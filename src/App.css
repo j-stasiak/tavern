@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.player-info {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  display: flex; /* or inline-flex */
+  text-align: center;
+}

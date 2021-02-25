@@ -10,23 +10,23 @@ const Player = ({ skin, buildings, selectCourse }: any) => {
   const { direction, step, walk, position, setPosition } = useWalk(3);
   // @ts-ignore
   useKeyPress((event) => {
-    walk(event.key.replace("Arrow", "").toLowerCase());
-    event.preventDefault();
+    if (event.key.includes("Arrow")) {
+      walk(event.key.replace("Arrow", "").toLowerCase());
+      event.preventDefault();
+    }
   });
 
   useEffect(() => {
     if (playerCollidesWith(position, buildings.tavern)) {
-      alert("tawerna");
       selectCourse(CourseTypes.TAVERN);
     } else if (playerCollidesWith(position, buildings.noobCourse)) {
-      alert("noob course");
       selectCourse(CourseTypes.NOOB_COURSE);
     } else if (playerCollidesWith(position, buildings.adeptCourse)) {
-      alert("adept course");
       selectCourse(CourseTypes.ADEPT_COURSE);
     } else if (playerCollidesWith(position, buildings.proCourse)) {
-      alert("noob course");
       selectCourse(CourseTypes.PRO_COURSE);
+    } else if (playerCollidesWith(position, buildings.ultraCourse)) {
+      selectCourse(CourseTypes.ULTRA_COURSE);
     }
   }, [position]);
 

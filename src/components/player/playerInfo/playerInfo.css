@@ -1,0 +1,37 @@
+.stats {
+    display: flex; /* or inline-flex */
+    text-align: center;
+    justify-content: center;
+}
+.stat {
+    border: #282c34 1px solid;
+    width: 40%;
+}
+
+.nick {
+
+}
+
+.rank{
+
+}
+
+.reputation{
+
+}
+
+.notes{
+
+}
+
+.progress{
+  width: 1000px;
+}
+.progress-bar{
+margin:auto;
+    width: 90%;
+}
+
+ul{
+    list-style-type: none;
+}
