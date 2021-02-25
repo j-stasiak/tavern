@@ -20,7 +20,7 @@ const Buildings = ({ buildings }: any) => (
       }}
     />
     <Sprite
-      image={"f1.png"}
+      image={"nowicjusz_arena_signed.png"}
       position={{
         xPosition: buildings.noobCourse.xPosition,
         yPosition: buildings.noobCourse.yPosition,
@@ -33,7 +33,7 @@ const Buildings = ({ buildings }: any) => (
       }}
     />
     <Sprite
-      image={"f1.png"}
+      image={"adept_arena_signed.png"}
       position={{
         xPosition: buildings.adeptCourse.xPosition,
         yPosition: buildings.adeptCourse.yPosition,
@@ -46,7 +46,7 @@ const Buildings = ({ buildings }: any) => (
       }}
     />
     <Sprite
-      image={"f1.png"}
+      image={"pro_arena_signed.png"}
       position={{
         xPosition: buildings.proCourse.xPosition,
         yPosition: buildings.proCourse.yPosition,
@@ -59,7 +59,7 @@ const Buildings = ({ buildings }: any) => (
       }}
     />
     <Sprite
-      image={"f1.png"}
+      image={"ultra_arena_signed.png"}
       position={{
         xPosition: buildings.ultraCourse.xPosition,
         yPosition: buildings.ultraCourse.yPosition,
