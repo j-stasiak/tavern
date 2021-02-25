@@ -1,30 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
-import Actor from "./components/actor";
 import Player from "./components/player";
-import Sprite from "./components/sprite";
-
+import { buildings } from "./constants/buildingsLocations";
+import Buildings from "./components/buildings/Buildings";
+import ReactModal from "react-modal";
+import { LiveEditor, LiveError, LivePreview, LiveProvider } from "react-live";
+import Course from "./components/course/Course";
+import { CourseTypes } from "./constants/CourseTypes";
+import { getCourse } from "./utils/courseUtils";
 function App() {
-  const buildings = {
-    tavern: { xPosition: 100, yPosition: 100, width: 100, height: 100 },
-  };
+  const [mapShown, setMapShown] = useState(true);
+  const [selectedCourseId, setSelectedCourse] = useState(1);
+  const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
+  useEffect(() => {
+    setSelectedCourseContent(getCourse(selectedCourseId));
+  }, [selectedCourseId]);
 
   return (
     <div className="App">
-      <Player buildings={buildings} skin={"m1"} />
-      <Sprite
-        image={"f1.png"}
-        position={{
-          xPosition: buildings.tavern.xPosition,
-          yPosition: buildings.tavern.yPosition,
-        }}
-        parameters={{
-          xPosition: 0,
-          yPosition: 0,
-          width: buildings.tavern.width,
-          height: buildings.tavern.height,
-        }}
-      />
+      <div onClick={() => setMapShown(!mapShown)}>dupa xD</div>
+      {mapShown ? (
+        <div className={"map"}>
+          <Player
+            selectCourse={setSelectedCourse}
+            buildings={buildings}
+            skin={"m1"}
+          />
+          <Buildings buildings={buildings} />
+        </div>
+      ) : (
+        <ReactModal
+          isOpen={!mapShown}
+          contentLabel="Inline Styles Modal Example"
+          style={{
+            overlay: {
+              backgroundColor: "papayawhip",
+            },
+            content: {
+              color: "lightsteelblue",
+            },
+          }}
+        >
+          <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
+          {selectedCourseId === CourseTypes.TAVERN ? (
+            <div>mysiorowy chat</div>
+          ) : (
+            <Course content={selectedCourseContent} />
+          )}
+        </ReactModal>
+      )}
     </div>
   );
 }
