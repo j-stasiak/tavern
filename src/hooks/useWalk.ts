@@ -2,7 +2,7 @@ import { useState } from "react";
 
 // @ts-ignore
 export const useWalk = (maxSteps) => {
-  const [position, setPosition] = useState({ xPosition: 0, yPosition: 0 });
+  const [position, setPosition] = useState({ xPosition: 600, yPosition: 500 });
   const [direction, setDirection] = useState(0);
   const [step, setStep] = useState(0);
   const directions: any = {
