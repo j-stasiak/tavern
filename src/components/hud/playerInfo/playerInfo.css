@@ -1,11 +1,11 @@
 .stats {
     display: flex; /* or inline-flex */
     text-align: center;
-    justify-content: center;
 }
 .stat {
     border: #282c34 1px solid;
     width: 40%;
+    background-image: url("https://opengameart.org/sites/default/files/Full%20Moon%20-%20background.png");
 }
 
 .nick {
@@ -25,7 +25,7 @@
 }
 
 .progress{
-  width: 1000px;
+  width: 1210px;
 }
 .progress-bar{
 margin:auto;

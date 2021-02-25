@@ -5,7 +5,9 @@ import React from "react";
 const Buildings = ({ buildings }: any) => (
   <>
     <Sprite
-      image={"f1.png"}
+      image={
+        "https://cdnb.artstation.com/p/assets/images/images/022/260/263/large/gonzalo-tomas-fernandez-pixel-2.jpg?1574735651"
+      }
       position={{
         xPosition: buildings.tavern.xPosition,
         yPosition: buildings.tavern.yPosition,

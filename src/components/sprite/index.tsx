@@ -12,6 +12,7 @@ const // @ts-ignore
           backgroundImage: `url(${image})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: `-${xPosition}px -${yPosition}px`,
+          borderRadius: "20%",
         }}
       />
     );
