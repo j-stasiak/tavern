@@ -37,7 +37,7 @@ function App() {
               backgroundColor: "papayawhip",
             },
             content: {
-              color: "lightsteelblue",
+              color: "ThreeDDarkShadow",
             },
           }}
         >
