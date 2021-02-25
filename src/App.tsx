@@ -7,7 +7,7 @@ import ReactModal from "react-modal";
 import Course from "./components/course/Course";
 import { CourseTypes } from "./constants/CourseTypes";
 import { getCourse } from "./utils/courseUtils";
-import PlayerInfo from "./components/player/playerInfo/PlayerInfo";
+import PlayerInfo from "./components/hud/playerInfo/PlayerInfo";
 
 function App() {
   const [mapShown, setMapShown] = useState(true);
@@ -20,7 +20,6 @@ function App() {
 
   return (
     <div className="App">
-      <div onClick={() => setMapShown(!mapShown)}>dupa xD</div>
       {mapShown ? (
         <div className={"map"}>
           <Player
@@ -53,9 +52,6 @@ function App() {
           isOpen={!mapShown}
           contentLabel="Inline Styles Modal Example"
           style={{
-            overlay: {
-              backgroundColor: "papayawhip",
-            },
             content: {
               color: "ThreeDDarkShadow",
             },

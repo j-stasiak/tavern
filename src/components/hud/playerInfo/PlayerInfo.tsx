@@ -5,7 +5,6 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { getCourse } from "../../../utils/courseUtils";
 import { CourseTypes } from "../../../constants/CourseTypes";
 // @ts-ignore
-// @ts-ignore
 const PlayerInfo = ({
   avatar,
   nick,
@@ -33,7 +32,6 @@ const PlayerInfo = ({
         ))}
       </ul>
       <div className={"progress-bar"}>
-        {" "}
         <ProgressBar
           completed={Math.round(
             (finishedCoursesIds.length /
