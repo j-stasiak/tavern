@@ -3,4 +3,5 @@ export const buildings = {
   noobCourse: { xPosition: 600, yPosition: 100, width: 100, height: 100 },
   adeptCourse: { xPosition: 800, yPosition: 100, width: 100, height: 100 },
   proCourse: { xPosition: 1000, yPosition: 100, width: 100, height: 100 },
+  ultraCourse: { xPosition: 1200, yPosition: 100, width: 100, height: 100 },
 };

@@ -30,6 +30,45 @@ const Buildings = ({ buildings }: any) => (
         height: buildings.noobCourse.height,
       }}
     />
+    <Sprite
+      image={"f1.png"}
+      position={{
+        xPosition: buildings.adeptCourse.xPosition,
+        yPosition: buildings.adeptCourse.yPosition,
+      }}
+      parameters={{
+        xPosition: 0,
+        yPosition: 0,
+        width: buildings.adeptCourse.width,
+        height: buildings.adeptCourse.height,
+      }}
+    />
+    <Sprite
+      image={"f1.png"}
+      position={{
+        xPosition: buildings.proCourse.xPosition,
+        yPosition: buildings.proCourse.yPosition,
+      }}
+      parameters={{
+        xPosition: 0,
+        yPosition: 0,
+        width: buildings.proCourse.width,
+        height: buildings.proCourse.height,
+      }}
+    />
+    <Sprite
+      image={"f1.png"}
+      position={{
+        xPosition: buildings.ultraCourse.xPosition,
+        yPosition: buildings.ultraCourse.yPosition,
+      }}
+      parameters={{
+        xPosition: 0,
+        yPosition: 0,
+        width: buildings.ultraCourse.width,
+        height: buildings.ultraCourse.height,
+      }}
+    />
   </>
 );
 
