@@ -8,11 +8,20 @@ import Course from "./components/course/Course";
 import { CourseTypes } from "./constants/CourseTypes";
 import { getCourse } from "./utils/courseUtils";
 import PlayerInfo from "./components/hud/playerInfo/PlayerInfo";
+import useSound from "use-sound";
 
 function App() {
   const [mapShown, setMapShown] = useState(true);
   const [selectedCourseId, setSelectedCourse] = useState(1);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
+  const [playActive] = useSound(
+    "Celtic Medieval Music - Kingdom of Bards.mp3",
+    { volume: 0.25 }
+  );
+
+  useEffect(() => {
+    playActive();
+  }, []);
 
   useEffect(() => {
     setSelectedCourseContent(getCourse(selectedCourseId));
