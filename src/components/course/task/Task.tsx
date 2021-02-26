@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { removeAllWhitespace } from "../../../utils/stringsUtils";
 import { PlayerModel } from "../../../constants/PlayerModel";
 import axios from "axios";
+import useSound from "use-sound";
+import { SERVER_URL } from "../../../constants/endpoints";
 
 const Task = ({
   task,
@@ -14,6 +16,7 @@ const Task = ({
   courseId: any;
 }) => {
   const [code, setCode] = useState("<div>Siemka</div>");
+  const [play] = useSound("sounds/level up sound.mp3", { volume: 0.3 });
   const [taskCompleted, setTaskCompleted] = useState<boolean>(
     user.finishedCoursesIds.includes(courseId)
   );
@@ -23,11 +26,12 @@ const Task = ({
       !user.finishedCoursesIds.includes(courseId)
     ) {
       axios
-        .put(`http://localhost:3000/user/${user.nick}`, {
+        .put(`${SERVER_URL}/user/${user.nick}`, {
           finishedCoursesIds: [...user.finishedCoursesIds, courseId],
         })
         .then((response) => {
           setTaskCompleted(true);
+          play();
         });
       //Todo: if playerCompletedTask === false putRequest to update in db
     }

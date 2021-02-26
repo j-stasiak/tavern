@@ -3,13 +3,15 @@ import { useForm } from "react-hook-form";
 import "./loginPanel.css";
 import axios from "axios";
 import { mapUser } from "../../../utils/backendUtils";
+import { SERVER_URL } from "../../../constants/endpoints";
 
 const LoginPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmit = (data: any) => {
-    axios
-      .post("http://localhost:3000/user", data)
-      .then((response) => submitCallback(mapUser(response)));
+    axios.post(`${SERVER_URL}/authentication/login`, data).then((response) => {
+      console.log("kurwa", response.data);
+      submitCallback(mapUser(response.data.user));
+    });
   };
 
   return (
