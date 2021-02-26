@@ -13,8 +13,6 @@ const Note = ({ note, saveNote }: Props) => {
   }, [note]);
   return (
     <div className={"right-side"}>
-      {editedNote.description}
-
       <textarea
         onChange={(event) =>
           setEditedNote({

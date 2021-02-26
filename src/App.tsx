@@ -16,6 +16,7 @@ import { mapUser } from "./utils/backendUtils";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
+  const [notesUpdated, setNotesUpdated] = useState(false);
   const [selectedCourseId, setSelectedCourse] = useState(1);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   //TODO: user will hold all user data retrieved after login/register
@@ -24,15 +25,17 @@ function App() {
     setSelectedCourseContent(getCourse(selectedCourseId));
   }, [selectedCourseId]);
 
+  const getUser = () =>
+    axios.get(`http://localhost:3000/user/${user?.nick}`).then((result) => {
+      // @ts-ignore
+      setUser(mapUser(result));
+    });
+
   useEffect(() => {
     if (mapShown) {
-      axios.get(`http://localhost:3000/user/${user?.nick}`).then((result) => {
-        // @ts-ignore
-        setUser(mapUser(result));
-      });
+      getUser();
     }
   }, [mapShown]);
-  console.log("user->", user);
 
   return (
     <div className="App">
@@ -59,6 +62,7 @@ function App() {
                 reputation={user.reputation}
                 notes={user.notes}
                 finishedCoursesIds={user.finishedCoursesIds}
+                getUser={getUser}
               />
             </div>
           </div>

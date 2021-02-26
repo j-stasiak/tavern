@@ -2,8 +2,6 @@ import { LiveError, LivePreview, LiveProvider } from "react-live";
 import React, { useEffect, useState } from "react";
 import { removeAllWhitespace } from "../../../utils/stringsUtils";
 import { PlayerModel } from "../../../constants/PlayerModel";
-import { getCourse } from "../../../utils/courseUtils";
-import { CourseTypes } from "../../../constants/CourseTypes";
 import axios from "axios";
 
 const Task = ({
@@ -34,7 +32,6 @@ const Task = ({
       //Todo: if playerCompletedTask === false putRequest to update in db
     }
   }, [code]);
-  //      player.finishedCoursesIds.includes(courseId) ||
 
   return (
     <div className={`task ${taskCompleted ? "task-completed" : ""}`}>

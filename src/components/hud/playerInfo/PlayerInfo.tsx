@@ -14,6 +14,7 @@ const PlayerInfo = ({
   reputation,
   notes,
   finishedCoursesIds,
+  getUser,
 }: any) => {
   const [editMode, setEditMode] = useState(false);
   return (
@@ -27,7 +28,12 @@ const PlayerInfo = ({
           },
         }}
       >
-        <Notes notes={notes} disableModal={() => setEditMode(false)} />
+        <Notes
+          nick={nick}
+          notes={notes}
+          disableModal={() => setEditMode(false)}
+          getUser={getUser}
+        />
       </ReactModal>
 
       <div className={"stat"}>
