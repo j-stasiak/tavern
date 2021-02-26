@@ -13,10 +13,10 @@ import WelcomePanel from "./components/welcomePanel/WelcomePanel";
 import { PlayerModel } from "./constants/PlayerModel";
 import axios from "axios";
 import { mapUser } from "./utils/backendUtils";
+import { resolveSprite } from "./utils/playerUtils";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
-  const [notesUpdated, setNotesUpdated] = useState(false);
   const [selectedCourseId, setSelectedCourse] = useState(1);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   //TODO: user will hold all user data retrieved after login/register
@@ -49,14 +49,12 @@ function App() {
                 setMapShown(false);
               }}
               buildings={buildings}
-              skin={"m1"}
+              skin={resolveSprite(user.finishedCoursesIds.length)}
             />
             <Buildings buildings={buildings} />
             <div className="player-info">
               <PlayerInfo
-                avatar={
-                  "http://www.gravatar.com/avatar/a16a38cdfe8b2cbd38e8a56ab93238d3"
-                }
+                avatar={`${user.avatar}.png`}
                 nick={user.nick}
                 rank={user.rank}
                 reputation={user.reputation}

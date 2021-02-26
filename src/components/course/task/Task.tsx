@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { removeAllWhitespace } from "../../../utils/stringsUtils";
 import { PlayerModel } from "../../../constants/PlayerModel";
 import axios from "axios";
+import useSound from "use-sound";
 
 const Task = ({
   task,
@@ -14,6 +15,7 @@ const Task = ({
   courseId: any;
 }) => {
   const [code, setCode] = useState("<div>Siemka</div>");
+  const [play] = useSound("sounds/level up sound.mp3", { volume: 0.3 });
   const [taskCompleted, setTaskCompleted] = useState<boolean>(
     user.finishedCoursesIds.includes(courseId)
   );
@@ -28,6 +30,7 @@ const Task = ({
         })
         .then((response) => {
           setTaskCompleted(true);
+          play();
         });
       //Todo: if playerCompletedTask === false putRequest to update in db
     }
