@@ -4,6 +4,8 @@ import NewNote from "./newNote/NewNote";
 import Note from "./note/Note";
 import axios from "axios";
 import { SERVER_URL } from "../../constants/endpoints";
+import { toast } from "react-toastify";
+import useSound from "use-sound";
 
 interface Props {
   notes: NoteModel[];
@@ -19,6 +21,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   );
   //
   const [newNoteMode, setNewNoteMode] = useState(false);
+  const [playSound] = useSound("sounds/wpis sound.mp3", { volume: 0.2 });
 
   const saveNote = (note: any) => {
     axios
@@ -27,6 +30,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
       })
       .then(() => {
         getUser();
+        playSound();
       });
   };
   const updateNote = (note: any) => {
@@ -38,6 +42,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
       })
       .then(() => {
         getUser();
+        playSound();
       });
   };
   return (
