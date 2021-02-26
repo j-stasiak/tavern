@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NoteModel } from "../../../constants/PlayerInfo";
+import { NoteModel } from "../../../constants/PlayerModel";
 
 interface Props {
   note: NoteModel;
@@ -13,8 +13,6 @@ const Note = ({ note, saveNote }: Props) => {
   }, [note]);
   return (
     <div className={"right-side"}>
-      {editedNote.description}
-
       <textarea
         onChange={(event) =>
           setEditedNote({

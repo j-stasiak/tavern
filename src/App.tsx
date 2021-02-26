@@ -10,16 +10,32 @@ import { getCourse } from "./utils/courseUtils";
 import PlayerInfo from "./components/hud/playerInfo/PlayerInfo";
 import SoundPlayer from "./components/soundPlayer/SoundPlayer";
 import WelcomePanel from "./components/welcomePanel/WelcomePanel";
+import { PlayerModel } from "./constants/PlayerModel";
+import axios from "axios";
+import { mapUser } from "./utils/backendUtils";
 
 function App() {
-  const [mapShown, setMapShown] = useState(true);
+  const [mapShown, setMapShown] = useState(false);
+  const [notesUpdated, setNotesUpdated] = useState(false);
   const [selectedCourseId, setSelectedCourse] = useState(1);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   //TODO: user will hold all user data retrieved after login/register
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState<PlayerModel>();
   useEffect(() => {
     setSelectedCourseContent(getCourse(selectedCourseId));
   }, [selectedCourseId]);
+
+  const getUser = () =>
+    axios.get(`http://localhost:3000/user/${user?.nick}`).then((result) => {
+      // @ts-ignore
+      setUser(mapUser(result));
+    });
+
+  useEffect(() => {
+    if (mapShown) {
+      getUser();
+    }
+  }, [mapShown]);
 
   return (
     <div className="App">
@@ -41,20 +57,12 @@ function App() {
                 avatar={
                   "http://www.gravatar.com/avatar/a16a38cdfe8b2cbd38e8a56ab93238d3"
                 }
-                nick="Airy Canine"
-                rank="Pro"
-                reputation="10"
-                notes={[
-                  {
-                    title: "Tytul notatki",
-                    description: "Jakies pierdu pierdu tutaj piszę ;)",
-                  },
-                  {
-                    title: "Tytul notatki2",
-                    description: "Super note ;)",
-                  },
-                ]}
-                finishedCoursesIds={[1, 2, 3]}
+                nick={user.nick}
+                rank={user.rank}
+                reputation={user.reputation}
+                notes={user.notes}
+                finishedCoursesIds={user.finishedCoursesIds}
+                getUser={getUser}
               />
             </div>
           </div>
@@ -72,7 +80,7 @@ function App() {
             {selectedCourseId === CourseTypes.TAVERN ? (
               <div>mysiorowy chat</div>
             ) : (
-              <Course content={selectedCourseContent} />
+              <Course content={selectedCourseContent} user={user} />
             )}
           </ReactModal>
         )
