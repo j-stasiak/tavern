@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
-import './Chat.scss'
-import {io, Socket} from "socket.io-client";
-import {SOCKET_SERVER_URL} from "../../constants/serverUrl";
+import React, { useEffect, useRef, useState } from "react";
+import "./Chat.scss";
+import { io, Socket } from "socket.io-client";
+import { CHAT_SOCKET_SERVER_URL } from "../../constants/serverUrl";
 import Message from "./message/Message";
 import "simplebar/src/simplebar.css";
 import Scrollbars from "react-custom-scrollbars";
@@ -24,7 +24,7 @@ const Chat: React.FC<IProps> = ({ nick }) => {
   const socketRef = useRef<Socket>();
 
   useEffect(() => {
-    socketRef.current = io(SOCKET_SERVER_URL);
+    socketRef.current = io(CHAT_SOCKET_SERVER_URL);
 
     socketRef.current.on("your id", (id: string) => {
       setYourId(id);
@@ -74,16 +74,18 @@ const Chat: React.FC<IProps> = ({ nick }) => {
             </div>
           </Scrollbars>
         </div>
+        <div className={"chat-input flex-container flex-justify-center"}>
+          <textarea
+            value={message}
+            onChange={handleChange}
+            placeholder="Write message..."
+            className="new-message-input-field"
+          />
+          <button className={"send-message-button"} onClick={sendMessage}>
+            Send
+          </button>
+        </div>
       </div>
-      <textarea
-        value={message}
-        onChange={handleChange}
-        placeholder="Write message..."
-        className="new-message-input-field"
-      />
-      <button onClick={sendMessage} className="send-message-button">
-        Send
-      </button>
     </div>
   );
 };
