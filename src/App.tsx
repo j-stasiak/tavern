@@ -20,7 +20,7 @@ import useSound from "use-sound";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
-  const [selectedCourseId, setSelectedCourse] = useState(1);
+  const [selectedCourseId, setSelectedCourse] = useState(0);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   //TODO: user will hold all user data retrieved after login/register
   const [user, setUser] = useState<PlayerModel>();
