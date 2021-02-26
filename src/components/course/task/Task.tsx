@@ -1,16 +1,40 @@
 import { LiveError, LivePreview, LiveProvider } from "react-live";
 import React, { useEffect, useState } from "react";
 import { removeAllWhitespace } from "../../../utils/stringsUtils";
+import { PlayerModel } from "../../../constants/PlayerModel";
+import { getCourse } from "../../../utils/courseUtils";
+import { CourseTypes } from "../../../constants/CourseTypes";
+import axios from "axios";
 
-const Task = ({ task, player }: any) => {
+const Task = ({
+  task,
+  user,
+  courseId,
+}: {
+  task: any;
+  user: PlayerModel;
+  courseId: any;
+}) => {
   const [code, setCode] = useState("<div>Siemka</div>");
-  const [taskCompleted, setTaskCompleted] = useState<boolean>();
+  const [taskCompleted, setTaskCompleted] = useState<boolean>(
+    user.finishedCoursesIds.includes(courseId)
+  );
   useEffect(() => {
-    if (removeAllWhitespace(code) === removeAllWhitespace(task.result)) {
-      setTaskCompleted(true);
+    if (
+      removeAllWhitespace(code) === removeAllWhitespace(task.result) &&
+      !user.finishedCoursesIds.includes(courseId)
+    ) {
+      axios
+        .put(`http://localhost:3000/user/${user.nick}`, {
+          finishedCoursesIds: [...user.finishedCoursesIds, courseId],
+        })
+        .then((response) => {
+          setTaskCompleted(true);
+        });
       //Todo: if playerCompletedTask === false putRequest to update in db
     }
   }, [code]);
+  //      player.finishedCoursesIds.includes(courseId) ||
 
   return (
     <div className={`task ${taskCompleted ? "task-completed" : ""}`}>

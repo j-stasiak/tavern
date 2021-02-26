@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NoteModel } from "../../../constants/PlayerInfo";
+import { NoteModel } from "../../../constants/PlayerModel";
 
 interface Props {
   note: NoteModel;

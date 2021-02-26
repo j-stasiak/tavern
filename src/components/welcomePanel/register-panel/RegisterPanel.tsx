@@ -2,10 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import "./registerPanel.css";
 import axios from "axios";
+import { mapUser } from "../../../utils/backendUtils";
 const RegisterPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmit = (data: any) => {
-    submitCallback(true);
+    axios
+      .post("http://localhost:3000/authentication/register", data)
+      .then((response) => submitCallback(mapUser(response)));
   };
 
   return (

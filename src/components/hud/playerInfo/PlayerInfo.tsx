@@ -39,6 +39,7 @@ const PlayerInfo = ({
       <div className={"stat notes"}>
         <button onClick={() => setEditMode(true)}>Notatki</button>
       </div>
+
       <div className={"stat progress"}>
         Ukończone kursy
         <ul>
