@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import "./registerPanel.css";
+import axios from "axios";
 const RegisterPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmit = (data: any) => {
-    console.log(data);
     submitCallback(true);
   };
 
@@ -19,6 +19,14 @@ const RegisterPanel = ({ submitCallback }: any) => {
       {errors.nick && "Bez nicku nie przejdziesz."}
       <br />
       <input
+        type="text"
+        placeholder="email"
+        name="email"
+        ref={register({ required: true, maxLength: 80 })}
+      />
+      {errors.email && "Email...."}
+      <br />
+      <input
         type="password"
         placeholder="Password"
         name="password"
@@ -27,10 +35,10 @@ const RegisterPanel = ({ submitCallback }: any) => {
       {errors.password && "Haslo jest wymagane."}
       <br />
       <select name="avatar" ref={register({ required: true })}>
-        <option value="1">Mr</option>
-        <option value="2">Mrs</option>
-        <option value="3">Miss</option>
-        <option value="4">Dr</option>
+        <option value="avatar_1">Fota Avatara 1</option>
+        <option value="avatar_2">Fota Avatara 2</option>
+        <option value="avatar_3">Fota Avatara 3</option>
+        <option value="avatar_4">Fota Avatara 4</option>
       </select>
       <br />
       <input type="submit" />
