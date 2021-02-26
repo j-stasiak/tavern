@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NoteModel } from "../../constants/PlayerModel";
 import NewNote from "./newNote/NewNote";
 import Note from "./note/Note";
@@ -20,7 +20,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   );
   //
   const [newNoteMode, setNewNoteMode] = useState(false);
-  const [playSound] = useSound("sounds/wpis sound.mp3", { volume: 0.2 });
+  const [play] = useSound("sounds/wpis sound.mp3", { volume: 0.2 });
 
   const saveNote = (note: any) => {
     axios
@@ -29,7 +29,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
       })
       .then(() => {
         getUser();
-        playSound();
+        play();
       });
   };
   const updateNote = (note: any) => {
@@ -41,7 +41,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
       })
       .then(() => {
         getUser();
-        playSound();
+        play();
       });
   };
   return (
@@ -59,7 +59,6 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
               {notes.map((note) => (
                 <div
                   onClick={() => {
-                    console.log("ustawiam nowa notatke na ", note);
                     setSelectedNote(note);
                   }}
                 >

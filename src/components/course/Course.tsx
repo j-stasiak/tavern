@@ -3,7 +3,6 @@ import "./course.css";
 import Task from "./task/Task";
 
 const Course = ({ content, user }: any) => {
-  console.log("courseuser-", user);
   return (
     <>
       <h1>{content.title}</h1>

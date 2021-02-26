@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./registerPanel.css";
 import axios from "axios";
 import { mapUser } from "../../../utils/backendUtils";
 import { SERVER_URL } from "../../../constants/endpoints";
 
+const avatars = [
+  "avatar_1.png",
+  "avatar_2.png",
+  "avatar_3.png",
+  "avatar_4.png",
+];
+
 const RegisterPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
+  const [avatar, setAvatar] = useState(avatars[0]);
   const onSubmit = (data: any) => {
     axios
-      .post(`${SERVER_URL}/authentication/register`, data)
+      .post(`${SERVER_URL}/authentication/register`, {
+        ...data,
+        avatar,
+      })
       .then((response) => submitCallback(mapUser(response.data)));
   };
 
@@ -39,13 +50,22 @@ const RegisterPanel = ({ submitCallback }: any) => {
       />
       {errors.password && "Haslo jest wymagane."}
       <br />
-      <select name="avatar" ref={register({ required: true })}>
-        <option value="avatar_1">Fota Avatara 1</option>
-        <option value="avatar_2">Fota Avatara 2</option>
-        <option value="avatar_3">Fota Avatara 3</option>
-        <option value="avatar_4">Fota Avatara 4</option>
-      </select>
+      {avatars.map((avatar, key) => (
+        <>
+          <img
+            onClick={() => {
+              setAvatar(avatar);
+            }}
+            src={avatar}
+            className={"avataro"}
+          />
+          -
+        </>
+      ))}
       <br />
+      {/*<div className={"avatars"}>*/}
+      {/*  <ImageGallery items={images} />*/}
+      {/*</div>*/}
       <input type="submit" />
     </form>
   );

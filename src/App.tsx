@@ -16,6 +16,7 @@ import { resolveSprite } from "./utils/playerUtils";
 import ReactModal from "react-modal";
 import Chat from "./components/chat/Chat";
 import { SERVER_URL } from "./constants/endpoints";
+import useSound from "use-sound";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
@@ -23,6 +24,9 @@ function App() {
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   //TODO: user will hold all user data retrieved after login/register
   const [user, setUser] = useState<PlayerModel>();
+  const [playWelcomeSound] = useSound("sounds/register sound.mp3", {
+    volume: 0.2,
+  });
   useEffect(() => {
     setSelectedCourseContent(getCourse(selectedCourseId));
   }, [selectedCourseId]);
@@ -40,7 +44,6 @@ function App() {
   }, [mapShown]);
 
   const showTavern = !mapShown && selectedCourseId === CourseTypes.TAVERN;
-
   return (
     <div className={`App ${showTavern ? "tavernBackground" : "mapBackground"}`}>
       <SoundPlayer />
@@ -58,7 +61,7 @@ function App() {
             <Buildings buildings={buildings} />
             <div className="player-info">
               <PlayerInfo
-                avatar={`${user.avatar}.png`}
+                avatar={user.avatar}
                 nick={user.nick}
                 rank={user.rank}
                 reputation={user.reputation}
@@ -93,8 +96,8 @@ function App() {
       ) : (
         <WelcomePanel
           submitCallback={(user: any) => {
-            console.log("elooo", user);
             setUser(user);
+            playWelcomeSound();
           }}
         />
       )}
