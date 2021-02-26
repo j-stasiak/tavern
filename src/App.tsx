@@ -3,7 +3,6 @@ import "./App.css";
 import Player from "./components/player";
 import { buildings } from "./constants/buildingsLocations";
 import Buildings from "./components/buildings/Buildings";
-import ReactModal from "react-modal";
 import Course from "./components/course/Course";
 import { CourseTypes } from "./constants/CourseTypes";
 import { getCourse } from "./utils/courseUtils";
@@ -37,8 +36,10 @@ function App() {
     }
   }, [mapShown]);
 
+  const showTavern = !mapShown && selectedCourseId === CourseTypes.TAVERN;
+
   return (
-    <div className="App">
+    <div className={`App ${showTavern ? "tavernBackground" : "mapBackground"}`}>
       <SoundPlayer />
       {user ? (
         mapShown ? (
@@ -65,22 +66,26 @@ function App() {
             </div>
           </div>
         ) : (
-          <ReactModal
-            isOpen={!mapShown}
-            contentLabel="Inline Styles Modal Example"
-            style={{
-              content: {
-                color: "ThreeDDarkShadow",
-              },
-            }}
-          >
+          <div className={`${mapShown ? "hide" : ""}`}>
             <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
             {selectedCourseId === CourseTypes.TAVERN ? (
-              <div>mysiorowy chat</div>
+              <Chat nick={user.nick} />
             ) : (
-              <Course content={selectedCourseContent} user={user} />
+              <ReactModal
+                isOpen={!mapShown}
+                contentLabel="Inline Styles Modal Example"
+                style={{
+                  content: {
+                    color: "ThreeDDarkShadow",
+                  },
+                }}
+              >
+                <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
+
+                <Course content={selectedCourseContent} user={user} />
+              </ReactModal>
             )}
-          </ReactModal>
+          </div>
         )
       ) : (
         <WelcomePanel
