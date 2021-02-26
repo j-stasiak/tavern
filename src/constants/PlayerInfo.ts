@@ -4,6 +4,11 @@ export interface PlayerInfo {
   nick: string;
   rank: string;
   reputation: number;
-  notes: { title: string; description: string }[];
+  notes: NoteModel[];
   finishedCoursesIds: number[];
+}
+
+export interface NoteModel {
+  title: string;
+  description: string;
 }

@@ -44,10 +44,16 @@ function App() {
                 nick="Airy Canine"
                 rank="Pro"
                 reputation="10"
-                notes={{
-                  title: "Notatka",
-                  description: "Jakies pierdu pierdu tutaj piszę ;)",
-                }}
+                notes={[
+                  {
+                    title: "Tytul notatki",
+                    description: "Jakies pierdu pierdu tutaj piszę ;)",
+                  },
+                  {
+                    title: "Tytul notatki2",
+                    description: "Super note ;)",
+                  },
+                ]}
                 finishedCoursesIds={[1, 2, 3]}
               />
             </div>
