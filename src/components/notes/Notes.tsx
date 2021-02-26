@@ -4,7 +4,6 @@ import NewNote from "./newNote/NewNote";
 import Note from "./note/Note";
 import axios from "axios";
 import { SERVER_URL } from "../../constants/endpoints";
-import { toast } from "react-toastify";
 import useSound from "use-sound";
 
 interface Props {
