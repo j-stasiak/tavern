@@ -74,7 +74,19 @@ function App() {
             {selectedCourseId === CourseTypes.TAVERN ? (
               <Chat nick={user.nick} />
             ) : (
-              <Course content={selectedCourseContent} user={user} />
+              <ReactModal
+                isOpen={!mapShown}
+                contentLabel="Inline Styles Modal Example"
+                style={{
+                  content: {
+                    color: "ThreeDDarkShadow",
+                  },
+                }}
+              >
+                <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
+
+                <Course content={selectedCourseContent} user={user} />
+              </ReactModal>
             )}
           </div>
         )
