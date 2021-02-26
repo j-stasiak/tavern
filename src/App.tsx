@@ -8,8 +8,8 @@ import Course from "./components/course/Course";
 import { CourseTypes } from "./constants/CourseTypes";
 import { getCourse } from "./utils/courseUtils";
 import PlayerInfo from "./components/hud/playerInfo/PlayerInfo";
-import useSound from "use-sound";
 import SoundPlayer from "./components/soundPlayer/SoundPlayer";
+import Chat from "./components/chat/Chat";
 
 function App() {
   const [mapShown, setMapShown] = useState(true);
@@ -62,7 +62,7 @@ function App() {
         >
           <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
           {selectedCourseId === CourseTypes.TAVERN ? (
-            <div>mysiorowy chat</div>
+            <Chat />
           ) : (
             <Course content={selectedCourseContent} />
           )}

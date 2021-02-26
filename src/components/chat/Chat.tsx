@@ -21,7 +21,7 @@ const Chat = () => {
         socketRef.current = io(SOCKET_SERVER_URL);
 
         socketRef.current.on("your id", (id: string) => {
-            setYourId(id);
+         setYourId(id);
         })
 
         socketRef.current.on("message:client", (message: Message) => {
@@ -49,7 +49,7 @@ const Chat = () => {
     }
 
     return (
-        <div className={"chat"}>
+        <div className={"glass"}>
             {messages.map((message: Message, index: number) => {
                     if (message.senderId === yourId) {
                         return <p style={{color: "white"}}>Ty: {message.body}</p>
