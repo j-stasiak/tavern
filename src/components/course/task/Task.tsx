@@ -5,6 +5,7 @@ import { PlayerModel } from "../../../constants/PlayerModel";
 import axios from "axios";
 import useSound from "use-sound";
 import { SERVER_URL } from "../../../constants/endpoints";
+import { resolveRank } from "../../../utils/playerUtils";
 
 const Task = ({
   task,
@@ -27,6 +28,7 @@ const Task = ({
     ) {
       axios
         .put(`${SERVER_URL}/user/${user.nick}`, {
+          rank: resolveRank(user.rank),
           finishedCoursesIds: [...user.finishedCoursesIds, courseId],
         })
         .then((response) => {
