@@ -1,6 +1,7 @@
 .stats {
     display: flex; /* or inline-flex */
     text-align: center;
+    color: wheat;
 }
 .stat {
     border: #282c34 1px solid;
