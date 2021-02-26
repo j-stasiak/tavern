@@ -41,26 +41,28 @@ const Task = ({
 
   return (
     <div className={`task ${taskCompleted ? "task-completed" : ""}`}>
-      <h2>{task.instruction}</h2>
-      <LiveProvider code={task.result}>
-        <h3>Oczekiwany rezultat</h3>
-        <LivePreview />
-      </LiveProvider>
-      <LiveProvider code={code}>
-        <div>
-          <textarea
-            onChange={(event) => setCode(event.target.value)}
-            name="styled-textarea"
-            id="styled"
-          >
-            Pisz..
-          </textarea>
-          <div className={"rendered-code"}>
-            <LiveError />
-            <LivePreview />
+      <div className={"flex-col-container"}>
+        <LiveProvider code={task.result}>
+          <h3>Oczekiwany rezultat</h3>
+          <LivePreview />
+        </LiveProvider>
+        <LiveProvider code={code}>
+          <div>
+            <textarea
+              onChange={(event) => setCode(event.target.value)}
+              name="styled-textarea"
+              id="styled"
+            >
+              Pisz..
+            </textarea>
+            <div className={"rendered-code"}>
+              <LiveError />
+              <LivePreview />
+            </div>
           </div>
-        </div>
-      </LiveProvider>
+        </LiveProvider>
+      </div>
+      <h2>{task.instruction}</h2>
     </div>
   );
 };

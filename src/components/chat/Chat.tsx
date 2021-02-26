@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Chat.scss";
-import { io, Socket } from "socket.io-client";
 import { CHAT_SOCKET_SERVER_URL } from "../../constants/serverUrl";
 import Message from "./message/Message";
 import "simplebar/src/simplebar.css";
 import Scrollbars from "react-custom-scrollbars";
+import io from "socket.io-client";
 
 export interface IMessage {
   body: string;
@@ -21,12 +21,13 @@ const Chat: React.FC<IProps> = ({ nick }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [message, setMessage] = useState<string>("");
 
-  const socketRef = useRef<Socket>();
+  const socketRef = useRef<any>();
 
   useEffect(() => {
     socketRef.current = io(CHAT_SOCKET_SERVER_URL);
 
     socketRef.current.on("your id", (id: string) => {
+      console.log("mam id");
       setYourId(id);
     });
 
@@ -46,13 +47,14 @@ const Chat: React.FC<IProps> = ({ nick }) => {
       senderId: yourId,
     };
     setMessage("");
-    // @ts-ignore
     socketRef.current.emit("message", messageObject);
   };
 
   const handleChange = (e: any) => {
     setMessage(e.target.value);
   };
+
+  console.log("id", yourId);
 
   return (
     <div className={"chat-container flex-container flex-justify-center"}>
