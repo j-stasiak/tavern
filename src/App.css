@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-  background: url("https://opengameart.org/sites/default/files/Full%20Moon%20-%20background.png") ;
 
   /* Full height */
   height: 940px;
@@ -11,10 +10,24 @@
   background-size: cover;
 }
 
+.mapBackground {
+  background: url("https://opengameart.org/sites/default/files/Full%20Moon%20-%20background.png");
+}
+
+.tavernBackground {
+  background: url("./images/tawerna.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
 .player-info {
   position: fixed;
   left: 0;
   bottom: 0;
   display: flex; /* or inline-flex */
   text-align: center;
+}
+
+.hide {
+  display: none;
 }
