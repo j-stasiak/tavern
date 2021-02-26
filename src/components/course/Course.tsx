@@ -3,7 +3,6 @@ import "./course.scss";
 import Task from "./task/Task";
 
 const Course = ({ content, user }: any) => {
-  console.log("courseuser-", user);
   return (
     <div className={'course'}>
       <h1>{content.title}</h1>

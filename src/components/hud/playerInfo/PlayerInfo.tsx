@@ -37,11 +37,11 @@ const PlayerInfo = ({
       </ReactModal>
 
       <div className={"stat"}>
-        <Avatar size="100" src={avatar} />
+        <Avatar size="300" src={`${avatar}`} />
       </div>
       <div className={"stat nick"}>{nick}</div>
       <div className={"stat rank"}>{rank}</div>
-      <div className={"stat reputation"}>{reputation} lajkuf</div>
+      <div className={"stat reputation"}>Reputacja: {reputation} </div>
       <div className={"stat notes"}>
         <button onClick={() => setEditMode(true)}>Notatki</button>
       </div>
