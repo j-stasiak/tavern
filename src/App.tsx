@@ -13,6 +13,7 @@ import { PlayerModel } from "./constants/PlayerModel";
 import axios from "axios";
 import { mapUser } from "./utils/backendUtils";
 import Chat from "./components/chat/Chat";
+import ReactModal from "react-modal";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
@@ -74,7 +75,19 @@ function App() {
             {selectedCourseId === CourseTypes.TAVERN ? (
               <Chat nick={user.nick} />
             ) : (
-              <Course content={selectedCourseContent} user={user} />
+              <ReactModal
+                isOpen={!mapShown}
+                contentLabel="Inline Styles Modal Example"
+                style={{
+                  content: {
+                    color: "ThreeDDarkShadow",
+                  },
+                }}
+              >
+                <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
+
+                <Course content={selectedCourseContent} user={user} />
+              </ReactModal>
             )}
           </div>
         )
