@@ -13,6 +13,9 @@ import { PlayerModel } from "./constants/PlayerModel";
 import axios from "axios";
 import { mapUser } from "./utils/backendUtils";
 import { resolveSprite } from "./utils/playerUtils";
+import ReactModal from "react-modal";
+import Chat from "./components/chat/Chat";
+import { SERVER_URL } from "./constants/endpoints";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
@@ -25,9 +28,9 @@ function App() {
   }, [selectedCourseId]);
 
   const getUser = () =>
-    axios.get(`http://localhost:3000/user/${user?.nick}`).then((result) => {
+    axios.get(`${SERVER_URL}/user/${user?.nick}`).then((result) => {
       // @ts-ignore
-      setUser(mapUser(result));
+      setUser(mapUser(result.data));
     });
 
   useEffect(() => {
@@ -90,6 +93,7 @@ function App() {
       ) : (
         <WelcomePanel
           submitCallback={(user: any) => {
+            console.log("elooo", user);
             setUser(user);
           }}
         />

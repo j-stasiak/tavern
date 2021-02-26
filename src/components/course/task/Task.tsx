@@ -4,6 +4,7 @@ import { removeAllWhitespace } from "../../../utils/stringsUtils";
 import { PlayerModel } from "../../../constants/PlayerModel";
 import axios from "axios";
 import useSound from "use-sound";
+import { SERVER_URL } from "../../../constants/endpoints";
 
 const Task = ({
   task,
@@ -25,7 +26,7 @@ const Task = ({
       !user.finishedCoursesIds.includes(courseId)
     ) {
       axios
-        .put(`http://localhost:3000/user/${user.nick}`, {
+        .put(`${SERVER_URL}/user/${user.nick}`, {
           finishedCoursesIds: [...user.finishedCoursesIds, courseId],
         })
         .then((response) => {

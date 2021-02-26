@@ -3,6 +3,7 @@ import { NoteModel } from "../../constants/PlayerModel";
 import NewNote from "./newNote/NewNote";
 import Note from "./note/Note";
 import axios from "axios";
+import { SERVER_URL } from "../../constants/endpoints";
 
 interface Props {
   notes: NoteModel[];
@@ -21,7 +22,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
 
   const saveNote = (note: any) => {
     axios
-      .put(`http://localhost:3000/user/${nick}`, {
+      .put(`${SERVER_URL}/user/${nick}`, {
         notes: [...notes, note],
       })
       .then(() => {
@@ -30,7 +31,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   };
   const updateNote = (note: any) => {
     axios
-      .put(`http://localhost:3000/user/${nick}`, {
+      .put(`${SERVER_URL}/user/${nick}`, {
         notes: notes.map((notunia) => {
           return notunia.title === note.title ? note : notunia;
         }),

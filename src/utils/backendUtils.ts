@@ -1,8 +1,8 @@
-export const mapUser = (response: any) => ({
-  nick: response.data.nick,
-  finishedCoursesIds: response.data.finishedCoursesIds,
-  avatar: response.data.avatar,
-  notes: response.data.notes,
-  rank: response.data.rank,
-  reputation: response.data.reputation,
+export const mapUser = (user: any) => ({
+  nick: user.nick,
+  finishedCoursesIds: user.finishedCoursesIds,
+  avatar: user.avatar,
+  notes: user.notes,
+  rank: user.rank,
+  reputation: user.reputation,
 });
