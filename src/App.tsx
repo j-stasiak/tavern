@@ -13,6 +13,7 @@ import { PlayerModel } from "./constants/PlayerModel";
 import axios from "axios";
 import { mapUser } from "./utils/backendUtils";
 import Chat from "./components/chat/Chat";
+import ReactModal from "react-modal";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
