@@ -1,0 +1,81 @@
+.course {
+  padding: 15px;
+}
+
+textarea#styled {
+  width: 400px;
+  height: 350px;
+  border: 3px solid #cccccc;
+  padding: 5px;
+  font-family: Tahoma, sans-serif;
+  background-color: #1a1111;
+  color: #cf6725;
+}
+
+.task {
+  height: 480px;
+}
+
+.task-completed {
+  background-color: darkgreen;
+}
+
+.editor {
+  height: 350px;
+  margin-top: 40px;
+}
+
+.hide {
+  display: none;
+}
+
+.box {
+  width: 400px;
+  height: 350px;
+  background: #fff;
+  border: solid black;
+}
+
+.box1 {
+  border-width: 3px 4px 3px 5px;
+  border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+  transform: rotate(0.2deg);
+  padding: 5px;
+}
+
+.box2 {
+  width: 350px;
+  border-width: 3px 3px 5px 5px;
+  border-radius: 4% 95% 6% 95%/95% 4% 92% 5%;
+  transform: rotate(-2deg);
+  margin-left: 50px;
+  padding: 30px;
+}
+
+.box3 {
+  border-width: 5px 3px 3px 5px;
+  border-radius: 95% 4% 97% 5%/4% 94% 3% 95%;
+  transform: rotate(2deg);
+  margin-left: 50px;
+  padding: 30px;
+}
+
+.finished-box {
+  width: 1000px;
+  border: solid #3cb371;
+  padding: 50px;
+  text-align: center;
+  font-size: 36px;
+  letter-spacing: 3px;
+  margin-top: 60px;
+  background-color: #fff;
+  //background-color: #3cb371;
+  color: green;
+}
+
+.finish-border {
+  border-width: 5px 3px 3px 5px;
+  border-radius: 4% 95% 6% 95%/95% 4% 92% 5%;
+  transform: rotate(2deg);
+  padding: 30px;
+}

@@ -16,7 +16,7 @@ const Task = ({
   user: PlayerModel;
   courseId: any;
 }) => {
-  const [code, setCode] = useState("<div>Siemka</div>");
+  const [code, setCode] = useState("<div></div>");
   const [play] = useSound("sounds/level up sound.mp3", { volume: 0.3 });
   const [taskCompleted, setTaskCompleted] = useState<boolean>(
     user.finishedCoursesIds.includes(courseId)
@@ -40,28 +40,52 @@ const Task = ({
   }, [code]);
 
   return (
-    <div className={`task ${taskCompleted ? "task-completed" : ""}`}>
-      <h2>{task.instruction}</h2>
-      <LiveProvider code={task.result}>
-        <h3>Oczekiwany rezultat</h3>
-        <LivePreview />
-      </LiveProvider>
-      <LiveProvider code={code}>
-        <div>
-          <textarea
-            onChange={(event) => setCode(event.target.value)}
-            name="styled-textarea"
-            id="styled"
-          >
-            Pisz..
-          </textarea>
-          <div className={"rendered-code"}>
-            <LiveError />
-            <LivePreview />
+    <>
+      <div className={"flex-col-container flex-align-center task"}>
+        <h2>{task.instruction}</h2>
+        <div className={"flex-container editor"}>
+          <div>
+            <LiveProvider code={code}>
+              <div>
+                <div className={"flex-container"}>
+                  <div className={"box box1"}>
+                    <textarea
+                      onChange={(event) => setCode(event.target.value)}
+                      name="styled-textarea"
+                      id="styled"
+                      placeholder={"Miejsce na Twój kod html..."}
+                    />
+                  </div>
+
+                  <div
+                    className={`box box2 ${
+                      taskCompleted ? "green-border" : "red-border"
+                    }`}
+                  >
+                    <h3>Twój rezultat:</h3>
+                    <LiveError />
+                    <LivePreview />
+                  </div>
+                </div>
+              </div>
+            </LiveProvider>
+          </div>
+          <div className={"box box3"}>
+            <LiveProvider code={task.result}>
+              <h3>Oczekiwany rezultat:</h3>
+              <LivePreview />
+            </LiveProvider>
           </div>
         </div>
-      </LiveProvider>
-    </div>
+        <div
+          className={`finished-box finish-border ${
+            taskCompleted ? "" : "hide"
+          }`}
+        >
+          GRATULACJE KURS UKOŃCZONY!!!
+        </div>
+      </div>
+    </>
   );
 };
 
