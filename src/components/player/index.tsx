@@ -22,7 +22,7 @@ const Player = ({ skin, buildings, selectCourse }: any) => {
     volume: 0.3,
   });
   const [playLaugh] = useSound("sounds/hihi.mp3", {
-    volume: 0.6,
+    volume: 1.5,
   });
   // @ts-ignore
   useKeyPress((event) => {
