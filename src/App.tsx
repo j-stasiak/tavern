@@ -12,12 +12,13 @@ import WelcomePanel from "./components/welcomePanel/WelcomePanel";
 import { PlayerModel } from "./constants/PlayerModel";
 import axios from "axios";
 import { mapUser } from "./utils/backendUtils";
-import Chat from "./components/chat/Chat";
+import { resolveSprite } from "./utils/playerUtils";
 import ReactModal from "react-modal";
+import Chat from "./components/chat/Chat";
+import { SERVER_URL } from "./constants/endpoints";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
-  const [notesUpdated, setNotesUpdated] = useState(false);
   const [selectedCourseId, setSelectedCourse] = useState(1);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   //TODO: user will hold all user data retrieved after login/register
@@ -27,9 +28,9 @@ function App() {
   }, [selectedCourseId]);
 
   const getUser = () =>
-    axios.get(`http://localhost:3000/user/${user?.nick}`).then((result) => {
+    axios.get(`${SERVER_URL}/user/${user?.nick}`).then((result) => {
       // @ts-ignore
-      setUser(mapUser(result));
+      setUser(mapUser(result.data));
     });
 
   useEffect(() => {
@@ -52,14 +53,12 @@ function App() {
                 setMapShown(false);
               }}
               buildings={buildings}
-              skin={"m1"}
+              skin={resolveSprite(user.finishedCoursesIds.length)}
             />
             <Buildings buildings={buildings} />
             <div className="player-info">
               <PlayerInfo
-                avatar={
-                  "http://www.gravatar.com/avatar/a16a38cdfe8b2cbd38e8a56ab93238d3"
-                }
+                avatar={`${user.avatar}.png`}
                 nick={user.nick}
                 rank={user.rank}
                 reputation={user.reputation}
@@ -94,6 +93,7 @@ function App() {
       ) : (
         <WelcomePanel
           submitCallback={(user: any) => {
+            console.log("elooo", user);
             setUser(user);
           }}
         />
