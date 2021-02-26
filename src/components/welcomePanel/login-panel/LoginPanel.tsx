@@ -1,11 +1,15 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import "./loginPanel.css";
+import axios from "axios";
+import { mapUser } from "../../../utils/backendUtils";
+
 const LoginPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmit = (data: any) => {
-    console.log(data);
-    submitCallback(true);
+    axios
+      .post("http://localhost:3000/user", data)
+      .then((response) => submitCallback(mapUser(response)));
   };
 
   return (
