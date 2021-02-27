@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { NoteModel } from "../../constants/PlayerModel";
-import NewNote from "./newNote/NewNote";
 import Note from "./note/Note";
 import axios from "axios";
 import { SERVER_URL } from "../../constants/endpoints";
 import useSound from "use-sound";
 import "./Notes.scss";
+import NewNote from "./newNote/NewNote";
 
 interface Props {
   notes: NoteModel[];
@@ -32,6 +32,7 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
         getUser();
         play();
       });
+    setNewNoteMode(false);
   };
   const updateNote = (note: any) => {
     axios
@@ -54,30 +55,34 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
       >
         {newNoteMode ? "Notatki" : "Nowa notatka"}
       </button>
-      {newNoteMode ? (
-        <NewNote saveNote={saveNote} />
-      ) : (
-        selectedNote && (
-          <div className={"flex-container"}>
-            <div className={"left flex-col-container flex-align-center"}>
-              {notes.map((note) => (
-                <div
-                  className={"sidebar-notes sidebar-notes-border"}
-                  onClick={() => {
-                    setSelectedNote(note);
-                  }}
-                >
-                  {note.title}
-                </div>
-              ))}
+      <div className={"flex-container"}>
+        <div className={"left flex-col-container flex-align-center"}>
+          {notes.map((note) => (
+            <div
+              className={"sidebar-notes sidebar-notes-border"}
+              onClick={() => {
+                setSelectedNote(note);
+              }}
+            >
+              {note.title}
             </div>
-            <div className={"selected-note"}>
-              <Note note={selectedNote} saveNote={updateNote} />
-            </div>
+          ))}
+        </div>
+        {newNoteMode ? (
+          <div className={"selected-note"}>
+            <NewNote saveNote={saveNote} />
           </div>
-        )
-      )}
-      {}
+        ) : (
+          <>
+            {selectedNote && (
+              <div className={"selected-note"}>
+                <Note note={selectedNote} saveNote={updateNote} />
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      )
     </>
   );
 };
