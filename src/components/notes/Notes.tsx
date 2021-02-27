@@ -82,7 +82,6 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
           </>
         )}
       </div>
-      )
     </>
   );
 };
