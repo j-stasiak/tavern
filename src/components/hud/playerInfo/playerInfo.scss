@@ -1,0 +1,48 @@
+.stats {
+  display: flex; /* or inline-flex */
+  text-align: center;
+  color: wheat;
+  width: 95%;
+}
+.stat {
+  border: #282c34 1px solid;
+  width: 40%;
+  background-image: url("https://opengameart.org/sites/default/files/Full%20Moon%20-%20background.png");
+  font-size: 18px;
+}
+
+.avatar {
+  width: 200px;
+}
+
+.nick {
+}
+
+.rank {
+}
+
+.reputation {
+}
+
+.notes {
+  //button {
+  //  width: 80%;
+  //  background-color: red;
+  //}
+}
+
+#notes-button {
+  max-width: 80%;
+}
+
+.progress {
+  width: 1210px;
+}
+.progress-bar {
+  margin: auto;
+  width: 90%;
+}
+
+ul {
+  list-style-type: none;
+}
