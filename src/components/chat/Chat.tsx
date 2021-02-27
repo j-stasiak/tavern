@@ -71,11 +71,11 @@ const Chat: React.FC<IProps> = ({ nick }) => {
           <textarea
             value={message}
             onChange={handleChange}
-            placeholder="Write message..."
+            placeholder="No mówże!"
             className="new-message-input-field"
           />
           <button className={"send-message-button"} onClick={sendMessage}>
-            Send
+            Mów
           </button>
         </div>
       </div>
