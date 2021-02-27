@@ -6,6 +6,7 @@ import {getCourse} from "../../../utils/courseUtils";
 import {CourseTypes} from "../../../constants/CourseTypes";
 import Notes from "../../notes/Notes";
 import ReactModal from "react-modal";
+import Stat from "./stat/stat";
 // @ts-ignore
 const PlayerInfo = ({
   avatar,
@@ -39,21 +40,9 @@ const PlayerInfo = ({
       <div className={"stat avatar"}>
         <Avatar size="200" src={`${avatar}`} />
       </div>
-      <div className={"stat nick flex-col-container flex-justify-center"}>
-        <p>Nick</p>
-        <br />
-        <p>{nick}</p>
-      </div>
-      <div className={"stat rank flex-col-container flex-justify-center"}>
-        <p>Ranga</p>
-        <br />
-        <p>{rank}</p>
-      </div>
-      <div className={"stat reputation flex-col-container flex-justify-center"}>
-        <p>Reputacja</p>
-        <br />
-        <p>{reputation}</p>
-      </div>
+      <Stat stat={nick} description={"Nick"} />
+      <Stat stat={rank} description={"Ranga"} />
+      <Stat stat={reputation} description={"Reputacja"} />
       <div
         className={
           "stat notes flex-col-container flex-justify-center flex-align-center"
