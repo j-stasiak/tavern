@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Avatar from "react-avatar";
-import "./playerInfo.css";
+import "./playerInfo.scss";
 import ProgressBar from "@ramonak/react-progress-bar";
-import { getCourse } from "../../../utils/courseUtils";
-import { CourseTypes } from "../../../constants/CourseTypes";
+import {getCourse} from "../../../utils/courseUtils";
+import {CourseTypes} from "../../../constants/CourseTypes";
 import Notes from "../../notes/Notes";
 import ReactModal from "react-modal";
+import Stat from "./stat/stat";
 // @ts-ignore
 const PlayerInfo = ({
   avatar,
@@ -36,18 +37,23 @@ const PlayerInfo = ({
         />
       </ReactModal>
 
-      <div className={"stat"}>
-        <Avatar size="300" src={`${avatar}`} />
+      <div className={"stat avatar"}>
+        <Avatar size="200" src={`${avatar}`} />
       </div>
-      <div className={"stat nick"}>{nick}</div>
-      <div className={"stat rank"}>{rank}</div>
-      <div className={"stat reputation"}>Reputacja: {reputation} </div>
-      <div className={"stat notes"}>
-        <button onClick={() => setEditMode(true)}>Notatki</button>
+      <Stat stat={nick} description={"Nick"} />
+      <Stat stat={rank} description={"Ranga"} />
+      <Stat stat={reputation} description={"Reputacja"} />
+      <div
+        className={
+          "stat notes flex-col-container flex-justify-center flex-align-center"
+        }
+      >
+        <button id={"notes-button"} onClick={() => setEditMode(true)}>
+          Notatki
+        </button>
       </div>
-
-      <div className={"stat progress"}>
-        Ukończone kursy
+      <div className={"stat progress flex-col-container flex-justify-center"}>
+        <p>Ukończone kursy</p>
         <ul>
           {finishedCoursesIds.map((courseId: any) => (
             //@ts-ignore
