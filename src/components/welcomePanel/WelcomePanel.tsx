@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RegisterPanel from "./register-panel/RegisterPanel";
 import LoginPanel from "./login-panel/LoginPanel";
+import "./WelcomePanel.scss";
 
 const WelcomePanel = ({ submitCallback }: any) => {
   const [loginChosen, setLoginChosen] = useState(false);
@@ -11,10 +12,10 @@ const WelcomePanel = ({ submitCallback }: any) => {
     return <RegisterPanel submitCallback={submitCallback} />;
   }
   return (
-    <>
-      <button onClick={() => setRegisterChosen(true)}>Rejestracja </button>
-      <button onClick={() => setLoginChosen(true)}> Logowanie</button>
-    </>
+    <div className={"welcome-panel"}>
+      <LoginPanel />
+      <RegisterPanel />
+    </div>
   );
 };
 
