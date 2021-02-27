@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import "./registerPanel.css";
+import "./registerPanel.scss";
 import axios from "axios";
 import { mapUser } from "../../../utils/backendUtils";
 import { SERVER_URL } from "../../../constants/endpoints";
@@ -25,49 +25,54 @@ const RegisterPanel = ({ submitCallback }: any) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        type="text"
-        placeholder="Nick"
-        name="nick"
-        ref={register({ required: true, maxLength: 80 })}
-      />
-      {errors.nick && "Bez nicku nie przejdziesz."}
-      <br />
-      <input
-        type="text"
-        placeholder="email"
-        name="email"
-        ref={register({ required: true, maxLength: 80 })}
-      />
-      {errors.email && "Email...."}
-      <br />
-      <input
-        type="password"
-        placeholder="Password"
-        name="password"
-        ref={register({ required: true, maxLength: 100 })}
-      />
-      {errors.password && "Haslo jest wymagane."}
-      <br />
-      {avatars.map((avatar, key) => (
-        <>
-          <img
-            onClick={() => {
-              setAvatar(avatar);
-            }}
-            src={avatar}
-            className={"avataro"}
-          />
-          -
-        </>
-      ))}
-      <br />
-      {/*<div className={"avatars"}>*/}
-      {/*  <ImageGallery items={images} />*/}
-      {/*</div>*/}
-      <input type="submit" />
-    </form>
+    <div className={"wood-register"}>
+      <h1>Zarejestruj się</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/*<div className={"flex-col-container"}>*/}
+        <input
+          type="text"
+          placeholder="Nick"
+          name="nick"
+          ref={register({ required: true, maxLength: 80 })}
+        />
+        {errors.nick && <p className={"error"}>Bez nicku nie przejdziesz.</p>}
+        <br />
+        <input
+          type="text"
+          placeholder="email"
+          name="email"
+          ref={register({ required: true, maxLength: 80 })}
+        />
+        {errors.email && <p className={"error"}>Email....</p>}
+        <br />
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          ref={register({ required: true, maxLength: 100 })}
+        />
+        {errors.password && <p className={"error"}>Haslo jest wymagane.</p>}
+        <br />
+        {avatars.map((avatarString, key) => (
+          <>
+            <img
+              key={key}
+              onClick={() => {
+                setAvatar(avatarString);
+              }}
+              src={avatarString}
+              width={80}
+              height={80}
+              className={`avataro ${avatarString === avatar ? "border" : ""}`}
+            />
+            -
+          </>
+        ))}
+        <br />
+        <br />
+        <input type="submit" value={"jestem tu nowy!"} />
+      </form>
+    </div>
   );
 };
 

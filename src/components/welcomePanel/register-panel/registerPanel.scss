@@ -1,0 +1,56 @@
+.wood-register {
+  width: 40%;
+  min-height: 80vh;
+  background-color: #240100;
+  background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+  border-radius: 20px;
+  padding: 30px;
+
+  h1 {
+    color: white;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+}
+
+form {
+  display: block;
+}
+input,
+select,
+button {
+  moz-box-shadow: inset -3px -3px 10px #cc870a;
+  -webkit-box-shadow: inset -3px -3px 10px #cc870a;
+  box-shadow: inset -3px -3px 10px #cc870a;
+  background-color: #f7b31c; /* Fill color */
+  color: white; /* Text color */
+  border-radius: 15px; /* Rounded button edges */
+  font-style: italic; /* Italicize text */
+  padding: 10px 30px; /* Distance between text and border */
+}
+
+input:focus,
+select:focus,
+button:focus {
+  outline: none !important;
+  border-color: #719ece;
+  box-shadow: 0 0 10px #719ece;
+}
+
+.avatars {
+  width: 300px;
+  height: 150px;
+}
+
+.avataro {
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.border {
+  border: 3px solid #f7b31c;
+}
+
+.error {
+  color: red;
+}
