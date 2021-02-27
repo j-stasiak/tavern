@@ -1,0 +1,50 @@
+.note-left {
+}
+
+.note-big {
+  min-height: 500px;
+  width: 500px;
+  background: url("https://i.pinimg.com/originals/3f/9c/37/3f9c37ecbe12d5d409ab090c8bdc4430.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.content-wrapper {
+  width: 250px;
+  height: 500px;
+}
+
+.content {
+  width: 250px;
+  position: absolute;
+  left: 130px;
+  max-height: 340px;
+  overflow-y: auto;
+  top: 90px;
+}
+
+.note-textarea {
+  background: transparent;
+  color: black;
+  resize: none;
+  border: 0 none;
+  width: 100%;
+  outline: none;
+  height: 100%;
+  position: absolute;
+}
+
+.content:focus {
+  outline: none !important;
+}
+
+.disable-border {
+  outline: none;
+  border: none;
+
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}

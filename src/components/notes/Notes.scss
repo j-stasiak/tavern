@@ -1,0 +1,37 @@
+.left {
+  min-height: 60vh;
+  width: 400px;
+  text-align: center;
+}
+
+.sidebar-notes {
+  padding: 20px;
+  background: #fff;
+  border: solid black;
+  width: 60%;
+  margin-top: 20px;
+  background: url("https://inboundmarketingsummit.com/wp-content/uploads/2019/08/old-paper-texture-vector.jpg");
+  font-size: 20px;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.sidebar-notes-border {
+  border-width: 3px 3px 5px 5px;
+  border-radius: 4% 95% 6% 95%/95% 4% 92% 5%;
+  transform: rotate(-2deg);
+  margin-left: 50px;
+  padding: 30px;
+}
+
+.selected-note {
+  width: 60%;
+  min-height: 50vh;
+}
+
+//.note-box {
+//  width: 400px;
+//  height: 350px;
+//  background: #fff;
+//  border: solid black;
+//}

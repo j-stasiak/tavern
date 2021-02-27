@@ -5,6 +5,7 @@ import Note from "./note/Note";
 import axios from "axios";
 import { SERVER_URL } from "../../constants/endpoints";
 import useSound from "use-sound";
+import "./Notes.scss";
 
 interface Props {
   notes: NoteModel[];
@@ -47,17 +48,21 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   return (
     <>
       <button onClick={() => disableModal()}>Wyjdź</button>
-      <button onClick={() => setNewNoteMode(!newNoteMode)}>
+      <button
+        style={{ marginLeft: "20px" }}
+        onClick={() => setNewNoteMode(!newNoteMode)}
+      >
         {newNoteMode ? "Notatki" : "Nowa notatka"}
       </button>
       {newNoteMode ? (
         <NewNote saveNote={saveNote} />
       ) : (
         selectedNote && (
-          <>
-            <div className={"left-sidebar"}>
+          <div className={"flex-container"}>
+            <div className={"left flex-col-container flex-align-center"}>
               {notes.map((note) => (
                 <div
+                  className={"sidebar-notes sidebar-notes-border"}
                   onClick={() => {
                     setSelectedNote(note);
                   }}
@@ -66,10 +71,10 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
                 </div>
               ))}
             </div>
-            <div className={"right-side"}>
+            <div className={"selected-note"}>
               <Note note={selectedNote} saveNote={updateNote} />
             </div>
-          </>
+          </div>
         )
       )}
       {}
