@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Avatar from "react-avatar";
 import "./playerInfo.scss";
 import ProgressBar from "@ramonak/react-progress-bar";
-import {getCourse} from "../../../utils/courseUtils";
-import {CourseTypes} from "../../../constants/CourseTypes";
+import { getCourse } from "../../../utils/courseUtils";
+import { CourseTypes } from "../../../constants/CourseTypes";
 import Notes from "../../notes/Notes";
 import ReactModal from "react-modal";
 import Stat from "./stat/stat";
@@ -26,6 +26,7 @@ const PlayerInfo = ({
         style={{
           content: {
             color: "ThreeDDarkShadow",
+            backgroundColor: "#282828",
           },
         }}
       >

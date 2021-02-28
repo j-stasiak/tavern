@@ -17,7 +17,7 @@ const Task = ({
   courseId: any;
 }) => {
   const [code, setCode] = useState("<div></div>");
-  const [play] = useSound("sounds/level up sound.mp3", { volume: 0.3 });
+  const [play] = useSound("sounds/level up sound.mp3", { volume: 0.1 });
   const [taskCompleted, setTaskCompleted] = useState<boolean>(
     user.finishedCoursesIds.includes(courseId)
   );
