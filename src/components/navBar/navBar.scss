@@ -1,0 +1,34 @@
+.header {
+  padding: 0 80px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #240100;
+  height: 80px;
+  background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+
+  h2 {
+    letter-spacing: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .buttons {
+    a {
+      width: 110px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: #350100;
+        //background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+      }
+    }
+  }
+}

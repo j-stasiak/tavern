@@ -1,4 +1,3 @@
-import { useState } from "react";
 import RegisterPanel from "./register-panel/RegisterPanel";
 import LoginPanel from "./login-panel/LoginPanel";
 import "./WelcomePanel.scss";

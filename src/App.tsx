@@ -7,7 +7,6 @@ import Course from "./components/course/Course";
 import { CourseTypes } from "./constants/CourseTypes";
 import { getCourse } from "./utils/courseUtils";
 import PlayerInfo from "./components/hud/playerInfo/PlayerInfo";
-import SoundPlayer from "./components/soundPlayer/SoundPlayer";
 import WelcomePanel from "./components/welcomePanel/WelcomePanel";
 import { PlayerModel } from "./constants/PlayerModel";
 import axios from "axios";
@@ -17,6 +16,7 @@ import ReactModal from "react-modal";
 import Chat from "./components/chat/Chat";
 import { SERVER_URL } from "./constants/endpoints";
 import useSound from "use-sound";
+import NavBar from "./components/navBar/NavBar";
 
 function App() {
   const [mapShown, setMapShown] = useState(false);
@@ -46,53 +46,57 @@ function App() {
   const showTavern = !mapShown && selectedCourseId === CourseTypes.TAVERN;
   return (
     <div className={`App ${showTavern ? "tavernBackground" : "mapBackground"}`}>
-      <SoundPlayer />
+      <NavBar />
       {user ? (
-        mapShown ? (
-          <div className={"map"}>
-            <Player
-              selectCourse={(selectedCourse: any) => {
-                setSelectedCourse(selectedCourse);
-                setMapShown(false);
-              }}
-              buildings={buildings}
-              skin={resolveSprite(user.finishedCoursesIds.length)}
-            />
-            <Buildings buildings={buildings} />
-            <div className="player-info">
-              <PlayerInfo
-                avatar={user.avatar}
-                nick={user.nick}
-                rank={user.rank}
-                reputation={user.reputation}
-                notes={user.notes}
-                finishedCoursesIds={user.finishedCoursesIds}
-                getUser={getUser}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className={`${mapShown ? "hide" : ""}`}>
-            <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
-            {selectedCourseId === CourseTypes.TAVERN ? (
-              <Chat nick={user.nick} />
-            ) : (
-              <ReactModal
-                isOpen={!mapShown}
-                contentLabel="Inline Styles Modal Example"
-                style={{
-                  content: {
-                    color: "ThreeDDarkShadow",
-                  },
+        <>
+          {mapShown ? (
+            <div className={"map"}>
+              <Player
+                selectCourse={(selectedCourse: any) => {
+                  setSelectedCourse(selectedCourse);
+                  setMapShown(false);
                 }}
-              >
-                <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
+                buildings={buildings}
+                skin={resolveSprite(user.finishedCoursesIds.length)}
+              />
+              <Buildings buildings={buildings} />
+              <div className="player-info">
+                <PlayerInfo
+                  avatar={user.avatar}
+                  nick={user.nick}
+                  rank={user.rank}
+                  reputation={user.reputation}
+                  notes={user.notes}
+                  finishedCoursesIds={user.finishedCoursesIds}
+                  getUser={getUser}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className={`${mapShown ? "hide" : ""}`}>
+              <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
+              {selectedCourseId === CourseTypes.TAVERN ? (
+                <Chat nick={user.nick} />
+              ) : (
+                <ReactModal
+                  isOpen={!mapShown}
+                  contentLabel="Inline Styles Modal Example"
+                  style={{
+                    content: {
+                      color: "ThreeDDarkShadow",
+                    },
+                  }}
+                >
+                  <button onClick={() => setMapShown(true)}>
+                    WRACAM DO GRY
+                  </button>
 
-                <Course content={selectedCourseContent} user={user} />
-              </ReactModal>
-            )}
-          </div>
-        )
+                  <Course content={selectedCourseContent} user={user} />
+                </ReactModal>
+              )}
+            </div>
+          )}
+        </>
       ) : (
         <WelcomePanel
           submitCallback={(user: any) => {

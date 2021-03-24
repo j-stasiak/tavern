@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { NoteModel } from "../../constants/PlayerModel";
+import React, {useState} from "react";
+import {NoteModel} from "../../constants/PlayerModel";
 import Note from "./note/Note";
 import axios from "axios";
-import { SERVER_URL } from "../../constants/endpoints";
+import {SERVER_URL} from "../../constants/endpoints";
 import useSound from "use-sound";
 import "./Notes.scss";
 import NewNote from "./newNote/NewNote";
+import {generateHeadersWithAccessToken} from "../../utils/tokenUtils";
 
 interface Props {
   notes: NoteModel[];
@@ -25,9 +26,17 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
 
   const saveNote = (note: any) => {
     axios
-      .put(`${SERVER_URL}/user/${nick}`, {
-        notes: [...notes, note],
-      })
+      .put(
+        `${SERVER_URL}/user/${nick}`,
+        {
+          notes: [...notes, note],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
       .then(() => {
         getUser();
         play();
@@ -36,11 +45,15 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   };
   const updateNote = (note: any) => {
     axios
-      .put(`${SERVER_URL}/user/${nick}`, {
-        notes: notes.map((notunia) => {
-          return notunia.title === note.title ? note : notunia;
-        }),
-      })
+      .put(
+        `${SERVER_URL}/user/${nick}`,
+        {
+          notes: notes.map((notunia) => {
+            return notunia.title === note.title ? note : notunia;
+          }),
+        },
+        generateHeadersWithAccessToken()
+      )
       .then(() => {
         getUser();
         play();

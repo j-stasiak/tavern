@@ -9,6 +9,7 @@ const LoginPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmit = (data: any) => {
     axios.post(`${SERVER_URL}/authentication/login`, data).then((response) => {
+      localStorage.setItem('access_token', response.data.access_token);
       submitCallback(mapUser(response.data.user));
     });
   };
