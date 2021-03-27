@@ -1,15 +1,18 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, {useContext} from "react";
+import {useForm} from "react-hook-form";
 import "./loginPanel.scss";
 import axios from "axios";
-import { mapUser } from "../../../utils/backendUtils";
-import { SERVER_URL } from "../../../constants/endpoints";
+import {mapUser} from "../../../utils/backendUtils";
+import {SERVER_URL} from "../../../constants/endpoints";
+import {UserContext} from "../../../contexts/UserContext";
 
 const LoginPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
+  const { setUserWrapper } = useContext(UserContext);
   const onSubmit = (data: any) => {
     axios.post(`${SERVER_URL}/authentication/login`, data).then((response) => {
-      localStorage.setItem('access_token', response.data.access_token);
+      setUserWrapper(response.data.user)
+      localStorage.setItem("access_token", response.data.access_token);
       submitCallback(mapUser(response.data.user));
     });
   };

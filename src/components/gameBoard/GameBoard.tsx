@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { PlayerModel } from "../../constants/PlayerModel";
+import React, { useContext, useEffect, useState } from "react";
 import useSound from "use-sound";
 import { getCourse } from "../../utils/courseUtils";
 import axios from "axios";
@@ -16,24 +15,26 @@ import ReactModal from "react-modal";
 import Course from "../course/Course";
 import WelcomePanel from "../welcomePanel/WelcomePanel";
 import "./gameBoard.scss";
+import { UserContext } from "../../contexts/UserContext";
 
 const GameBoard: React.FC = () => {
+  const { user, setUserWrapper } = useContext(UserContext);
   const [mapShown, setMapShown] = useState(false);
   const [selectedCourseId, setSelectedCourse] = useState(0);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   //TODO: user will hold all user data retrieved after login/register
-  const [user, setUser] = useState<PlayerModel>();
+  // const [user, setUser] = useState<PlayerModel>();
   const [playWelcomeSound] = useSound("sounds/register sound.mp3", {
     volume: 0.2,
   });
+
   useEffect(() => {
     setSelectedCourseContent(getCourse(selectedCourseId));
   }, [selectedCourseId]);
 
   const getUser = () =>
     axios.get(`${SERVER_URL}/user/${user?.nick}`).then((result) => {
-      // @ts-ignore
-      setUser(mapUser(result.data));
+      setUserWrapper(mapUser(result.data));
     });
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const GameBoard: React.FC = () => {
   }, [mapShown]);
 
   const showTavern = !mapShown && selectedCourseId === CourseTypes.TAVERN;
+
   return (
     <div
       className={`gameBoard ${
@@ -110,7 +112,8 @@ const GameBoard: React.FC = () => {
       ) : (
         <WelcomePanel
           submitCallback={(user: any) => {
-            setUser(user);
+            console.log(user);
+            // setUserWrapper(user);
             playWelcomeSound();
           }}
         />

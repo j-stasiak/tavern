@@ -28,7 +28,6 @@ const RegisterPanel = ({ submitCallback }: any) => {
     <div className={"wood-register"}>
       <h1>Zarejestruj się</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/*<div className={"flex-col-container"}>*/}
         <input
           type="text"
           placeholder="Nick"
@@ -64,7 +63,7 @@ const RegisterPanel = ({ submitCallback }: any) => {
               width={80}
               height={80}
               className={`avataro ${avatarString === avatar ? "border" : ""}`}
-            />
+             alt={'obrazek'}/>
             -
           </>
         ))}

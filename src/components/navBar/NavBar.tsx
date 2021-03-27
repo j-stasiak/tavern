@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./navBar.scss";
 import { Link } from "react-router-dom";
 import SoundPlayer from "../soundPlayer/SoundPlayer";
+import { UserContext } from "../../contexts/UserContext";
 
 const NavBar: React.FC = () => {
   const avatarUrl = "/img/user/user.jpeg";
+  const { user } = useContext(UserContext);
   const [userPanelHidden, setUserPanelHidden] = useState(true);
+  console.log("user in navbar", user);
   return (
     <header>
       <div className="header">

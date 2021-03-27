@@ -6,6 +6,7 @@ export interface PlayerModel {
   reputation: number;
   notes: NoteModel[];
   finishedCoursesIds: number[];
+  roles: [];
 }
 
 export interface NoteModel {
