@@ -13,6 +13,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.gold-button {
+  moz-box-shadow: inset -3px -3px 10px #cc870a;
+  -webkit-box-shadow: inset -3px -3px 10px #cc870a;
+  box-shadow: inset -3px -3px 10px #cc870a;
+  background-color: #f7b31c; /* Fill color */
+  color: white; /* Text color */
+  border-radius: 15px; /* Rounded button edges */
+  font-style: italic; /* Italicize text */
+  padding: 10px 30px; /* Distance between text and border */
+
+  &:hover {
+    outline: none !important;
+    border-color: #719ece;
+    box-shadow: 0 0 10px #719ece;
+  }
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

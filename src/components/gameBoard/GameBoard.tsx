@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {PlayerModel} from "../../constants/PlayerModel";
+import React, { useEffect, useState } from "react";
+import { PlayerModel } from "../../constants/PlayerModel";
 import useSound from "use-sound";
-import {getCourse} from "../../utils/courseUtils";
+import { getCourse } from "../../utils/courseUtils";
 import axios from "axios";
-import {SERVER_URL} from "../../constants/endpoints";
-import {mapUser} from "../../utils/backendUtils";
-import {CourseTypes} from "../../constants/CourseTypes";
+import { SERVER_URL } from "../../constants/endpoints";
+import { mapUser } from "../../utils/backendUtils";
+import { CourseTypes } from "../../constants/CourseTypes";
 import Player from "../player";
-import {buildings} from "../../constants/buildingsLocations";
-import {resolveSprite} from "../../utils/playerUtils";
+import { buildings } from "../../constants/buildingsLocations";
+import { resolveSprite } from "../../utils/playerUtils";
 import Buildings from "../buildings/Buildings";
 import PlayerInfo from "../hud/playerInfo/PlayerInfo";
 import Chat from "../chat/Chat";
@@ -44,7 +44,11 @@ const GameBoard: React.FC = () => {
 
   const showTavern = !mapShown && selectedCourseId === CourseTypes.TAVERN;
   return (
-    <div className={`gameBoard ${showTavern ? "tavernBackground" : "mapBackground"}`}>
+    <div
+      className={`gameBoard ${
+        showTavern ? "tavernBackground" : "mapBackground"
+      }`}
+    >
       {user ? (
         <>
           {mapShown ? (
@@ -72,7 +76,12 @@ const GameBoard: React.FC = () => {
             </div>
           ) : (
             <div className={`${mapShown ? "hide" : ""}`}>
-              <button onClick={() => setMapShown(true)}>WRACAM DO GRY</button>
+              <button
+                className={"gold-button"}
+                onClick={() => setMapShown(true)}
+              >
+                WRACAM DO GRY
+              </button>
               {selectedCourseId === CourseTypes.TAVERN ? (
                 <Chat nick={user.nick} />
               ) : (
@@ -85,7 +94,10 @@ const GameBoard: React.FC = () => {
                     },
                   }}
                 >
-                  <button onClick={() => setMapShown(true)}>
+                  <button
+                    className={"gold-button"}
+                    onClick={() => setMapShown(true)}
+                  >
                     WRACAM DO GRY
                   </button>
 

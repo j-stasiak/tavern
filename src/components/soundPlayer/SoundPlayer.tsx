@@ -7,9 +7,16 @@ const SoundPlayer: React.FC = () => {
     volume: 0.1,
   });
   return (
-    <button onClick={() => (isPlaying ? stop() : play())}>
-      <div className={"sound-button"}>{isPlaying ? "♪" : "Graj muzyko..."}</div>
-    </button>
+    <div
+      className={"music-button"}
+      onClick={() => (isPlaying ? stop() : play())}
+    >
+      {isPlaying ? (
+        <span className="material-icons">music_note</span>
+      ) : (
+        <span className="material-icons">music_off</span>
+      )}
+    </div>
   );
 };
 

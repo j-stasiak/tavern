@@ -61,10 +61,13 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   };
   return (
     <>
-      <button onClick={() => disableModal()}>Wyjdź</button>
+      <button className={"gold-button"} onClick={() => disableModal()}>
+        Wyjdź
+      </button>
       <button
         style={{ marginLeft: "20px" }}
         onClick={() => setNewNoteMode(!newNoteMode)}
+        className={"gold-button"}
       >
         {newNoteMode ? "Notatki" : "Nowa notatka"}
       </button>

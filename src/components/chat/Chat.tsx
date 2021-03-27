@@ -74,7 +74,10 @@ const Chat: React.FC<IProps> = ({ nick }) => {
             placeholder="No mówże!"
             className="new-message-input-field"
           />
-          <button className={"send-message-button"} onClick={sendMessage}>
+          <button
+            className={"gold-button send-message-button"}
+            onClick={sendMessage}
+          >
             Mów
           </button>
         </div>
