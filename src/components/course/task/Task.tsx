@@ -6,6 +6,7 @@ import axios from "axios";
 import useSound from "use-sound";
 import { SERVER_URL } from "../../../constants/endpoints";
 import { resolveRank } from "../../../utils/playerUtils";
+import { generateHeadersWithAccessToken } from "../../../utils/tokenUtils";
 
 const Task = ({
   task,
@@ -27,10 +28,14 @@ const Task = ({
       !user.finishedCoursesIds.includes(courseId)
     ) {
       axios
-        .put(`${SERVER_URL}/user/${user.nick}`, {
-          rank: resolveRank(user.rank),
-          finishedCoursesIds: [...user.finishedCoursesIds, courseId],
-        })
+        .put(
+          `${SERVER_URL}/user/${user.nick}`,
+          {
+            rank: resolveRank(user.rank),
+            finishedCoursesIds: [...user.finishedCoursesIds, courseId],
+          },
+          generateHeadersWithAccessToken()
+        )
         .then((response) => {
           setTaskCompleted(true);
           play();

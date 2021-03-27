@@ -1,8 +1,8 @@
-.App {
+.gameBoard {
   text-align: center;
 
   /* Full height */
-  height: 969px;
+  height: 889px;
 
   /* Center and scale the image nicely */
   background-position: center;
@@ -15,7 +15,7 @@
 }
 
 .tavernBackground {
-  background: url("./images/tawerna.jpg");
+  background: url("../../images/tawerna.jpg");
   background-size: cover;
   background-position: center;
 }
