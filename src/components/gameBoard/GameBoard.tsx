@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import useSound from "use-sound";
-import { getCourse } from "../../utils/courseUtils";
+import {getCourse} from "../../utils/courseUtils";
 import axios from "axios";
-import { SERVER_URL } from "../../constants/endpoints";
-import { mapUser } from "../../utils/backendUtils";
-import { CourseTypes } from "../../constants/CourseTypes";
+import {SERVER_URL} from "../../constants/endpoints";
+import {CourseTypes} from "../../constants/CourseTypes";
 import Player from "../player";
-import { buildings } from "../../constants/buildingsLocations";
-import { resolveSprite } from "../../utils/playerUtils";
+import {buildings} from "../../constants/buildingsLocations";
+import {resolveSprite} from "../../utils/playerUtils";
 import Buildings from "../buildings/Buildings";
 import PlayerInfo from "../hud/playerInfo/PlayerInfo";
 import Chat from "../chat/Chat";
@@ -15,15 +14,12 @@ import ReactModal from "react-modal";
 import Course from "../course/Course";
 import WelcomePanel from "../welcomePanel/WelcomePanel";
 import "./gameBoard.scss";
-import { UserContext } from "../../contexts/UserContext";
+import {UserContext} from "../../contexts/UserContext";
 
 const GameBoard: React.FC = () => {
-  const { user, setUserWrapper } = useContext(UserContext);
-  const [mapShown, setMapShown] = useState(false);
+  const { user, setUserWrapper, mapShown, setMapShown } = useContext(UserContext);
   const [selectedCourseId, setSelectedCourse] = useState(0);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
-  //TODO: user will hold all user data retrieved after login/register
-  // const [user, setUser] = useState<PlayerModel>();
   const [playWelcomeSound] = useSound("sounds/register sound.mp3", {
     volume: 0.2,
   });
@@ -40,7 +36,6 @@ const GameBoard: React.FC = () => {
         },
       })
       .then((result) => {
-        // setUserWrapper(mapUser(result.data._doc));
         setUserWrapper(result.data._doc);
       });
 
@@ -50,6 +45,7 @@ const GameBoard: React.FC = () => {
     }
   }, [mapShown]);
 
+  console.log(mapShown);
   const showTavern = !mapShown && selectedCourseId === CourseTypes.TAVERN;
 
   return (
