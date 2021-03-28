@@ -1,11 +1,11 @@
-import {LiveError, LivePreview, LiveProvider} from "react-live";
-import React, {useEffect, useState} from "react";
-import {removeAllWhitespace} from "../../../utils/stringsUtils";
-import {PlayerModel} from "../../../constants/PlayerModel";
+import { LiveError, LivePreview, LiveProvider } from "react-live";
+import React, { useEffect, useState } from "react";
+import { removeAllWhitespace } from "../../../utils/stringsUtils";
+import { PlayerModel } from "../../../constants/PlayerModel";
 import axios from "axios";
 import useSound from "use-sound";
-import {SERVER_URL} from "../../../constants/endpoints";
-import {resolveRank} from "../../../utils/playerUtils";
+import { SERVER_URL } from "../../../constants/endpoints";
+import { resolveRank } from "../../../utils/playerUtils";
 
 const Task = ({
   task,
@@ -21,24 +21,30 @@ const Task = ({
   const [taskCompleted, setTaskCompleted] = useState<boolean>(
     user.finishedCoursesIds.includes(courseId)
   );
+
   useEffect(() => {
+    const preparedData =
+      // @ts-ignore
+      user?.roles[0] === "admin"
+        ? {
+            rank: resolveRank(user.rank),
+            finishedCoursesIds: [...user.finishedCoursesIds, courseId],
+            roles: ["admin"],
+          }
+        : {
+            rank: resolveRank(user.rank),
+            finishedCoursesIds: [...user.finishedCoursesIds, courseId],
+          };
     if (
       removeAllWhitespace(code) === removeAllWhitespace(task.result) &&
       !user.finishedCoursesIds.includes(courseId)
     ) {
       axios
-        .put(
-          `${SERVER_URL}/user/${user.nick}`,
-          {
-            rank: resolveRank(user.rank),
-            finishedCoursesIds: [...user.finishedCoursesIds, courseId],
+        .put(`${SERVER_URL}/user/${user.nick}`, preparedData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        )
+        })
         .then((response) => {
           setTaskCompleted(true);
           play();

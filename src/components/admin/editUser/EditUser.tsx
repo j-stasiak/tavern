@@ -1,25 +1,19 @@
-import React, { useContext } from "react";
-import { useForm } from "react-hook-form";
-import "./loginPanel.scss";
-import axios from "axios";
-import { mapUser } from "../../../utils/backendUtils";
-import { SERVER_URL } from "../../../constants/endpoints";
-import { UserContext } from "../../../contexts/UserContext";
+import React from "react";
+import {useForm} from "react-hook-form";
 
-const LoginPanel = ({ submitCallback }: any) => {
+const EditUser: React.FC = () => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const { setUserWrapper, setJwtWrapper } = useContext(UserContext);
+
   const onSubmit = (data: any) => {
-    axios.post(`${SERVER_URL}/authentication/login`, data).then((response) => {
-      setUserWrapper(response.data.user);
-      setJwtWrapper(response.data.access_token);
-      submitCallback(mapUser(response.data.user));
-    });
+    console.log(data);
+    // axios.post(`${SERVER_URL}/authentication/login`, data).then((response) => {
+    //
+    // });
   };
 
   return (
     <div className={"wood-login"}>
-      <h1>Zaloguj się</h1>
+      <h1>Edycja użytkownika</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
@@ -42,4 +36,4 @@ const LoginPanel = ({ submitCallback }: any) => {
   );
 };
 
-export default LoginPanel;
+export default EditUser;

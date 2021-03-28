@@ -26,6 +26,10 @@
 
 .chat-input {
   margin-top: 20px;
+
+  textarea {
+    padding-left: 10px;
+  }
 }
 
 .send-message-button {

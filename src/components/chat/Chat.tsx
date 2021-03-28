@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./Chat.scss";
 import io from "socket.io-client";
 import Message from "./message/Message";
 import "simplebar/src/simplebar.css";
 import Scrollbars from "react-custom-scrollbars";
-import { SERVER_SOCKET_URL } from "../../constants/endpoints";
+import {SERVER_SOCKET_URL} from "../../constants/endpoints";
 
 export interface IMessage {
   body: string;
@@ -72,7 +72,6 @@ const Chat: React.FC<IProps> = ({ nick }) => {
             value={message}
             onChange={handleChange}
             placeholder="No mówże!"
-            className="new-message-input-field"
           />
           <button
             className={"gold-button send-message-button"}

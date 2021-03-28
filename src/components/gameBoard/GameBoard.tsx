@@ -17,7 +17,9 @@ import "./gameBoard.scss";
 import {UserContext} from "../../contexts/UserContext";
 
 const GameBoard: React.FC = () => {
-  const { user, setUserWrapper, mapShown, setMapShown } = useContext(UserContext);
+  const { user, setUserWrapper, mapShown, setMapShown } = useContext(
+    UserContext
+  );
   const [selectedCourseId, setSelectedCourse] = useState(0);
   const [selectedCourseContent, setSelectedCourseContent] = useState<any>();
   const [playWelcomeSound] = useSound("sounds/register sound.mp3", {
@@ -36,7 +38,7 @@ const GameBoard: React.FC = () => {
         },
       })
       .then((result) => {
-        setUserWrapper(result.data._doc);
+        setUserWrapper(result.data);
       });
 
   useEffect(() => {
@@ -45,7 +47,6 @@ const GameBoard: React.FC = () => {
     }
   }, [mapShown]);
 
-  console.log(mapShown);
   const showTavern = !mapShown && selectedCourseId === CourseTypes.TAVERN;
 
   return (
