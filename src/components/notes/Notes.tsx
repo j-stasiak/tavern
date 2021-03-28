@@ -1,12 +1,12 @@
-import React, {useState} from "react";
-import {NoteModel} from "../../constants/PlayerModel";
+import React, { useState } from "react";
+import { NoteModel } from "../../constants/PlayerModel";
 import Note from "./note/Note";
 import axios from "axios";
-import {SERVER_URL} from "../../constants/endpoints";
+import { SERVER_URL } from "../../constants/endpoints";
 import useSound from "use-sound";
 import "./Notes.scss";
 import NewNote from "./newNote/NewNote";
-import {generateHeadersWithAccessToken} from "../../utils/tokenUtils";
+import { generateHeadersWithAccessToken } from "../../utils/tokenUtils";
 
 interface Props {
   notes: NoteModel[];
@@ -52,7 +52,11 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
             return notunia.title === note.title ? note : notunia;
           }),
         },
-        generateHeadersWithAccessToken()
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
       )
       .then(() => {
         getUser();

@@ -1,12 +1,11 @@
-import { LiveError, LivePreview, LiveProvider } from "react-live";
-import React, { useEffect, useState } from "react";
-import { removeAllWhitespace } from "../../../utils/stringsUtils";
-import { PlayerModel } from "../../../constants/PlayerModel";
+import {LiveError, LivePreview, LiveProvider} from "react-live";
+import React, {useEffect, useState} from "react";
+import {removeAllWhitespace} from "../../../utils/stringsUtils";
+import {PlayerModel} from "../../../constants/PlayerModel";
 import axios from "axios";
 import useSound from "use-sound";
-import { SERVER_URL } from "../../../constants/endpoints";
-import { resolveRank } from "../../../utils/playerUtils";
-import { generateHeadersWithAccessToken } from "../../../utils/tokenUtils";
+import {SERVER_URL} from "../../../constants/endpoints";
+import {resolveRank} from "../../../utils/playerUtils";
 
 const Task = ({
   task,
@@ -34,7 +33,11 @@ const Task = ({
             rank: resolveRank(user.rank),
             finishedCoursesIds: [...user.finishedCoursesIds, courseId],
           },
-          generateHeadersWithAccessToken()
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
         )
         .then((response) => {
           setTaskCompleted(true);

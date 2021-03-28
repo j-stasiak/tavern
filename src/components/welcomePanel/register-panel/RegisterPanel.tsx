@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./registerPanel.scss";
 import axios from "axios";
 import { mapUser } from "../../../utils/backendUtils";
 import { SERVER_URL } from "../../../constants/endpoints";
+import { UserContext } from "../../../contexts/UserContext";
 
 const avatars = [
   "avatar_1.png",
@@ -14,6 +15,7 @@ const avatars = [
 
 const RegisterPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
+  const { setUserWrapper } = useContext(UserContext);
   const [avatar, setAvatar] = useState(avatars[0]);
   const onSubmit = (data: any) => {
     axios
@@ -21,7 +23,10 @@ const RegisterPanel = ({ submitCallback }: any) => {
         ...data,
         avatar,
       })
-      .then((response) => submitCallback(mapUser(response.data)));
+      .then((response) => {
+        submitCallback(mapUser(response.data));
+        setUserWrapper(response.data);
+      });
   };
 
   return (
@@ -63,7 +68,8 @@ const RegisterPanel = ({ submitCallback }: any) => {
               width={80}
               height={80}
               className={`avataro ${avatarString === avatar ? "border" : ""}`}
-             alt={'obrazek'}/>
+              alt={"obrazek"}
+            />
             -
           </>
         ))}

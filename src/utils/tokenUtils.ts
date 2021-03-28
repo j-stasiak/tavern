@@ -1,5 +1,5 @@
 export const generateHeadersWithAccessToken = () => ({
   headers: {
-    Authorization: `Baerer ${localStorage.getItem("access_token")}`,
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
   },
 });

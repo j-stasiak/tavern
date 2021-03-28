@@ -1,5 +1,5 @@
 export const columnsNames = [
-  "id",
+  // "id",
   "nick",
   "email",
   "createdAt",

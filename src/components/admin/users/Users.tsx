@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {SERVER_URL} from "../../../constants/endpoints";
+import { SERVER_URL } from "../../../constants/endpoints";
 import "./users.scss";
 import Styles from "./Style";
 import Table from "./table/Table";
-import {columnsNames} from "../../../constants/tableConstants";
+import { columnsNames } from "../../../constants/tableConstants";
+import { generateHeadersWithAccessToken } from "../../../utils/tokenUtils";
 
 const Users: React.FC = () => {
   useEffect(() => {
@@ -14,9 +15,11 @@ const Users: React.FC = () => {
   const [users, setUsers] = useState<any>([]);
 
   const getListOfUsers = () =>
-    axios.get(`${SERVER_URL}/user`).then((result) => {
-      setUsers(result.data);
-    });
+    axios
+      .get(`${SERVER_URL}/user`, generateHeadersWithAccessToken())
+      .then((result) => {
+        setUsers(result.data.map((user: any) => user._doc));
+      });
 
   const columns = [
     ...columnsNames.map((columnName: string) => ({
@@ -36,7 +39,7 @@ const Users: React.FC = () => {
         roles,
         updatedAt,
         verified,
-        _id,
+        // _id,
       } = user;
       return {
         createdAt,
@@ -47,7 +50,7 @@ const Users: React.FC = () => {
         roles,
         updatedAt,
         verified: String(verified),
-        id: _id,
+        // id: _id,
       };
     }),
   ];

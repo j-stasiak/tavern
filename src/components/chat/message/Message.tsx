@@ -30,14 +30,14 @@ const Message: React.FC<IProps> = ({ sendByYou, message, nick }) => {
         });
     });
   };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      axios.get(`${SERVER_URL}/user/${message.nick}`).then((result) => {
-        setPlayerReputation(result.data.reputation);
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     axios.get(`${SERVER_URL}/user/${message.nick}`).then((result) => {
+  //       setPlayerReputation(result.data.reputation);
+  //     });
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, []);
   return (
     <>
       <p

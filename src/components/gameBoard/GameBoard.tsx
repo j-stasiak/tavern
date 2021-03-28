@@ -33,9 +33,15 @@ const GameBoard: React.FC = () => {
   }, [selectedCourseId]);
 
   const getUser = () =>
-    axios.get(`${SERVER_URL}/user/${user?.nick}`).then((result) => {
-      setUserWrapper(mapUser(result.data));
-    });
+    axios
+      .get(`${SERVER_URL}/user/${user?.nick}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((result) => {
+        setUserWrapper(mapUser(result.data._doc));
+      });
 
   useEffect(() => {
     if (mapShown) {
@@ -112,7 +118,7 @@ const GameBoard: React.FC = () => {
       ) : (
         <WelcomePanel
           submitCallback={(user: any) => {
-            console.log(user);
+            // console.log(user);
             // setUserWrapper(user);
             playWelcomeSound();
           }}
