@@ -32,3 +32,50 @@
     }
   }
 }
+
+.user-panel-header {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  align-self: center;
+  cursor: pointer;
+  position: relative;
+}
+
+//.user-panel {
+//  width: 200px;
+//  height: 300px;
+//  border: 1px solid aliceblue;
+//  position: absolute;
+//  background-color: white;
+//  color: black;
+//  z-index: 1;
+//  right: 25px;
+//  top: 90px;
+//  text-align: center;
+//
+//  .username {
+//    font-weight: 700;
+//  }
+//
+//  a {
+//    display: block;
+//    text-decoration: none;
+//    padding: 6px 0;
+//    color: black;
+//    margin-left: auto;
+//    margin-right: auto;
+//    width: 100%;
+//    &:hover {
+//      background-color: red;
+//      color: white;
+//    }
+//  }
+//
+//  a:last-child {
+//    border-top: 1px solid black;
+//    margin-top: auto;
+//  }
+//}

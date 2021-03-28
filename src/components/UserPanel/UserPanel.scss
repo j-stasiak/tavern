@@ -1,0 +1,35 @@
+.user-panel {
+  width: 200px;
+  height: 300px;
+  border: 1px solid aliceblue;
+  position: absolute;
+  background-color: white;
+  color: black;
+  z-index: 1;
+  right: 25px;
+  top: 90px;
+  text-align: center;
+
+  .username {
+    font-weight: 700;
+  }
+
+  a {
+    display: block;
+    text-decoration: none;
+    padding: 6px 0;
+    color: black;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+
+  a:last-child {
+    border-top: 1px solid black;
+    margin-top: auto;
+  }
+}

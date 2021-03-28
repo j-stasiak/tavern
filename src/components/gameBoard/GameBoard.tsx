@@ -40,7 +40,8 @@ const GameBoard: React.FC = () => {
         },
       })
       .then((result) => {
-        setUserWrapper(mapUser(result.data._doc));
+        // setUserWrapper(mapUser(result.data._doc));
+        setUserWrapper(result.data._doc);
       });
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import Styles from "./Style";
 import Table from "./table/Table";
 import { columnsNames } from "../../../constants/tableConstants";
 import { generateHeadersWithAccessToken } from "../../../utils/tokenUtils";
+import moment from "moment";
 
 const Users: React.FC = () => {
   useEffect(() => {
@@ -42,14 +43,30 @@ const Users: React.FC = () => {
         // _id,
       } = user;
       return {
-        createdAt,
+        "created at": moment(createdAt).format("DD/MM/YYYY HH:MM:SS"),
         email,
         nick,
-        numberOfNotes: notes.length,
+        "number of notes": notes.length,
         rank,
         roles,
-        updatedAt,
+        "updated at": moment(updatedAt).format("DD/MM/YYYY HH:MM:SS"),
         verified: String(verified),
+        edit: (
+          <span
+            onClick={() => console.log("edit clicked")}
+            className="material-icons icons"
+          >
+            mode_edit
+          </span>
+        ),
+        delete: (
+          <span
+            onClick={() => console.log("delete user: ", nick)}
+            className="material-icons icons"
+          >
+            delete_forever
+          </span>
+        ),
         // id: _id,
       };
     }),

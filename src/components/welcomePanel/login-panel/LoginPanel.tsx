@@ -8,11 +8,11 @@ import {UserContext} from "../../../contexts/UserContext";
 
 const LoginPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const { setUserWrapper } = useContext(UserContext);
+  const { setUserWrapper, setJwtWrapper } = useContext(UserContext);
   const onSubmit = (data: any) => {
     axios.post(`${SERVER_URL}/authentication/login`, data).then((response) => {
       setUserWrapper(response.data.user)
-      localStorage.setItem("access_token", response.data.access_token);
+      setJwtWrapper(response.data.access_token);
       submitCallback(mapUser(response.data.user));
     });
   };
