@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NoteModel } from "../../constants/PlayerModel";
 import Note from "./note/Note";
 import axios from "axios";
@@ -6,7 +6,7 @@ import { SERVER_URL } from "../../constants/endpoints";
 import useSound from "use-sound";
 import "./Notes.scss";
 import NewNote from "./newNote/NewNote";
-import { generateHeadersWithAccessToken } from "../../utils/tokenUtils";
+import { UserContext } from "../../contexts/UserContext";
 
 interface Props {
   notes: NoteModel[];
@@ -17,19 +17,30 @@ interface Props {
 
 const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   // @ts-ignore
+  const { user } = useContext(UserContext);
   const [selectedNote, setSelectedNote] = useState<any>(
     notes.length > 0 ? notes[0] : undefined
   );
-  //
+
   const [newNoteMode, setNewNoteMode] = useState(false);
   const [play] = useSound("sounds/wpis sound.mp3", { volume: 0.2 });
 
   const saveNote = (note: any) => {
+    const preparedData =
+      // @ts-ignore
+      user?.roles[0] === "admin"
+        ? {
+            notes: [...notes, note],
+            roles: ["admin"],
+          }
+        : {
+            notes: [...notes, note],
+          };
     axios
       .put(
         `${SERVER_URL}/user/${nick}`,
         {
-          notes: [...notes, note],
+          ...preparedData,
         },
         {
           headers: {
@@ -44,13 +55,25 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
     setNewNoteMode(false);
   };
   const updateNote = (note: any) => {
+    const preparedData =
+      // @ts-ignore
+      user?.roles[0] === "admin"
+        ? {
+            notes: notes.map((notunia) => {
+              return notunia.title === note.title ? note : notunia;
+            }),
+            roles: ["admin"],
+          }
+        : {
+            notes: notes.map((notunia) => {
+              return notunia.title === note.title ? note : notunia;
+            }),
+          };
     axios
       .put(
         `${SERVER_URL}/user/${nick}`,
         {
-          notes: notes.map((notunia) => {
-            return notunia.title === note.title ? note : notunia;
-          }),
+          ...preparedData,
         },
         {
           headers: {
@@ -63,6 +86,45 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
         play();
       });
   };
+
+  const deleteNote = (indexToDelete: number) => {
+    const notesAfterDelete = [
+      ...notes.filter((note, index) => index !== indexToDelete),
+    ];
+    const preparedData =
+      // @ts-ignore
+      user?.roles[0] === "admin"
+        ? {
+            notes: [...notesAfterDelete],
+            roles: ["admin"],
+          }
+        : {
+            notes: [...notesAfterDelete],
+          };
+    axios
+      .put(
+        `${SERVER_URL}/user/${nick}`,
+        {
+          ...preparedData,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then(() => {
+        getUser();
+        play();
+        refreshView(notesAfterDelete);
+      });
+  };
+
+  const refreshView = (notesAfterDelete: any) => {
+    console.log(notes);
+    setSelectedNote(notesAfterDelete.length > 0 ? notes[0] : undefined);
+  };
+
   return (
     <>
       <button className={"gold-button"} onClick={() => disableModal()}>
@@ -77,13 +139,19 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
       </button>
       <div className={"flex-container"}>
         <div className={"left flex-col-container flex-align-center"}>
-          {notes.map((note) => (
+          {notes.map((note, index) => (
             <div
               className={"sidebar-notes sidebar-notes-border"}
               onClick={() => {
                 setSelectedNote(note);
               }}
             >
+              <span
+                onClick={() => deleteNote(index)}
+                className="material-icons delete-icon"
+              >
+                backspace
+              </span>
               {note.title}
             </div>
           ))}
