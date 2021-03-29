@@ -24,6 +24,7 @@ const Styles = styled.div`
       border-right: 1px solid white;
       text-align: center;
       font-size: 20px;
+      background-color: #111;
 
       :last-child {
         border-right: 0;

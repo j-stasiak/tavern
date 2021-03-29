@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {SERVER_URL} from "../../../constants/endpoints";
+import { SERVER_URL } from "../../../constants/endpoints";
 import "./users.scss";
 import Styles from "./Style";
 import Table from "./table/Table";
-import {columnsNames} from "../../../constants/tableConstants";
-import {generateHeadersWithAccessToken} from "../../../utils/tokenUtils";
+import { columnsNames } from "../../../constants/tableConstants";
+import { generateHeadersWithAccessToken } from "../../../utils/tokenUtils";
 import moment from "moment";
-import ReactModal from "react-modal";
 import EditUser from "../editUser/EditUser";
+import ReactModal from "react-modal";
 
 const Users: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
@@ -40,7 +40,9 @@ const Users: React.FC = () => {
       });
   };
 
-  console.log(users);
+  // console.log(users);
+
+  const [selectedUser, setSelectedUser] = useState();
 
   const data = [
     ...users.map((user: any) => {
@@ -67,12 +69,17 @@ const Users: React.FC = () => {
         "updated at": moment(updatedAt).format("DD/MM/YYYY HH:MM:SS"),
         verified: String(verified),
         edit: (
-          <span
-            onClick={() => setEditMode(true)}
-            className="material-icons icons"
-          >
-            mode_edit
-          </span>
+          <>
+            <span
+              onClick={() => {
+                setSelectedUser(user);
+                setEditMode(true);
+              }}
+              className="material-icons icons"
+            >
+              mode_edit
+            </span>
+          </>
         ),
         delete: (
           <span onClick={() => onDelete(_id)} className="material-icons icons">
@@ -85,29 +92,42 @@ const Users: React.FC = () => {
   ];
 
   return (
-    <div
-      className={
-        "users-container flex-container flex-align-center flex-justify-center"
-      }
-    >
-      <Styles>
-        <Table columns={columns} data={data} />
-      </Styles>
-      <ReactModal
-        isOpen={editMode}
-        contentLabel="Inline Styles Modal Example"
-        style={{
-          content: {
-            color: "ThreeDDarkShadow",
-            backgroundColor: "#282828",
-          },
-        }}
+    <>
+      <div
+        className={
+          "users-container flex-container flex-align-center flex-justify-center"
+        }
       >
-        <div className={"flex-container"}>
-          <EditUser />
-        </div>
-      </ReactModal>
-    </div>
+        <Styles>
+          <Table columns={columns} data={data} />
+        </Styles>
+        <ReactModal
+          isOpen={editMode}
+          contentLabel="Inline Styles Modal Example"
+          style={{
+            content: {
+              color: "ThreeDDarkShadow",
+              backgroundColor: "#282828",
+            },
+          }}
+        >
+          <button className={"gold-button"} onClick={() => setEditMode(false)}>
+            WRÓĆ DO PANELU ADMINISTRATORA
+          </button>
+          <div
+            className={
+              "flex-container flex-align-center flex-justify-center h-100"
+            }
+          >
+            <EditUser
+              closeEditMode={() => setEditMode(false)}
+              user={selectedUser}
+              refreshUsers={() => getListOfUsers()}
+            />
+          </div>
+        </ReactModal>
+      </div>
+    </>
   );
 };
 
