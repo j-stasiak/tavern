@@ -121,7 +121,6 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
   };
 
   const refreshView = (notesAfterDelete: any) => {
-    console.log(notes);
     setSelectedNote(notesAfterDelete.length > 0 ? notes[0] : undefined);
   };
 

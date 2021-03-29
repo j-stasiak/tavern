@@ -40,8 +40,6 @@ const Users: React.FC = () => {
       });
   };
 
-  // console.log(users);
-
   const [selectedUser, setSelectedUser] = useState();
 
   const data = [

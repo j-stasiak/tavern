@@ -14,7 +14,6 @@ interface IProps {
 const EditUser: React.FC<IProps> = ({ closeEditMode, user, refreshUsers }) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const onSubmit = (data: any) => {
-    console.log(data);
     const courses =
       data.finishedCoursesIds.length > 0
         ? data.finishedCoursesIds.split(", ").map((id: string) => Number(id))
