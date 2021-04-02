@@ -5,6 +5,7 @@ import {Route, Switch} from "react-router-dom";
 import Admin from "./components/admin/Admin";
 import News from "./components/news/News";
 import UserProvider from "./contexts/UserContext";
+import UserSettings from "./components/useSettings/UserSettings";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/news">
             <News />
+          </Route>
+          <Route path={"/profile"}>
+            <UserSettings />
           </Route>
           <Route path="/">
             <GameBoard />

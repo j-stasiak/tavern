@@ -116,7 +116,6 @@ const GameBoard: React.FC = () => {
       ) : (
         <WelcomePanel
           submitCallback={(user: any) => {
-            // setUserWrapper(user);
             playWelcomeSound();
           }}
         />

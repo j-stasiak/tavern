@@ -124,6 +124,23 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
     setSelectedNote(notesAfterDelete.length > 0 ? notes[0] : undefined);
   };
 
+  const [searchValue, setSearchValue] = useState("");
+
+  const filteredData = () => {
+    if (searchValue.length > 1) {
+      console.log(notes);
+      return notes.filter(
+        (note: any) =>
+          note.title.toLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+          note.description
+            .toLowerCase()
+            .includes(searchValue.toLocaleLowerCase())
+      );
+    } else {
+      return notes;
+    }
+  };
+
   return (
     <>
       <button className={"gold-button"} onClick={() => disableModal()}>
@@ -136,9 +153,17 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
       >
         {newNoteMode ? "Notatki" : "Nowa notatka"}
       </button>
+      <input
+        className={"margin-20"}
+        type="text"
+        placeholder="Wyszukaj notatkę..."
+        name="searchBar"
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
+      />
       <div className={"flex-container"}>
         <div className={"left flex-col-container flex-align-center"}>
-          {notes.map((note, index) => (
+          {filteredData().map((note, index) => (
             <div
               className={"sidebar-notes sidebar-notes-border"}
               onClick={() => {

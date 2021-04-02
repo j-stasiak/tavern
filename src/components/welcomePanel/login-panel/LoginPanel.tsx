@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
-import { useForm } from "react-hook-form";
+import React, {useContext} from "react";
+import {useForm} from "react-hook-form";
 import "./loginPanel.scss";
 import axios from "axios";
-import { mapUser } from "../../../utils/backendUtils";
-import { SERVER_URL } from "../../../constants/endpoints";
-import { UserContext } from "../../../contexts/UserContext";
+import {SERVER_URL} from "../../../constants/endpoints";
+import {UserContext} from "../../../contexts/UserContext";
 
 const LoginPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
@@ -13,7 +12,7 @@ const LoginPanel = ({ submitCallback }: any) => {
     axios.post(`${SERVER_URL}/authentication/login`, data).then((response) => {
       setUserWrapper(response.data.user);
       setJwtWrapper(response.data.access_token);
-      submitCallback(mapUser(response.data.user));
+      submitCallback(response.data.user);
     });
   };
 

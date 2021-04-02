@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./registerPanel.scss";
 import axios from "axios";
-import { mapUser } from "../../../utils/backendUtils";
 import { SERVER_URL } from "../../../constants/endpoints";
 import { UserContext } from "../../../contexts/UserContext";
 
@@ -15,7 +14,7 @@ const avatars = [
 
 const RegisterPanel = ({ submitCallback }: any) => {
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const { setUserWrapper } = useContext(UserContext);
+  const { setUserWrapper, setJwtWrapper } = useContext(UserContext);
   const [avatar, setAvatar] = useState(avatars[0]);
   const onSubmit = (data: any) => {
     axios
@@ -24,8 +23,8 @@ const RegisterPanel = ({ submitCallback }: any) => {
         avatar,
       })
       .then((response) => {
-        submitCallback(mapUser(response.data));
-        setUserWrapper(response.data);
+        console.log(response);
+        alert("Konto utworzone! Możesz się zalogować!");
       });
   };
 

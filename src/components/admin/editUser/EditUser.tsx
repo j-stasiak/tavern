@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, {useState} from "react";
+import {useForm} from "react-hook-form";
 import "./editUser.scss";
 import axios from "axios";
-import { SERVER_URL } from "../../../constants/endpoints";
-import { resolveRank } from "../../../utils/playerUtils";
+import {SERVER_URL} from "../../../constants/endpoints";
 
 interface IProps {
   closeEditMode: () => void;
