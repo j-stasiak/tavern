@@ -9,14 +9,20 @@ import {generateHeadersWithAccessToken} from "../../../utils/tokenUtils";
 import moment from "moment";
 import EditUser from "../editUser/EditUser";
 import ReactModal from "react-modal";
+import {UserModel} from "../../../models/UserModel";
+
+interface Column {
+  Header: string;
+  accessor: string;
+}
 
 const Users: React.FC = () => {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
   useEffect(() => {
     getListOfUsers();
   }, []);
 
-  const [users, setUsers] = useState<any>([]);
+  const [users, setUsers] = useState<UserModel[]>([]);
 
   const getListOfUsers = () =>
     axios
@@ -25,7 +31,7 @@ const Users: React.FC = () => {
         setUsers(result.data);
       });
 
-  const columns = [
+  const columns: Column[] = [
     ...columnsNames.map((columnName: string) => ({
       Header: columnName,
       accessor: columnName,
@@ -40,10 +46,10 @@ const Users: React.FC = () => {
       });
   };
 
-  const [selectedUser, setSelectedUser] = useState();
+  const [selectedUser, setSelectedUser] = useState<UserModel>();
 
   const data = [
-    ...users.map((user: any) => {
+    ...users.map((user: UserModel) => {
       const {
         createdAt,
         email,
@@ -94,7 +100,7 @@ const Users: React.FC = () => {
   const filteredData = () => {
     if (searchValue.length > 1) {
       return data.filter(
-        (user: any) =>
+        (user) =>
           user.nick.toLowerCase().includes(searchValue.toLocaleLowerCase()) ||
           user.email.toLowerCase().includes(searchValue.toLocaleLowerCase())
       );

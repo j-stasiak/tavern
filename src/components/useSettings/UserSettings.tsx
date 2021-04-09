@@ -1,32 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useState} from "react";
 import "./userSettings.scss";
-import { UserContext } from "../../contexts/UserContext";
+import {UserContext, UserContextModel} from "../../contexts/UserContext";
 
-import { useForm } from "react-hook-form";
+import {useForm} from "react-hook-form";
 import axios from "axios";
-import { SERVER_URL } from "../../constants/endpoints";
+import {updateUser} from "../../constants/endpoints";
+import {generateHeadersWithAccessToken} from "../../utils/tokenUtils";
 
-interface OwnProps {}
+interface FormData {
+  nick: string;
+  email: string;
+}
 
-type Props = OwnProps;
-
-const UserSettings: React.FC<Props> = (props) => {
-  const { user } = useContext(UserContext);
-  const [nick, setNick] = useState(user.nick);
-  const [email, setEmail] = useState(user.email);
-  // const [password, setPassword] = useState("");
-  const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const onSubmit = (data: any) => {
-    // const filterPassword =
-    //   data.password.length > 0
-    //     ? {
-    //         ...data,
-    //       }
-    //     : {
-    //         nick: data.nick,
-    //         email: data.email,
-    //       };
-    const preparedData =
+const UserSettings: React.FC = () => {
+  const { user } = useContext<UserContextModel>(UserContext);
+  const [nick, setNick] = useState(user?.nick);
+  const [email, setEmail] = useState(user?.email);
+  const { register, handleSubmit, errors } = useForm();
+  const onSubmit = (data: FormData) => {
+    const adminBugWorkaround =
       user?.roles[0] === "admin"
         ? {
             ...data,
@@ -37,15 +29,11 @@ const UserSettings: React.FC<Props> = (props) => {
           };
     axios
       .put(
-        `${SERVER_URL}/user/${user.nick}`,
+        updateUser(user!.nick),
         {
-          ...preparedData,
+          ...adminBugWorkaround,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
+        generateHeadersWithAccessToken()
       )
       .then(() => {
         alert("Dane profilu zmienione!");

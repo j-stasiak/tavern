@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { NoteModel } from "../../constants/PlayerModel";
+import { NoteModel } from "../../models/UserModel";
 import Note from "./note/Note";
 import axios from "axios";
 import { SERVER_URL } from "../../constants/endpoints";

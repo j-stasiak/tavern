@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NoteModel } from "../../../constants/PlayerModel";
+import { NoteModel } from "../../../models/UserModel";
 import "./Note.scss";
 import ContentEditable from "react-contenteditable";
 

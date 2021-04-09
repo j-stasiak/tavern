@@ -1,7 +1,7 @@
 import { LiveError, LivePreview, LiveProvider } from "react-live";
 import React, { useEffect, useState } from "react";
 import { removeAllWhitespace } from "../../../utils/stringsUtils";
-import { PlayerModel } from "../../../constants/PlayerModel";
+import { UserModel } from "../../../models/UserModel";
 import axios from "axios";
 import useSound from "use-sound";
 import { SERVER_URL } from "../../../constants/endpoints";
@@ -13,7 +13,7 @@ const Task = ({
   courseId,
 }: {
   task: any;
-  user: PlayerModel;
+  user: UserModel;
   courseId: any;
 }) => {
   const [code, setCode] = useState("<div></div>");

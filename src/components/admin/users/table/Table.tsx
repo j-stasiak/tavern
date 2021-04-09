@@ -6,7 +6,9 @@ interface IProps {
   data: any;
 }
 
-const Table: React.FC<IProps> = ({ columns, data }) => {
+const
+
+    Table: React.FC<IProps> = ({ columns, data }) => {
   const {
     getTableProps,
     getTableBodyProps,
