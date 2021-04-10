@@ -18,3 +18,22 @@ export interface UserModel {
   verified: boolean;
   _id: string;
 }
+
+interface IObjectKeys {
+  [key: string]: any;
+}
+
+export interface TableUser extends IObjectKeys {
+  nick: string;
+  createdAt: string;
+  updatedAt: string;
+  email: string;
+  finishedCoursesIds: string;
+  numberOfNotes: number;
+  rank: string;
+  roles: string;
+  verified: string;
+  _id: string;
+  edit: JSX.Element;
+  delete: JSX.Element;
+}

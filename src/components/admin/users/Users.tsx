@@ -1,20 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {SERVER_URL} from "../../../constants/endpoints";
+import { SERVER_URL } from "../../../constants/endpoints";
 import "./users.scss";
 import Styles from "./Style";
 import Table from "./table/Table";
-import {columnsNames} from "../../../constants/tableConstants";
-import {generateHeadersWithAccessToken} from "../../../utils/tokenUtils";
+import { columnsNames } from "../../../constants/tableConstants";
+import { generateHeadersWithAccessToken } from "../../../utils/tokenUtils";
 import moment from "moment";
 import EditUser from "../editUser/EditUser";
 import ReactModal from "react-modal";
-import {UserModel} from "../../../models/UserModel";
-
-interface Column {
-  Header: string;
-  accessor: string;
-}
+import { TableUser, UserModel } from "../../../models/UserModel";
 
 const Users: React.FC = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -31,13 +26,6 @@ const Users: React.FC = () => {
         setUsers(result.data);
       });
 
-  const columns: Column[] = [
-    ...columnsNames.map((columnName: string) => ({
-      Header: columnName,
-      accessor: columnName,
-    })),
-  ];
-
   const onDelete = (id: string) => {
     axios
       .delete(`${SERVER_URL}/user/${id}`, generateHeadersWithAccessToken())
@@ -48,7 +36,7 @@ const Users: React.FC = () => {
 
   const [selectedUser, setSelectedUser] = useState<UserModel>();
 
-  const data = [
+  const data: TableUser[] = [
     ...users.map((user: UserModel) => {
       const {
         createdAt,
@@ -63,14 +51,15 @@ const Users: React.FC = () => {
         _id,
       } = user;
       return {
-        "created at": moment(createdAt).format("DD/MM/YYYY HH:MM:SS"),
-        email,
+        _id: _id,
         nick,
-        "number of notes": notes.length,
+        email,
+        createdAt: moment(createdAt).format("YYYY-MM-DD HH:MM:SS"),
+        numberOfNotes: notes.length,
         rank,
-        roles,
-        "finished courses": finishedCoursesIds.join(", "),
-        "updated at": moment(updatedAt).format("DD/MM/YYYY HH:MM:SS"),
+        roles: roles.join(", "),
+        finishedCoursesIds: finishedCoursesIds.join(", "),
+        updatedAt: moment(updatedAt).format("YYYY-MM-DD HH:MM:SS"),
         verified: String(verified),
         edit: (
           <>
@@ -90,7 +79,6 @@ const Users: React.FC = () => {
             delete_forever
           </span>
         ),
-        id: _id,
       };
     }),
   ];
@@ -99,13 +87,13 @@ const Users: React.FC = () => {
 
   const filteredData = () => {
     if (searchValue.length > 1) {
-      return data.filter(
+      return [...data].filter(
         (user) =>
           user.nick.toLowerCase().includes(searchValue.toLocaleLowerCase()) ||
           user.email.toLowerCase().includes(searchValue.toLocaleLowerCase())
       );
     } else {
-      return data;
+      return [...data];
     }
   };
 
@@ -124,7 +112,7 @@ const Users: React.FC = () => {
           onChange={(event) => setSearchValue(event.target.value)}
         />
         <Styles>
-          <Table columns={columns} data={filteredData()} />
+          <Table columns={columnsNames} usersTable={filteredData()} />
         </Styles>
         <ReactModal
           isOpen={editMode}

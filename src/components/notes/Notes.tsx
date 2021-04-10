@@ -124,11 +124,10 @@ const Notes = ({ notes, nick, disableModal, getUser }: Props) => {
     setSelectedNote(notesAfterDelete.length > 0 ? notes[0] : undefined);
   };
 
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const filteredData = () => {
     if (searchValue.length > 1) {
-      console.log(notes);
       return notes.filter(
         (note: any) =>
           note.title.toLowerCase().includes(searchValue.toLocaleLowerCase()) ||

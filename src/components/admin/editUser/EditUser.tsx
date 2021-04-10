@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {useForm} from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import "./editUser.scss";
-import {UserModel} from "../../../models/UserModel";
+import { UserModel } from "../../../models/UserModel";
 import axios from "axios";
-import {SERVER_URL} from "../../../constants/endpoints";
+import { SERVER_URL } from "../../../constants/endpoints";
 
 interface IProps {
   closeEditMode: () => void;
@@ -72,9 +72,6 @@ const EditUser: React.FC<IProps> = ({ closeEditMode, user, refreshUsers }) => {
     user?.finishedCoursesIds.some((id) => id === 4)
   );
 
-  useEffect(() => {
-    console.log(course4);
-  }, [course4]);
   return (
     <div className={"flex-col-container font-size"}>
       <h1 className={"margin-20"}>Edycja użytkownika</h1>

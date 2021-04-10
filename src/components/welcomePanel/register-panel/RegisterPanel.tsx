@@ -23,7 +23,6 @@ const RegisterPanel = ({ submitCallback }: any) => {
         avatar,
       })
       .then((response) => {
-        console.log(response);
         alert("Konto utworzone! Możesz się zalogować!");
       });
   };

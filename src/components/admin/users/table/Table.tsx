@@ -1,77 +1,132 @@
-import React from "react";
-import { useSortBy, useTable } from "react-table";
+import React, {useState} from "react";
+import {TableUser} from "../../../../models/UserModel";
+import "./table.scss";
+import {
+  sortAlphabeticalAsc,
+  sortAlphabeticalDesc,
+  sortArrayLengthAsc,
+  sortArrayLengthDesc,
+  sortDateAsc,
+  sortDateDesc,
+  sortNumbersDesc,
+} from "../../../../utils/sortUtils";
 
 interface IProps {
-  columns: any;
-  data: any;
+  columns: string[];
+  usersTable: TableUser[];
 }
 
-const
+const Table: React.FC<IProps> = ({ columns, usersTable }) => {
+  const [sortedData, setSortedData] = useState<TableUser[]>([...usersTable]);
+  console.log(usersTable);
+  const sortDescFunctions = (columnName: string) => {
+    console.log(columnName);
+    switch (columnName) {
+      case "created at":
+        setSortedData(sortDateDesc([...usersTable], "createdAt"));
+        break;
+      case "updated at":
+        setSortedData(sortDateDesc([...usersTable], "updatedAt"));
+        break;
+      case "id":
+        setSortedData(sortAlphabeticalDesc([...usersTable], "_id"));
+        break;
+      case "nick":
+      case "verified":
+      case "email":
+      case "rank":
+      case "roles":
+        setSortedData(sortAlphabeticalDesc([...usersTable], columnName));
+        break;
+      case "number of notes":
+        setSortedData(sortNumbersDesc([...usersTable], "numberOfNotes"));
+        break;
+      case "finished courses":
+        setSortedData(
+          sortArrayLengthDesc([...usersTable], "finishedCoursesIds")
+        );
+    }
+  };
 
-    Table: React.FC<IProps> = ({ columns, data }) => {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-    },
-    useSortBy
+  const sortAscFunctions = (columnName: string) => {
+    console.log(columnName);
+    switch (columnName) {
+      case "created at":
+        setSortedData(sortDateAsc([...usersTable], "createdAt"));
+        break;
+      case "updated at":
+        setSortedData(sortDateAsc([...usersTable], "updatedAt"));
+        break;
+      case "id":
+        setSortedData(sortAlphabeticalAsc([...usersTable], "_id"));
+        break;
+      case "nick":
+      case "verified":
+      case "email":
+      case "rank":
+      case "roles":
+        setSortedData(sortAlphabeticalAsc([...usersTable], columnName));
+        break;
+      case "number of notes":
+        setSortedData(sortDateAsc([...usersTable], "numberOfNotes"));
+        break;
+      case "finished courses":
+        setSortedData(
+          sortArrayLengthAsc([...usersTable], "finishedCoursesIds")
+        );
+    }
+  };
+
+  const renderTable = (data: TableUser[]): JSX.Element => (
+    <table>
+      <thead>
+        <tr>
+          {columns.map((column) => {
+            if (column === "edit" || column === "delete") {
+              return <th>{column}</th>;
+            }
+            return (
+              <th>
+                {column}
+                <div>
+                  <span
+                    onClick={() => sortDescFunctions(column)}
+                    className="pointer material-icons"
+                  >
+                    expand_more
+                  </span>
+                  <span
+                    onClick={() => sortAscFunctions(column)}
+                    className="pointer material-icons"
+                  >
+                    expand_less
+                  </span>
+                </div>
+              </th>
+            );
+          })}
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((user) => {
+          const values = Object.values(user);
+          return (
+            <tr>
+              {values.map((value: string) => (
+                <td>{value}</td>
+              ))}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 
   return (
     <>
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                // Add the sorting props to control sorting. For this example
-                // we can add them into the header props
-                <th
-                  {...column.getHeaderProps(
-                    // @ts-ignore
-                    column.getSortByToggleProps()
-                  )}
-                >
-                  {column.render("Header")}
-                  {/* Add a sort direction indicator */}
-                  <span>
-                    {
-                      // @ts-ignore
-                      column.isSorted
-                        ? // @ts-ignore
-                          column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""
-                    }
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <br />
+      {sortedData.length > 0
+        ? renderTable(sortedData)
+        : renderTable(usersTable)}
     </>
   );
 };
