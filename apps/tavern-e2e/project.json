@@ -1,0 +1,28 @@
+{
+  "root": "apps/tavern-e2e",
+  "sourceRoot": "apps/tavern-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/tavern-e2e/cypress.json",
+        "devServerTarget": "tavern:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "tavern:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/tavern-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["tavern"]
+}

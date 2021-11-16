@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "tavern": "apps/tavern",
+    "tavern-e2e": "apps/tavern-e2e"
+  }
+}

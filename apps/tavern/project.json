@@ -1,0 +1,69 @@
+{
+  "root": "apps/tavern",
+  "sourceRoot": "apps/tavern/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/tavern",
+        "index": "apps/tavern/src/index.html",
+        "baseHref": "/",
+        "main": "apps/tavern/src/main.tsx",
+        "polyfills": "apps/tavern/src/polyfills.ts",
+        "tsConfig": "apps/tavern/tsconfig.app.json",
+        "assets": ["apps/tavern/src/favicon.ico", "apps/tavern/src/assets"],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/tavern/src/environments/environment.ts",
+              "with": "apps/tavern/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "tavern:build",
+        "hmr": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "tavern:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/tavern/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/tavern"],
+      "options": {
+        "jestConfig": "apps/tavern/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
