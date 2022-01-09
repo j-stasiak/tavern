@@ -1,17 +1,15 @@
 import React from 'react';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames';
+import { useMenu } from '../providers/menuProvider/MenuProvider';
+import { texts } from '../../texts';
 
-interface Props {
-  isOpen: boolean;
-  setIsOpen: (state: boolean) => void;
-}
-
-const Navbar: React.FC<Props> = ({ isOpen, setIsOpen }) => {
+const Navbar: React.FC = () => {
+  const { isOpen, setIsOpen } = useMenu();
   return (
-    <div className={classNames(styles.navbar, isOpen && styles.active)}>
+    <div className={classNames(styles.navbar, { [styles.active]: isOpen })}>
       <div className={styles.menu}>
-        <h3 className={styles.logo}>tavern</h3>
+        <h3 className={styles.logo}>{texts.navBar.logo}</h3>
         <div className={styles.hamburgerMenu} onClick={() => setIsOpen(!isOpen)}>
           <div className={styles.bar} />
         </div>
