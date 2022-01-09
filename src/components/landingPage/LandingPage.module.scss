@@ -1,3 +1,5 @@
+@import "src/styles/functions";
+
 header {
   min-height: 100vh;
   width: 100%;
@@ -20,12 +22,12 @@ header {
   .main {
     animation: main-animation 0.5s ease;
     cursor: pointer;
-    transform: perspective(1300px) rotateY(20deg) translateZ(310px)  scale(0.5);
+    transform: calcPerspective(310px);
 
     &:hover {
-      transform: perspective(1300px) rotateY(20deg) translateZ(340px)  scale(0.5);
+      transform: calcPerspective(340px);
       & + .shadowOne {
-        transform: perspective(1300px) rotateY(20deg) translateZ(230px)  scale(0.5);
+        transform: calcPerspective(230px)
       }
     }
   }
@@ -37,6 +39,6 @@ header {
   }
 
   to {
-    transform: perspective(1300px) rotateY(20deg) translateZ(310px)  scale(0.5);
+    transform: calcPerspective(310px)
   }
 }

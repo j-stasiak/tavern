@@ -1,3 +1,5 @@
+@import "src/styles/colors";
+
 .active {
   .bar {
     background-color: transparent;
@@ -26,7 +28,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #fff
+  color: $white;
 }
 
 .logo {
@@ -35,6 +37,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   line-height: 4rem;
+  color: tan;
 }
 
 .hamburgerMenu {
@@ -50,7 +53,7 @@
   width: 1.9rem;
   height: 1.5px;
   border-radius: 2px;
-  background-color: #eee;
+  background-color: $beige;
   transition: 0.5s;
   position: relative;
 
@@ -60,7 +63,7 @@
     position: absolute;
     width: inherit;
     height: inherit;
-    background-color: #eee;
+    background-color: $beige;
     transition: .5s;
   }
 
