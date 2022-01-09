@@ -1,0 +1,9 @@
+@import "styles/colors";
+
+.container {
+  min-height: 100vh;
+  width: 100%;
+  background-image: linear-gradient(135deg, $beige 0%, $tan 74%);
+  overflow-x: hidden;
+  transform-style: preserve-3d;
+}

@@ -1,0 +1,44 @@
+@import "src/styles/functions";
+
+header {
+  min-height: 100vh;
+  width: 100%;
+  background: url(../../images/bg.jpg) no-repeat top center / cover;
+  position: relative;
+}
+
+.main {
+  position: relative;
+  width: 100%;
+  left: 0;
+  z-index: 5;
+  overflow: hidden;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transition: 0.5s;
+}
+
+.active {
+  .main {
+    animation: main-animation 0.5s ease;
+    cursor: pointer;
+    transform: calcPerspective(310px);
+
+    &:hover {
+      transform: calcPerspective(340px);
+      & + .shadowOne {
+        transform: calcPerspective(230px)
+      }
+    }
+  }
+}
+
+@keyframes main-animation {
+  from {
+    transform: translate(0);
+  }
+
+  to {
+    transform: calcPerspective(310px)
+  }
+}
