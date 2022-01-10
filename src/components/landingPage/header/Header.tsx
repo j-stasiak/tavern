@@ -9,10 +9,10 @@ const Header: React.FC = () => {
   return (
     <header>
       <div className={classNames(styles.overlay, flex.flexRowContainer, flex.twoAxisCenter)}>
-        <div className={styles.inner}>
-          <h2 className={styles.title}>{header}</h2>
-          <p>{description}</p>
-          <button className={styles.btn}>{button}</button>
+        <div id={'phaser-example'} className={styles.inner}>
+          {/*<h2 className={styles.title}>{header}</h2>*/}
+          {/*<p>{description}</p>*/}
+          {/*<button className={styles.btn}>{button}</button>*/}
         </div>
       </div>
     </header>
