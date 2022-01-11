@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useMenu } from '../../providers/menuProvider/MenuProvider';
+import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import styles from './Shadows.module.scss';
 
 const Shadows: React.FC = () => {
-  const { isOpen } = useMenu();
+  const { isMenuOpen } = useGlobalStates();
   return (
-    <div className={classNames({ [styles.active]: isOpen })}>
+    <div className={classNames({ [styles.active]: isMenuOpen })}>
       <div className={classNames(styles.shadow, styles.shadowOne)} />
       <div className={classNames(styles.shadow, styles.shadowTwo)} />
     </div>
