@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
+import { useNavigate } from 'react-router-dom';
 import Input from '../Form/Input/Input';
 
 type Inputs = {
@@ -17,14 +18,18 @@ type Inputs = {
 };
 
 const LoginModal: React.FC = () => {
-  const { isLoginModalOpen } = useGlobalStates();
+  const { isLoginModalOpen, setIsLoginModalOpen } = useGlobalStates();
   const { header, username, password } = texts.login;
   const {
     handleSubmit,
     control,
     formState: { errors }
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setIsLoginModalOpen(false);
+    navigate('/game');
+  };
 
   return (
     <Modal
@@ -37,7 +42,7 @@ const LoginModal: React.FC = () => {
         <Input name={'username'} control={control} label={username} errors={errors}>
           <AccountCircle sx={{ mr: 1, my: 0.5 }} />
         </Input>
-        <Input name={'password'} control={control} label={password} errors={errors}>
+        <Input name={'password'} control={control} label={password} errors={errors} type={'password'}>
           <LockIcon sx={{ mr: 1, my: 0.5 }} />
         </Input>
         <Button className={styles.btn} type={'submit'} variant="outlined">

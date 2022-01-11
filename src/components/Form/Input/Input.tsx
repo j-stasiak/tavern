@@ -9,9 +9,10 @@ interface Props {
   control: any;
   label: string;
   errors: any;
+  type?: string;
 }
 
-const Input: React.FC<Props> = ({ name, control, label, errors, children }) => {
+const Input: React.FC<Props> = ({ name, control, label, errors, type, children }) => {
   return (
     <Box className={styles.box} sx={{ display: 'flex', flexDirection: 'column' }}>
       <Controller
@@ -21,7 +22,7 @@ const Input: React.FC<Props> = ({ name, control, label, errors, children }) => {
         render={({ field: { onChange, value } }) => (
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
             {children}
-            <TextField onChange={onChange} value={value} label={label} variant={'standard'} />
+            <TextField onChange={onChange} value={value} label={label} variant={'standard'} type={type} />
           </Box>
         )}
       />
