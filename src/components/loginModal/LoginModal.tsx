@@ -11,6 +11,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
 import Input from '../Form/Input/Input';
+import { usePostLoginMutation } from '../../redux/authApi/loginApi';
 
 type Inputs = {
   username: string;
@@ -26,9 +27,14 @@ const LoginModal: React.FC = () => {
     formState: { errors }
   } = useForm<Inputs>();
   const navigate = useNavigate();
+  const [triggerLogin, { data, isLoading, isError }] = usePostLoginMutation();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setIsLoginModalOpen(false);
-    navigate('/game');
+    triggerLogin({ ...data, email: 'email2@email.pl' })
+      .unwrap()
+      .then((data) => {
+        setIsLoginModalOpen(false);
+        navigate('/game');
+      });
   };
 
   return (
