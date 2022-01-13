@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { LOGIN_URL } from '../../endpoints';
+import { LOGIN_URL } from '../../constants/endpoints';
 
 export interface User {
   username: string;

@@ -15,8 +15,9 @@ import { usePostLoginMutation } from '../../redux/authApi/loginApi';
 import { io } from 'socket.io-client';
 import ErrorIcon from '@mui/icons-material/Error';
 import PacmanLoader from 'react-spinners/PacmanLoader';
-import { WS_ENDPOINT } from '../../endpoints';
+import { WS_ENDPOINT } from '../../constants/endpoints';
 import { useToken } from '../../hooks/useToken';
+import { GAME_ROUTE } from '../../constants/routes';
 
 export type Inputs = {
   username: string;
@@ -49,7 +50,7 @@ const LoginModal: React.FC = () => {
         const newSocket = io(WS_ENDPOINT);
         setToken(access_token);
         setSocket(newSocket);
-        navigate('/game');
+        navigate(GAME_ROUTE);
       });
   };
 
@@ -58,6 +59,7 @@ const LoginModal: React.FC = () => {
       isOpen={isLoginModalOpen}
       className={classNames(styles.container, flex.flexColContainer, flex.justifyCenter)}
       overlayClassName={styles.overlay}
+      ariaHideApp={false}
     >
       <h2 className={styles.header}>{header}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
