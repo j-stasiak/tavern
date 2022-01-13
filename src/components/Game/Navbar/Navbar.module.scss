@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.header {
+  height: 80px;
+  display: grid;
+  width: 100%;
+  text-align: center;
+  grid-template-columns: 1fr 4fr 1fr;
+  color: white;
+  background-image: url(../../../images/wood.jpg);
+  align-content: center;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', serif;
+  letter-spacing: 2px;
+}
+
+.logo {
+  height: 100%;
+  font-size: 36px;
+}
+
+.links {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  height: 100%;
+  font-size: 0.9rem;
+
+  .container {
+    border-right: white 2px solid;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      //border-radius: 5px;
+      background-color: rgba(112, 84, 70, 0.6);
+    }
+
+    &:last-child {
+      border: none;
+    }
+
+    a {
+      line-height: 130%;
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}
+
+.social {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+}
