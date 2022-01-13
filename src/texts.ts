@@ -18,9 +18,11 @@ export const texts = {
   login: {
     header: 'Login',
     username: 'username',
-    password: 'password'
+    password: 'password',
+    logIn: 'log in!'
   },
   validation: {
-    required: 'This field is required'
+    required: 'This field is required',
+    incorrectCredentials: 'incorrect credentials!'
   }
 };

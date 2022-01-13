@@ -33,7 +33,7 @@ const Game: React.FC = () => {
         loop: -1
       });
     }
-    const game = new Phaser.Game(config);
+    // const game = new Phaser.Game(config);
   }, []);
   return <div id={'phaser-example'} />;
 };
