@@ -11,8 +11,18 @@ export const texts = {
       { label: 'home page', delay: 0.05 },
       { label: 'about us', delay: 0.1 },
       { label: 'project', delay: 0.15 },
-      { label: 'contact', delay: 0.2 },
-      { label: 'log in', delay: 0.25 }
-    ]
+      { label: 'contact', delay: 0.2 }
+    ],
+    login: { label: 'log in', delay: 0.25 }
+  },
+  login: {
+    header: 'Login',
+    username: 'username',
+    password: 'password',
+    logIn: 'log in!'
+  },
+  validation: {
+    required: 'This field is required',
+    incorrectCredentials: 'incorrect credentials!'
   }
 };

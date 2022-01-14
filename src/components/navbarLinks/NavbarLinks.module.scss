@@ -28,6 +28,9 @@
     a {
       animation: appear 0.5s forwards ease var(--time);
     }
+    .btn {
+      animation: appear 0.5s forwards ease var(--time);
+    }
   }
 }
 
@@ -57,6 +60,20 @@
       color: $white;
     }
   }
+}
+
+.btn {
+  background-color: transparent;
+  color: #E1C391;
+  font-size: 1.5rem;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0;
+  animation: hide 0.5s forwards ease;
+  transform: translateY(10px);
 }
 
 ul {
