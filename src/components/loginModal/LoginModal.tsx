@@ -14,10 +14,10 @@ import Input from '../Form/Input/Input';
 import { usePostLoginMutation } from '../../redux/authApi/loginApi';
 import { io } from 'socket.io-client';
 import ErrorIcon from '@mui/icons-material/Error';
-import PacmanLoader from 'react-spinners/PacmanLoader';
 import { WS_ENDPOINT } from '../../constants/endpoints';
 import { useToken } from '../../hooks/useToken';
 import { GAME_ROUTE } from '../../constants/routes';
+import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
 
 export type Inputs = {
   username: string;
@@ -74,9 +74,7 @@ const LoginModal: React.FC = () => {
             {logIn}
           </Button>
         ) : (
-          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <PacmanLoader color={'#E1C391'} size={15} />
-          </Box>
+          <PacmanLoaderWrapper />
         )}
       </form>
       {isError && (

@@ -5,16 +5,17 @@ import LoginModal from './components/loginModal/LoginModal';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 import Routing from './components/Routing/Routing';
+import { beige, white } from './constants/colors';
 
 const App: React.FC = () => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#E1C391'
+        main: beige
       },
       text: {
-        primary: '#ffffff',
-        secondary: '#ffffff'
+        primary: white,
+        secondary: white
       }
     }
   });
