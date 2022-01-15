@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import React, { useEffect } from 'react';
+import Navbar from './Navbar/Navbar';
 
 const Game: React.FC = () => {
   useEffect(() => {
@@ -35,7 +36,11 @@ const Game: React.FC = () => {
     }
     // const game = new Phaser.Game(config);
   }, []);
-  return <div id={'phaser-example'} />;
+  return (
+    <div id={'phaser-example'}>
+      <Navbar />
+    </div>
+  );
 };
 
 export default Game;
