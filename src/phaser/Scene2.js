@@ -5,7 +5,7 @@ import Player from './Player';
 import OnlinePlayer from './OnlinePlayer';
 
 let cursors, socketKey;
-
+let isAllAssetsLoaded = false;
 export class Scene2 extends Phaser.Scene {
   constructor() {
     super('playGame');
@@ -24,6 +24,72 @@ export class Scene2 extends Phaser.Scene {
 
   preload() {
     this.load.audio('bgMusic', ['assets/audio/world.mp3']);
+    !isAllAssetsLoaded && this.handleLoadingScreen();
+  }
+
+  handleLoadingScreen() {
+    var progressBar = this.add.graphics();
+    var progressBox = this.add.graphics();
+    const progressBoxXPos = this.cameras.main.width / 3;
+    progressBox.fillStyle(0x222222, 0.8);
+    progressBox.fillRect(progressBoxXPos, 270, 320, 50);
+    this.load.image('logo', 'assets/images/tavern.png');
+    for (var i = 0; i < 500; i++) {
+      this.load.image('logo' + i, 'assets/images/tavern.png');
+    }
+    var width = this.cameras.main.width;
+    var height = this.cameras.main.height;
+    var loadingText = this.make.text({
+      x: width / 2,
+      y: height / 2 - 50,
+      text: 'Loading...',
+      style: {
+        font: '20px monospace',
+        fill: '#ffffff'
+      }
+    });
+    loadingText.setOrigin(0.5, 0.5);
+    var percentText = this.make.text({
+      x: width / 2,
+      y: height / 2 - 5,
+      text: '0%',
+      style: {
+        font: '18px monospace',
+        fill: '#ffffff'
+      }
+    });
+    percentText.setOrigin(0.5, 0.5);
+    var assetText = this.make.text({
+      x: width / 2,
+      y: height / 2 + 50,
+      text: '',
+      style: {
+        font: '18px monospace',
+        fill: '#ffffff'
+      }
+    });
+    assetText.setOrigin(0.5, 0.5);
+
+    this.load.on('progress', function (value) {
+      console.log(value);
+      progressBar.clear();
+      progressBar.fillStyle(0xffffff, 1);
+      progressBar.fillRect(progressBoxXPos, 280, 300 * value, 30);
+      percentText.setText(parseInt(value * 100) + '%');
+    });
+    this.load.on('fileprogress', function (file) {
+      console.log(file.src);
+      assetText.setText('Loading asset: ' + file.key);
+    });
+    this.load.on('complete', function () {
+      console.log('complete');
+      isAllAssetsLoaded = true;
+      progressBar.destroy();
+      progressBox.destroy();
+      loadingText.destroy();
+      percentText.destroy();
+      assetText.destroy();
+    });
   }
 
   create() {
@@ -159,7 +225,8 @@ export class Scene2 extends Phaser.Scene {
       worldLayer: this.worldLayer,
       key: 'player',
       x: spawnPoint.x,
-      y: spawnPoint.y
+      y: spawnPoint.y,
+      react: this.game.react
     });
 
     const camera = this.cameras.main;

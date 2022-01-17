@@ -4,6 +4,7 @@ import { onlinePlayers, room } from './SocketServer';
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
+    this.react = config.react;
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this);
     this.scene.physics.add.collider(this, config.worldLayer);
@@ -110,8 +111,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.scene.map.findObject('Doors', (obj) => {
       if (this.y >= obj.y && this.y <= obj.y + obj.height && this.x >= obj.x && this.x <= obj.x + obj.width) {
         console.log('Player is by ' + obj.name);
-        console.table(obj);
+        console.table(this.react);
         if (this.spacebar.isDown) {
+          this.react.chat.openChat();
           console.log('Door is open!');
           this.worldInteraction2();
         }
