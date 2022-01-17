@@ -3,6 +3,7 @@ import * as Colyseus from 'colyseus.js';
 /*================================================
 | Array with current online players
 */
+
 let onlinePlayers = [];
 
 /*================================================

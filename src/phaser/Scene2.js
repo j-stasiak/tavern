@@ -22,6 +22,10 @@ export class Scene2 extends Phaser.Scene {
     this.container = [];
   }
 
+  preload() {
+    this.load.audio('bgMusic', ['assets/audio/world.mp3']);
+  }
+
   create() {
     room.then((room) =>
       room.onMessage((data) => {
@@ -178,6 +182,8 @@ export class Scene2 extends Phaser.Scene {
     this.debugGraphics();
 
     this.movementTimer();
+
+    this.playSound();
   }
 
   update(time, delta) {
@@ -284,5 +290,14 @@ export class Scene2 extends Phaser.Scene {
         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
       });
     });
+  }
+
+  playSound() {
+    if (!this.bgMusic) {
+      this.bgMusic = this.sound.add('bgMusic', { volume: 0.5, loop: true });
+    }
+    if (!this.bgMusic?.isPlaying) {
+      this.bgMusic.play();
+    }
   }
 }

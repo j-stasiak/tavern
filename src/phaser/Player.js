@@ -4,7 +4,6 @@ import { onlinePlayers, room } from './SocketServer';
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.key);
-
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this);
     this.scene.physics.add.collider(this, config.worldLayer);
@@ -111,8 +110,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.scene.map.findObject('Doors', (obj) => {
       if (this.y >= obj.y && this.y <= obj.y + obj.height && this.x >= obj.x && this.x <= obj.x + obj.width) {
         console.log('Player is by ' + obj.name);
+        console.table(obj);
         if (this.spacebar.isDown) {
           console.log('Door is open!');
+          this.worldInteraction2();
         }
       }
     });
@@ -146,6 +147,25 @@ export default class Player extends Phaser.GameObjects.Sprite {
           })
         );
       }
+    });
+  }
+
+  worldInteraction2() {
+    this.scene.map.findObject('Worlds', (world) => {
+      console.log('Player is by world entry: ' + world.name);
+
+      // Get playerTexturePosition from from Worlds object property
+      // Load new level (tiles map)
+      this.scene.registry.destroy();
+      this.scene.events.off();
+      this.scene.scene.restart({ map: 'route1', playerTexturePosition: this.playerTexturePosition });
+
+      room.then((room) =>
+        room.send({
+          event: 'PLAYER_CHANGED_MAP',
+          map: world.name
+        })
+      );
     });
   }
 }

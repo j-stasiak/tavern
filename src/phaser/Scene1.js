@@ -4,8 +4,6 @@ import Phaser from 'phaser';
 
 import Route1JSON from './assets/tilemaps/route1';
 
-import AtlasPNG from './assets/atlas/atlas.png';
-import AtlasJSON from './assets/atlas/atlas';
 import PlayersAtlasPNG from './assets/images/players/players.png';
 import PlayersAtlasJSON from './assets/atlas/players';
 
@@ -23,9 +21,7 @@ export class Scene1 extends Phaser.Scene {
     this.load.tilemapTiledJSON('route1', Route1JSON);
 
     // Load atlas
-    console.log(AtlasPNG);
     this.load.atlas('currentPlayer', './assets/atlas/atlas.png', './assets/atlas/atlas.json');
-    console.log(AtlasJSON);
     this.load.atlas('players', PlayersAtlasPNG, PlayersAtlasJSON);
   }
 

@@ -1,3 +1,8 @@
+Used free music:
+https://www.serpentsoundstudios.com/royalty-free-music/celtic-fantasy
+Music: [adventure, tavern brawl] by Alexander Nakarada (www.serpentsoundstudios.com)
+Licensed under Creative Commons BY Attribution 4.0 License
+http://creativecommons.org/licenses/by/4.0/
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

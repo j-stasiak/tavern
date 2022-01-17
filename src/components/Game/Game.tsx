@@ -6,6 +6,11 @@ import { GameConfig } from '../../phaser';
 const Game: React.FC = () => {
   useEffect(() => {
     const game = new Phaser.Game(GameConfig);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    game.socketcikMordo = () => {
+      console.log('siema');
+    };
   }, []);
   return (
     <div id={'phaser-example'}>
