@@ -1,40 +1,20 @@
 import Phaser from 'phaser';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar/Navbar';
+import { GameConfig } from '../../phaser';
 
 const Game: React.FC = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
   useEffect(() => {
-    const config = {
-      type: Phaser.AUTO,
-      parent: 'phaser-example',
-      width: 800,
-      height: 800,
-      scene: {
-        preload: preload,
-        create: create
-      }
+    const game = new Phaser.Game(GameConfig);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    game.socketcikMordo = () => {
+      console.log('siema');
     };
-    function preload() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this.load.image('logo', './logo512.png');
-    }
-    function create() {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const logo = this.add.image(400, 150, 'logo');
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this.tweens.add({
-        targets: logo,
-        y: 550,
-        duration: 2000,
-        ease: 'Power2',
-        yoyo: true,
-        loop: -1
-      });
-    }
-    // const game = new Phaser.Game(config);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    game.react = { chat: { openChat: () => setIsChatOpen(true), closeChat: () => setIsChatOpen(false) } };
   }, []);
   return (
     <div id={'phaser-example'}>
