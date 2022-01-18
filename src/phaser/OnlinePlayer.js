@@ -11,7 +11,7 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
     this.setTexture('players', 'bob_front.png').setScale(1.9, 2.1);
 
     this.map = config.map;
-    // console.log(`Map of ${config.playerId} is ${this.map}`);
+    console.log(`Map of ${config.playerId} is ${this.map}`);
 
     // Player Offset
     this.body.setOffset(0, 24);

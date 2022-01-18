@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { onlinePlayers, room } from './SocketServer';
+import { room } from './SocketServer';
 import { ReactPhaserProps } from '../react-phaser-middleware/ReactPhaserTransmitter';
 
 const SPEECH_BUBBLE_WIDTH = 140;
