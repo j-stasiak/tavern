@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar/Navbar';
 import { GameConfig } from '../../phaser';
+import styles from './Game.module.scss';
+import classNames from 'classnames';
 
 const Game: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -17,8 +18,8 @@ const Game: React.FC = () => {
     game.react = { chat: { openChat: () => setIsChatOpen(true), closeChat: () => setIsChatOpen(false) } };
   }, []);
   return (
-    <div id={'phaser-example'}>
-      <Navbar />
+    <div className={styles.frame}>
+      <div id={'phaser-example'} className={classNames(styles.gameWrapper)} />
     </div>
   );
 };

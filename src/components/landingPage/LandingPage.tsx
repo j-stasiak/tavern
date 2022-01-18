@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './LandingPage.module.scss';
 import classNames from 'classnames';
-import NavbarLinks from '../navbarLinks/NavbarLinks';
 import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
 import Shadows from './shadows/Shadows';
 import Header from './header/Header';
+import SideMenu from '../navbar/SideMenu/SideMenu';
 
 const LandingPage: React.FC = () => {
   const { isMenuOpen } = useGlobalStates();
@@ -16,7 +16,9 @@ const LandingPage: React.FC = () => {
         </div>
         <Shadows />
       </div>
-      <NavbarLinks />
+      <div className={styles.sideMenuWrapper}>
+        <SideMenu />
+      </div>
     </div>
   );
 };

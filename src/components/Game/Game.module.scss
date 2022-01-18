@@ -1,0 +1,20 @@
+.gameWrapper {
+  width: 1024px;
+  height: 768px;
+  margin: 0 auto;
+}
+
+.frame {
+  background-color: #7d7d7d;
+  background-image: url("https://cyndikirkpatrick.com/wp-content/uploads/2016/06/eos_autumn3a.png");
+  width: 1072px;
+  height: 816px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px 7px 7px 7px;
+  -moz-border-radius: 7px 7px 7px 7px;
+  -webkit-border-radius: 7px 7px 7px 7px;
+  border: 1px solid #000;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

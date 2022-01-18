@@ -1,4 +1,5 @@
 @import "src/styles/colors";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 .active {
   .bar {
@@ -38,6 +39,7 @@
   letter-spacing: 2px;
   line-height: 4rem;
   color: tan;
+  font-family: 'Press Start 2P', serif;
 }
 
 .hamburgerMenu {

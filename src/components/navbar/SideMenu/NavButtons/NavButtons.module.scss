@@ -1,4 +1,4 @@
-@import "src/styles/colors";
+@import "../../../../styles/colors";
 
 @keyframes appear {
   from {
@@ -35,13 +35,6 @@
 }
 
 .links {
-  position: absolute;
-  width: 30%;
-  right: 0;
-  top: 0;
-  height: 100vh;
-  z-index: 2;
-
   a {
     text-decoration: none;
     color: $light-white;
@@ -51,6 +44,7 @@
     font-weight: 300;
     text-transform: uppercase;
     letter-spacing: 1px;
+    cursor: pointer;
     transition: 0.3s;
     opacity: 0;
     transform: translateY(10px);

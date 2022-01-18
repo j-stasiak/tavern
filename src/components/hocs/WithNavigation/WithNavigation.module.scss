@@ -1,0 +1,54 @@
+@import '../../../styles/colors';
+@import url('https://fonts.googleapis.com/css2?family=Bilbo&display=swap');
+
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: blueviolet;
+  display: grid;
+  grid-template-rows: 15fr 1fr;
+}
+
+.wrappedComponent {
+  position: relative;
+  //background-image: url(../../../images/letterBg.jpg);
+  background-repeat: no-repeat;
+  padding-top: 80px;
+  padding-right: 20px;
+  font-size: 1.5rem;
+  padding-left: 20px;
+  //background-attachment: fixed;
+  background-position: center;
+  font-family: 'Bilbo', cursive;
+  font-weight: bold;
+  background-size: cover;
+  color: rgba(40, 49, 59, 0.9);
+  height: 100%;
+
+  //&:after {
+  //  content: " ";
+  //  z-index: 10;
+  //  display: block;
+  //  position: absolute;
+  //  height: 100%;
+  //  top: 0;
+  //  left: 0;
+  //  right: 0;
+  //  background: rgba(0, 0, 0, 0.5);
+  //}
+}
+
+.button {
+  background-color: $beige;
+  width: 100%;
+  height: 100%;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $ebony;
+  }
+}
