@@ -14,5 +14,6 @@ export const GameConfig = {
       gravity: { y: 0 }
     }
   },
-  scene: [CourseScene, Scene2]
+  scene: [CourseScene, Scene2],
+  zoom: 1.2
 };
