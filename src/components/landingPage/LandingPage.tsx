@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
 import Shadows from './shadows/Shadows';
 import Header from './header/Header';
+import Course from '../Course/Course';
 import SideMenu from '../navbar/SideMenu/SideMenu';
 
 const LandingPage: React.FC = () => {
