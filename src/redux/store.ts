@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { loginApi } from './authApi/loginApi';
+import { authApi } from './authApi/authApi';
 import sideMenuSlice from './sideMenuSlice/sideMenuSlice';
 
 export const store = configureStore({
   reducer: {
     sideMenu: sideMenuSlice,
-    [loginApi.reducerPath]: loginApi.reducer
+    [authApi.reducerPath]: authApi.reducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loginApi.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

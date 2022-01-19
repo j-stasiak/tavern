@@ -22,7 +22,16 @@ export const texts = {
     header: 'Login',
     username: 'username',
     password: 'password',
-    logIn: 'log in!'
+    logIn: 'log in!',
+    register: "Don't have an account?"
+  },
+  register: {
+    header: 'New account',
+    username: 'username',
+    password: 'password',
+    email: 'email',
+    register: 'create account!',
+    login: 'Already have an account?'
   },
   validation: {
     required: 'This field is required',
