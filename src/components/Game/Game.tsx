@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar/Navbar';
 import { GameConfig } from '../../phaser';
+import styles from './Game.module.scss';
+import classNames from 'classnames';
 import Course from '../Course/Course';
 import { ReactPhaserProps, useReactPhaserCommons } from '../../react-phaser-middleware/ReactPhaserTransmitter';
 
@@ -19,9 +20,10 @@ const Game: React.FC = () => {
     game.reactProps = { ...reactProps };
   }, []);
   return (
-    <div id={'phaser-example'}>
-      <Navbar />
-      {isCourseOpen && <Course name={selectedCourseName} />}
+    <div className={styles.frame}>
+      <div id={'phaser-example'} className={classNames(styles.gameWrapper)}>
+        {isCourseOpen && <Course name={selectedCourseName} />}
+      </div>
     </div>
   );
 };

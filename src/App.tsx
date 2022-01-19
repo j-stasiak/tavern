@@ -4,8 +4,9 @@ import GlobalStatesProvider from './components/providers/globalStatesProvider/Gl
 import LoginModal from './components/loginModal/LoginModal';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
-import Routing from './components/Routing/Routing';
 import { beige, white } from './constants/colors';
+import LandingPage from './components/landingPage/LandingPage';
+import Navbar from './components/navbar/Navbar';
 
 const App: React.FC = () => {
   const theme = createTheme({
@@ -26,7 +27,10 @@ const App: React.FC = () => {
         <div className={styles.container}>
           <GlobalStatesProvider>
             <LoginModal />
-            <Routing />
+            <Navbar />
+            <main>
+              <LandingPage />
+            </main>
           </GlobalStatesProvider>
         </div>
       </ThemeProvider>

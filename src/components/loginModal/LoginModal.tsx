@@ -9,14 +9,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
-import { useNavigate } from 'react-router-dom';
 import Input from '../Form/Input/Input';
 import { usePostLoginMutation } from '../../redux/authApi/loginApi';
 import { io } from 'socket.io-client';
 import ErrorIcon from '@mui/icons-material/Error';
 import { WS_ENDPOINT } from '../../constants/endpoints';
 import { useToken } from '../../hooks/useToken';
-import { GAME_ROUTE } from '../../constants/routes';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
 
 export type Inputs = {
@@ -27,7 +25,7 @@ export type Inputs = {
 type Socket = ReturnType<typeof io>;
 
 const LoginModal: React.FC = () => {
-  const { isLoginModalOpen, setIsLoginModalOpen } = useGlobalStates();
+  const { isLoginModalOpen, setIsLoginModalOpen, setIsMenuOpen } = useGlobalStates();
   const { setToken } = useToken();
   const [, setSocket] = useState<Socket>();
   const {
@@ -39,7 +37,6 @@ const LoginModal: React.FC = () => {
     control,
     formState: { errors }
   } = useForm<Inputs>();
-  const navigate = useNavigate();
   const [triggerLogin, { isLoading, isError }] = usePostLoginMutation();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -47,10 +44,10 @@ const LoginModal: React.FC = () => {
       .unwrap()
       .then(({ access_token }) => {
         setIsLoginModalOpen(false);
+        setIsMenuOpen(false);
         const newSocket = io(WS_ENDPOINT);
         setToken(access_token);
         setSocket(newSocket);
-        navigate(GAME_ROUTE);
       });
   };
 

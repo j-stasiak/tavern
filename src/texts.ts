@@ -1,11 +1,4 @@
-import {
-  ABOUT_US_ROUTE,
-  CONTACT_ROUTE,
-  HOME_ROUTE,
-  HOW_TO_START_ROUTE,
-  NEWS_ROUTE,
-  PROJECT_ROUTE
-} from './constants/routes';
+import { RouteEnum } from './enums/RouteEnum';
 
 export const texts = {
   landingPage: {
@@ -17,10 +10,10 @@ export const texts = {
   navBar: {
     logo: 'tavern',
     links: [
-      { label: 'home page', delay: 0.05 },
-      { label: 'about us', delay: 0.1 },
-      { label: 'project', delay: 0.15 },
-      { label: 'contact', delay: 0.2 }
+      { label: 'how to start', delay: 0.05, path: RouteEnum.HowToStart },
+      { label: 'about us', delay: 0.1, path: RouteEnum.AboutUs },
+      { label: 'project', delay: 0.15, path: RouteEnum.Project },
+      { label: 'contact', delay: 0.2, path: RouteEnum.Contact }
     ],
     login: { label: 'log in', delay: 0.25 }
   },
@@ -34,12 +27,5 @@ export const texts = {
     required: 'This field is required',
     incorrectCredentials: 'incorrect credentials!'
   },
-  gameNavbar: [
-    { label: 'home', link: HOME_ROUTE },
-    { label: 'project', link: PROJECT_ROUTE },
-    { label: 'how to start', link: HOW_TO_START_ROUTE },
-    { label: 'about us', link: ABOUT_US_ROUTE },
-    { label: 'news', link: NEWS_ROUTE },
-    { label: 'contact', link: CONTACT_ROUTE }
-  ]
+  backToMenu: 'back to menu'
 };
