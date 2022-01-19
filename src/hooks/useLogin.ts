@@ -1,16 +1,13 @@
-import { io } from 'socket.io-client';
-import { WS_ENDPOINT } from '../constants/endpoints';
 import { usePostLoginMutation } from '../redux/authApi/authApi';
 import { LoginInputs } from '../components/loginModal/LoginModal';
 import { useGlobalStates } from '../components/providers/globalStatesProvider/GlobalStatesProvider';
 import { useToken } from './useToken';
-import { useSocket } from './useSocket';
 
 export const useLogin = () => {
   const [triggerLogin, { isLoading, isError }] = usePostLoginMutation();
   const { setIsLoginModalOpen, setIsMenuOpen, setIsLoggedIn } = useGlobalStates();
   const { setToken } = useToken();
-  const { setSocket } = useSocket();
+  // const { setSocket } = useSocket();
 
   const login = (data: LoginInputs) =>
     triggerLogin(data)
@@ -20,7 +17,7 @@ export const useLogin = () => {
         setIsMenuOpen(false);
         setIsLoggedIn(true);
         setToken(access_token);
-        setSocket(io(WS_ENDPOINT));
+        // setSocket(io(WS_ENDPOINT));
       });
 
   return {

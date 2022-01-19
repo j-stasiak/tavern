@@ -9,7 +9,6 @@ import { routeToPath } from '../../../../redux/sideMenuSlice/sideMenuSlice';
 import { RouteEnum } from '../../../../enums/RouteEnum';
 import { useAppDispatch } from '../../../../hooks/reduxHooks';
 import { useToken } from '../../../../hooks/useToken';
-import { useSocket } from '../../../../hooks/useSocket';
 
 const NavButtons: React.FC = () => {
   const { links, login, logout } = texts.navBar;
@@ -17,11 +16,11 @@ const NavButtons: React.FC = () => {
   const { removeToken } = useToken();
   const { isMenuOpen, setIsLoginModalOpen, setIsMenuOpen, isLoggedIn } = useGlobalStates();
   const handleLogin = () => setIsLoginModalOpen(true);
-  const { socket } = useSocket();
+  // const { socket } = useSocket();
   const handleLogout = () => {
     setIsMenuOpen(false);
     removeToken();
-    socket?.disconnect();
+    // socket?.disconnect();
   };
   const handleRouteClick = (path: RouteEnum) => dispatch(routeToPath(path));
 
