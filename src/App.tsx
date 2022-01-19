@@ -28,7 +28,9 @@ const App: React.FC = () => {
           <GlobalStatesProvider>
             <LoginModal />
             <Navbar />
-            <LandingPage />
+            <main>
+              <LandingPage />
+            </main>
           </GlobalStatesProvider>
         </div>
       </ThemeProvider>
