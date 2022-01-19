@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import flex from '../../../styles/flex.module.scss';
 import Game from '../../Game/Game';
 import { useToken } from '../../../hooks/useToken';
+import SoundPlayer from '../../SoundPlayer/SoundPlayer';
 
 const Header: React.FC = () => {
   const { header, description, button } = texts.landingPage;
@@ -13,6 +14,7 @@ const Header: React.FC = () => {
 
   return (
     <header>
+      <SoundPlayer />
       <div className={classNames(styles.overlay, flex.flexRowContainer, flex.twoAxisCenter)}>
         {userLoggedIn ? (
           <Game />

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { GameConfig } from '../../phaser';
 import styles from './Game.module.scss';
 import classNames from 'classnames';
@@ -7,8 +7,7 @@ import Course from '../Course/Course';
 import { ReactPhaserProps, useReactPhaserCommons } from '../../react-phaser-middleware/ReactPhaserTransmitter';
 
 const Game: React.FC = () => {
-  const { setIsChatOpen, isChatOpen, selectCourse, isCourseOpen, exitCourse, selectedCourseName } =
-    useReactPhaserCommons();
+  const { setIsChatOpen, selectCourse, isCourseOpen, exitCourse, selectedCourseName } = useReactPhaserCommons();
   useEffect(() => {
     const game = new Phaser.Game(GameConfig);
     const reactProps: ReactPhaserProps = {
