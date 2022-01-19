@@ -5,6 +5,7 @@ import NavbarLinks from '../navbarLinks/NavbarLinks';
 import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
 import Shadows from './shadows/Shadows';
 import Header from './header/Header';
+import Course from '../Course/Course';
 
 const LandingPage: React.FC = () => {
   const { isMenuOpen } = useGlobalStates();

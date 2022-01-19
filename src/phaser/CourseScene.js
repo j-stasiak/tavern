@@ -7,7 +7,7 @@ import Route1JSON from './assets/tilemaps/route1';
 import PlayersAtlasPNG from './assets/images/players/players.png';
 import PlayersAtlasJSON from './assets/atlas/players';
 
-export class Scene1 extends Phaser.Scene {
+export class CourseScene extends Phaser.Scene {
   constructor() {
     super('bootGame');
   }

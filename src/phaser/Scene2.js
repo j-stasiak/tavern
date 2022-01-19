@@ -3,9 +3,11 @@ import { onlinePlayers, room } from './SocketServer';
 
 import Player from './Player';
 import OnlinePlayer from './OnlinePlayer';
+import { getGameProps } from './util/configUtils';
 
 let cursors, socketKey;
 let isAllAssetsLoaded = false;
+
 export class Scene2 extends Phaser.Scene {
   constructor() {
     super('playGame');
@@ -71,18 +73,18 @@ export class Scene2 extends Phaser.Scene {
     assetText.setOrigin(0.5, 0.5);
 
     this.load.on('progress', function (value) {
-      console.log(value);
+      // console.log(value);
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(progressBoxXPos, 280, 300 * value, 30);
       percentText.setText(parseInt(value * 100) + '%');
     });
     this.load.on('fileprogress', function (file) {
-      console.log(file.src);
+      // console.log(file.src);
       assetText.setText('Loading asset: ' + file.key);
     });
     this.load.on('complete', function () {
-      console.log('complete');
+      // console.log('complete');
       isAllAssetsLoaded = true;
       progressBar.destroy();
       progressBox.destroy();
@@ -96,7 +98,7 @@ export class Scene2 extends Phaser.Scene {
     room.then((room) =>
       room.onMessage((data) => {
         if (data.event === 'CURRENT_PLAYERS') {
-          console.log('CURRENT_PLAYERSr');
+          // console.log('CURRENT_PLAYERSr');
 
           Object.keys(data.players).forEach((playerId) => {
             let player = data.players[playerId];
@@ -114,7 +116,7 @@ export class Scene2 extends Phaser.Scene {
           });
         }
         if (data.event === 'PLAYER_JOINED') {
-          console.log('PLAYER_JOINED');
+          // console.log('PLAYER_JOINED');
 
           if (!onlinePlayers[data.sessionId]) {
             onlinePlayers[data.sessionId] = new OnlinePlayer({
@@ -128,7 +130,7 @@ export class Scene2 extends Phaser.Scene {
           }
         }
         if (data.event === 'PLAYER_LEFT') {
-          console.log('PLAYER_LEFT');
+          // console.log('PLAYER_LEFT');
 
           if (onlinePlayers[data.sessionId]) {
             onlinePlayers[data.sessionId].destroy();
@@ -174,7 +176,7 @@ export class Scene2 extends Phaser.Scene {
           }
         }
         if (data.event === 'PLAYER_CHANGED_MAP') {
-          console.log('PLAYER_CHANGED_MAP');
+          // console.log('PLAYER_CHANGED_MAP');
 
           if (onlinePlayers[data.sessionId]) {
             onlinePlayers[data.sessionId].destroy();
@@ -218,17 +220,18 @@ export class Scene2 extends Phaser.Scene {
 
     // Get spawn point from tiled map
     const spawnPoint = this.map.findObject('SpawnPoints', (obj) => obj.name === 'Spawn Point');
-
     // Set player
+    const gameProps = getGameProps(this.game);
     this.player = new Player({
       scene: this,
       worldLayer: this.worldLayer,
       key: 'player',
       x: spawnPoint.x,
       y: spawnPoint.y,
-      react: this.game.react
+      reactProps: gameProps
     });
 
+    // console.log(this.player);
     const camera = this.cameras.main;
     camera.startFollow(this.player);
     camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);

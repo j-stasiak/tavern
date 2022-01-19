@@ -24,7 +24,9 @@ const Routing: React.FC = () => {
         element={
           <>
             <Navbar />
-            <LandingPage />
+            <main>
+              <LandingPage />
+            </main>
           </>
         }
       />

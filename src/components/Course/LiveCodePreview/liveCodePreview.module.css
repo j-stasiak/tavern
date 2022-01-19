@@ -1,0 +1,20 @@
+.darkMode {
+    background-color: #28313b !important;
+}
+
+.lightMode {
+    background-color: gainsboro;
+}
+
+.splitScreen {
+    display: flex;
+    flex-direction: row;
+}
+
+.editorPane {
+    width: 50%
+}
+
+.resultPane {
+    width: 50%
+}
