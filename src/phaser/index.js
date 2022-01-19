@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { CourseScene } from './CourseScene';
+import { SceneLoader } from './SceneLoader';
 import { Scene2 } from './Scene2';
 
 export const GameConfig = {
@@ -14,5 +14,6 @@ export const GameConfig = {
       gravity: { y: 0 }
     }
   },
-  scene: [CourseScene, Scene2]
+  scene: [SceneLoader, Scene2],
+  zoom: 1.2
 };

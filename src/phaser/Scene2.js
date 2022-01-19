@@ -6,7 +6,6 @@ import OnlinePlayer from './OnlinePlayer';
 import { getGameProps } from './util/configUtils';
 
 let cursors, socketKey;
-let isAllAssetsLoaded = false;
 
 export class Scene2 extends Phaser.Scene {
   constructor() {
@@ -24,81 +23,69 @@ export class Scene2 extends Phaser.Scene {
     this.container = [];
   }
 
-  preload() {
-    this.load.audio('bgMusic', ['assets/audio/world.mp3']);
-    !isAllAssetsLoaded && this.handleLoadingScreen();
-  }
-
-  handleLoadingScreen() {
-    var progressBar = this.add.graphics();
-    var progressBox = this.add.graphics();
-    const progressBoxXPos = this.cameras.main.width / 3;
-    progressBox.fillStyle(0x222222, 0.8);
-    progressBox.fillRect(progressBoxXPos, 270, 320, 50);
-    this.load.image('logo', 'assets/images/tavern.png');
-    for (var i = 0; i < 500; i++) {
-      this.load.image('logo' + i, 'assets/images/tavern.png');
-    }
-    var width = this.cameras.main.width;
-    var height = this.cameras.main.height;
-    var loadingText = this.make.text({
-      x: width / 2,
-      y: height / 2 - 50,
-      text: 'Loading...',
-      style: {
-        font: '20px monospace',
-        fill: '#ffffff'
-      }
-    });
-    loadingText.setOrigin(0.5, 0.5);
-    var percentText = this.make.text({
-      x: width / 2,
-      y: height / 2 - 5,
-      text: '0%',
-      style: {
-        font: '18px monospace',
-        fill: '#ffffff'
-      }
-    });
-    percentText.setOrigin(0.5, 0.5);
-    var assetText = this.make.text({
-      x: width / 2,
-      y: height / 2 + 50,
-      text: '',
-      style: {
-        font: '18px monospace',
-        fill: '#ffffff'
-      }
-    });
-    assetText.setOrigin(0.5, 0.5);
-
-    this.load.on('progress', function (value) {
-      // console.log(value);
-      progressBar.clear();
-      progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(progressBoxXPos, 280, 300 * value, 30);
-      percentText.setText(parseInt(value * 100) + '%');
-    });
-    this.load.on('fileprogress', function (file) {
-      // console.log(file.src);
-      assetText.setText('Loading asset: ' + file.key);
-    });
-    this.load.on('complete', function () {
-      // console.log('complete');
-      isAllAssetsLoaded = true;
-      progressBar.destroy();
-      progressBox.destroy();
-      loadingText.destroy();
-      percentText.destroy();
-      assetText.destroy();
-    });
-  }
-
   create() {
+    this.map = this.make.tilemap({ key: this.mapName });
+
+    // Set current map Bounds
+    this.scene.scene.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+
+    // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
+    // Phaser's cache (i.e. the name you used in preload)
+    const tileset = this.map.addTilesetImage('tuxmon-sample-32px-extruded', 'TilesTown');
+
+    // Parameters: layer name (or index) from Tiled, tileset, x, y
+    this.belowLayer = this.map.createStaticLayer('Below Player', tileset, 0, 0);
+    this.worldLayer = this.map.createStaticLayer('World', tileset, 0, 0);
+    this.grassLayer = this.map.createStaticLayer('Grass', tileset, 0, 0);
+    this.aboveLayer = this.map.createStaticLayer('Above Player', tileset, 0, 0);
+
+    this.worldLayer.setCollisionByProperty({ collides: true });
+
+    // By default, everything gets depth sorted on the screen in the order we created things. Here, we
+    // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
+    // Higher depths will sit on top of lower depth objects.
+    this.aboveLayer.setDepth(10);
+
+    // Get spawn point from tiled map
+    const spawnPoint = this.map.findObject('SpawnPoints', (obj) => obj.name === 'Spawn Point');
+
+    // Set player
+    const gameProps = getGameProps(this.game);
+    this.player = new Player({
+      scene: this,
+      worldLayer: this.worldLayer,
+      key: 'player',
+      x: spawnPoint.x,
+      y: spawnPoint.y,
+      reactProps: gameProps
+    });
+
+    const camera = this.cameras.main;
+    camera.startFollow(this.player);
+    camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+    // Help text that has a "fixed" position on the screen
+    this.add
+      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
+        font: '18px monospace',
+        fill: '#000000',
+        padding: { x: 20, y: 10 },
+        backgroundColor: '#ffffff'
+      })
+      .setScrollFactor(0)
+      .setDepth(30);
+
+    this.debugGraphics();
+
+    this.movementTimer();
+    // this.openSocketConnection();
     room.then((room) =>
       room.onMessage((data) => {
+        console.log('what the');
         if (data.event === 'CURRENT_PLAYERS') {
-          // console.log('CURRENT_PLAYERSr');
+          console.log('CURRENT_PLAYERS');
 
           Object.keys(data.players).forEach((playerId) => {
             let player = data.players[playerId];
@@ -116,7 +103,7 @@ export class Scene2 extends Phaser.Scene {
           });
         }
         if (data.event === 'PLAYER_JOINED') {
-          // console.log('PLAYER_JOINED');
+          console.log('PLAYER_JOINED');
 
           if (!onlinePlayers[data.sessionId]) {
             onlinePlayers[data.sessionId] = new OnlinePlayer({
@@ -130,7 +117,7 @@ export class Scene2 extends Phaser.Scene {
           }
         }
         if (data.event === 'PLAYER_LEFT') {
-          // console.log('PLAYER_LEFT');
+          console.log('PLAYER_LEFT');
 
           if (onlinePlayers[data.sessionId]) {
             onlinePlayers[data.sessionId].destroy();
@@ -176,7 +163,7 @@ export class Scene2 extends Phaser.Scene {
           }
         }
         if (data.event === 'PLAYER_CHANGED_MAP') {
-          // console.log('PLAYER_CHANGED_MAP');
+          console.log('PLAYER_CHANGED_MAP');
 
           if (onlinePlayers[data.sessionId]) {
             onlinePlayers[data.sessionId].destroy();
@@ -195,66 +182,10 @@ export class Scene2 extends Phaser.Scene {
         }
       })
     );
-
-    this.map = this.make.tilemap({ key: this.mapName });
-
-    // Set current map Bounds
-    this.scene.scene.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-
-    // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
-    // Phaser's cache (i.e. the name you used in preload)
-    const tileset = this.map.addTilesetImage('tuxmon-sample-32px-extruded', 'TilesTown');
-
-    // Parameters: layer name (or index) from Tiled, tileset, x, y
-    this.belowLayer = this.map.createLayer('Below Player', tileset, 0, 0);
-    this.worldLayer = this.map.createLayer('World', tileset, 0, 0);
-    this.grassLayer = this.map.createLayer('Grass', tileset, 0, 0);
-    this.aboveLayer = this.map.createLayer('Above Player', tileset, 0, 0);
-
-    this.worldLayer.setCollisionByProperty({ collides: true });
-
-    // By default, everything gets depth sorted on the screen in the order we created things. Here, we
-    // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
-    // Higher depths will sit on top of lower depth objects.
-    this.aboveLayer.setDepth(10);
-
-    // Get spawn point from tiled map
-    const spawnPoint = this.map.findObject('SpawnPoints', (obj) => obj.name === 'Spawn Point');
-    // Set player
-    const gameProps = getGameProps(this.game);
-    this.player = new Player({
-      scene: this,
-      worldLayer: this.worldLayer,
-      key: 'player',
-      x: spawnPoint.x,
-      y: spawnPoint.y,
-      reactProps: gameProps
-    });
-
-    // console.log(this.player);
-    const camera = this.cameras.main;
-    camera.startFollow(this.player);
-    camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-
-    cursors = this.input.keyboard.createCursorKeys();
-
-    // Help text that has a "fixed" position on the screen
-    this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
-        font: '18px monospace',
-        fill: '#000000',
-        padding: { x: 20, y: 10 },
-        backgroundColor: '#ffffff'
-      })
-      .setScrollFactor(0)
-      .setDepth(30);
-
-    this.debugGraphics();
-
-    this.movementTimer();
-
-    this.playSound();
+    console.log('wtf', room, onlinePlayers);
   }
+
+  // openSocketConnection() {}
 
   update(time, delta) {
     // Loop the player update method
@@ -360,14 +291,5 @@ export class Scene2 extends Phaser.Scene {
         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
       });
     });
-  }
-
-  playSound() {
-    if (!this.bgMusic) {
-      this.bgMusic = this.sound.add('bgMusic', { volume: 0.5, loop: true });
-    }
-    if (!this.bgMusic?.isPlaying) {
-      this.bgMusic.play();
-    }
   }
 }
