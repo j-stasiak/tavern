@@ -206,8 +206,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         room.then((room) =>
           // @ts-ignore
-          room.send({
-            event: 'PLAYER_CHANGED_MAP',
+          room.send('PLAYER_CHANGED_MAP', {
             map: world.name
           })
         );
@@ -230,8 +229,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
       room.then((room) =>
         // @ts-ignore
-        room.send({
-          event: 'PLAYER_CHANGED_MAP',
+        room.send('PLAYER_CHANGED_MAP', {
           map: world.name
         })
       );

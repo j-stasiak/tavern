@@ -45,9 +45,9 @@ const LoginModal: React.FC = () => {
       .then(({ access_token }) => {
         setIsLoginModalOpen(false);
         setIsMenuOpen(false);
-        const newSocket = io(WS_ENDPOINT);
+        // const newSocket = io(WS_ENDPOINT);
         setToken(access_token);
-        setSocket(newSocket);
+        // setSocket(newSocket);
       });
   };
 
