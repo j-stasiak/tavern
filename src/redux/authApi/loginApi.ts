@@ -4,7 +4,6 @@ import { LOGIN_URL } from '../../constants/endpoints';
 export interface User {
   username: string;
   password: string;
-  email: string;
 }
 
 export interface LoginResponse {

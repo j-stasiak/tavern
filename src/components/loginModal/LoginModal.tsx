@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
 import styles from './LoginModal.module.scss';
@@ -16,18 +16,17 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { WS_ENDPOINT } from '../../constants/endpoints';
 import { useToken } from '../../hooks/useToken';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
+import { useSocket } from '../../hooks/useSocket';
 
 export type Inputs = {
   username: string;
   password: string;
 };
 
-type Socket = ReturnType<typeof io>;
-
 const LoginModal: React.FC = () => {
-  const { isLoginModalOpen, setIsLoginModalOpen, setIsMenuOpen } = useGlobalStates();
+  const { isLoginModalOpen, setIsLoginModalOpen, setIsMenuOpen, setIsLoggedIn } = useGlobalStates();
   const { setToken } = useToken();
-  const [, setSocket] = useState<Socket>();
+  const { setSocket } = useSocket();
   const {
     login: { header, username, password, logIn },
     validation: { incorrectCredentials }
@@ -40,14 +39,14 @@ const LoginModal: React.FC = () => {
   const [triggerLogin, { isLoading, isError }] = usePostLoginMutation();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    triggerLogin({ ...data, email: 'email2@email.pl' })
+    triggerLogin(data)
       .unwrap()
       .then(({ access_token }) => {
         setIsLoginModalOpen(false);
         setIsMenuOpen(false);
-        const newSocket = io(WS_ENDPOINT);
+        setIsLoggedIn(true);
         setToken(access_token);
-        setSocket(newSocket);
+        setSocket(io(WS_ENDPOINT));
       });
   };
 

@@ -8,13 +8,23 @@ import { useGlobalStates } from '../../../providers/globalStatesProvider/GlobalS
 import { routeToPath } from '../../../../redux/sideMenuSlice/sideMenuSlice';
 import { RouteEnum } from '../../../../enums/RouteEnum';
 import { useAppDispatch } from '../../../../hooks/reduxHooks';
+import { useToken } from '../../../../hooks/useToken';
+import { useSocket } from '../../../../hooks/useSocket';
 
 const NavButtons: React.FC = () => {
-  const { links, login } = texts.navBar;
+  const { links, login, logout } = texts.navBar;
   const dispatch = useAppDispatch();
-  const { isMenuOpen, setIsLoginModalOpen } = useGlobalStates();
-  const handleClick = () => setIsLoginModalOpen(true);
+  const { removeToken } = useToken();
+  const { isMenuOpen, setIsLoginModalOpen, setIsMenuOpen, isLoggedIn } = useGlobalStates();
+  const handleLogin = () => setIsLoginModalOpen(true);
+  const { socket } = useSocket();
+  const handleLogout = () => {
+    setIsMenuOpen(false);
+    removeToken();
+    socket?.disconnect();
+  };
   const handleRouteClick = (path: RouteEnum) => dispatch(routeToPath(path));
+
   return (
     <div className={classNames({ [styles.active]: isMenuOpen }, sizes.h100)}>
       <div className={classNames(styles.links, sizes.h100, flex.flexColContainer, flex.twoAxisCenter)}>
@@ -28,11 +38,11 @@ const NavButtons: React.FC = () => {
           ))}
           <li>
             <button
-              onClick={handleClick}
+              onClick={isLoggedIn ? handleLogout : handleLogin}
               style={{ ['--time']: `${login.delay}s` } as React.CSSProperties}
               className={styles.btn}
             >
-              {login.label}
+              {isLoggedIn ? logout : login.label}
             </button>
           </li>
         </ul>

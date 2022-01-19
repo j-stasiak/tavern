@@ -15,7 +15,8 @@ export const texts = {
       { label: 'project', delay: 0.15, path: RouteEnum.Project },
       { label: 'contact', delay: 0.2, path: RouteEnum.Contact }
     ],
-    login: { label: 'log in', delay: 0.25 }
+    login: { label: 'log in', delay: 0.25 },
+    logout: 'log out'
   },
   login: {
     header: 'Login',
