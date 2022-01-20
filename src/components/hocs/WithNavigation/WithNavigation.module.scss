@@ -4,7 +4,7 @@
 .container {
   height: 100%;
   width: 100%;
-  background-color: blueviolet;
+  background-color: rgba(203, 182, 130, 0.81);
   display: grid;
   grid-template-rows: 15fr 1fr;
 }
@@ -15,7 +15,7 @@
   background-repeat: no-repeat;
   padding-top: 80px;
   padding-right: 20px;
-  font-size: 1.5rem;
+  font-size: 5.5rem;
   padding-left: 20px;
   //background-attachment: fixed;
   background-position: center;
