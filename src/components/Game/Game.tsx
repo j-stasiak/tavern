@@ -5,7 +5,7 @@ import styles from './Game.module.scss';
 import classNames from 'classnames';
 import Course from '../Course/Course';
 import { ReactPhaserProps, useReactPhaserCommons } from '../../react-phaser-middleware/ReactPhaserTransmitter';
-import { onlinePlayers, room } from '../../react-phaser-middleware/SocketServer';
+import { useColyseus } from '../../context/ColyseusContext';
 
 const courseMock = {
   answer: '<div>finito</div>',
@@ -13,18 +13,13 @@ const courseMock = {
 };
 const Game: React.FC = () => {
   const { setIsChatOpen, selectCourse, isCourseOpen, exitCourse, selectedCourseName } = useReactPhaserCommons();
+  const { room, onlinePlayers } = useColyseus();
   useEffect(() => {
     const game = new Phaser.Game(GameConfig);
     const reactProps: ReactPhaserProps = {
       colyseus: {
-        onlinePlayers,
         room,
-        chat: {
-          messages: [
-            { playerId: 'player', message: 'Jestem playerem i chuj' },
-            { playerId: 'otherPlayer', message: 'A ja ci kladę na twarz banana' }
-          ]
-        }
+        onlinePlayers
       },
       course: { selectCourse, exitCourse },
       chat: { openChat: () => setIsChatOpen(true), closeChat: () => setIsChatOpen(false) }

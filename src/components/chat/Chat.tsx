@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Chat.scss';
 import Message from './message/Message';
 import Scrollbars from 'react-custom-scrollbars';
+import { useColyseus } from '../../context/ColyseusContext';
 
 export interface IMessage {
   body: string;
@@ -13,25 +14,29 @@ interface IProps {
 }
 
 const Chat: React.FC<IProps> = ({ nick }) => {
-  const [messages, setMessages] = useState<IMessage[]>([
-    { body: 'Siema', nick: 'Lavat' },
-    { body: 'Siema', nick: 'Lavat' },
-    { body: 'Siema', nick: 'Lavat' },
-    { body: 'Siema', nick: 'Lavat' },
-    { body: 'Siema', nick: 'Lavat' },
-    { body: 'Siema', nick: 'Lavat' }
-  ]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
   const [message, setMessage] = useState<string>('');
-
+  const { room } = useColyseus();
   const socketRef = useRef<any>();
 
   useEffect(() => {
+    //TODO below code will be changed when socket changes get implemented. It's bad
+    room.then((room) => {
+      room?.onMessage('CURRENT_PLAYERS', (data) => {
+        Object.keys(data.players).forEach((playerId) => {
+          const player = data.players[playerId];
+          receivedMessage({ body: 'Siema', nick: playerId });
+        });
+      });
+      room?.onMessage('PLAYER_JOINED', (data) => {
+        receivedMessage({ body: 'Siema', nick: data.sessionId });
+      });
+    });
     /* socketRef.current = io(SERVER_SOCKET_URL);
 
     socketRef.current.on("message:client", (message: IMessage) => {
       receivedMessage(message);
     })*/
-    receivedMessage({ body: 'Siema', nick: 'Lavat' });
   }, []);
 
   const receivedMessage = (message: IMessage) => {

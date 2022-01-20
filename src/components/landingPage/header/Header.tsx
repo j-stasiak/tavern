@@ -7,6 +7,8 @@ import Game from '../../Game/Game';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import SoundPlayer from '../../SoundPlayer/SoundPlayer';
 import Chat from '../../chat/Chat';
+import { onlinePlayers, room } from '../../../react-phaser-middleware/SocketServer';
+import { ColyseusContext } from '../../../context/ColyseusContext';
 
 const Header: React.FC = () => {
   const { header, description, button } = texts.landingPage;
@@ -17,10 +19,10 @@ const Header: React.FC = () => {
       <SoundPlayer />
       <div className={classNames(styles.overlay, flex.flexRowContainer, flex.twoAxisCenter)}>
         {isLoggedIn ? (
-          <>
+          <ColyseusContext.Provider value={{ onlinePlayers, room }}>
             <Game />
             <Chat nick={'Andrzej'} />
-          </>
+          </ColyseusContext.Provider>
         ) : (
           <div className={styles.inner}>
             <h2 className={styles.title}>{header}</h2>

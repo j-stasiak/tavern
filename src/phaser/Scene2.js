@@ -116,6 +116,9 @@ export class Scene2 extends Phaser.Scene {
       room.onMessage('PLAYER_JOINED', (data) => {
         console.log('PLAYER_JOINED');
         console.log(data);
+        this.player.toggleSpeechBubble('Witamy w tavernie nowego pana');
+
+        console.log('PLAYER_MOVED');
         if (!this.colyseus.onlinePlayers[data.sessionId]) {
           this.colyseus.onlinePlayers[data.sessionId] = new OnlinePlayer({
             scene: this,
@@ -136,7 +139,6 @@ export class Scene2 extends Phaser.Scene {
         }
       });
       room.onMessage('PLAYER_MOVED', (data) => {
-        //console.log('PLAYER_MOVED');
         console.log(data);
         // If player is in same map
         if (this.mapName === this.colyseus.onlinePlayers[data.sessionId].map) {
@@ -175,7 +177,6 @@ export class Scene2 extends Phaser.Scene {
       });
       room.onMessage('PLAYER_CHANGED_MAP', (data) => {
         console.log('PLAYER_CHANGED_MAP');
-
         if (this.colyseus.onlinePlayers[data.sessionId]) {
           this.colyseus.onlinePlayers[data.sessionId].destroy();
 
@@ -197,7 +198,6 @@ export class Scene2 extends Phaser.Scene {
   update(time, delta) {
     // Loop the player update method
     this.player.update(time, delta);
-
     // Horizontal movement
     if (cursors.left.isDown) {
       if (socketKey) {
