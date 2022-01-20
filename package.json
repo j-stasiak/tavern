@@ -23,6 +23,7 @@
     "node-sass": "^7.0.1",
     "raw-loader": "^3.1.0",
     "react": "^16.8.0",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.0",
     "react-hook-form": "^7.22.5",
     "react-modal": "^3.14.4",
@@ -67,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-custom-scrollbars": "^4.0.10",
     "@types/react-howler": "^3.7.3",
     "@types/react-modal": "^3.13.1",
     "@typescript-eslint/eslint-plugin": "^5.9.0",

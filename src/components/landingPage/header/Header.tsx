@@ -6,6 +6,7 @@ import flex from '../../../styles/flex.module.scss';
 import Game from '../../Game/Game';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import SoundPlayer from '../../SoundPlayer/SoundPlayer';
+import Chat from '../../chat/Chat';
 
 const Header: React.FC = () => {
   const { header, description, button } = texts.landingPage;
@@ -16,7 +17,10 @@ const Header: React.FC = () => {
       <SoundPlayer />
       <div className={classNames(styles.overlay, flex.flexRowContainer, flex.twoAxisCenter)}>
         {isLoggedIn ? (
-          <Game />
+          <>
+            <Game />
+            <Chat nick={'Andrzej'} />
+          </>
         ) : (
           <div className={styles.inner}>
             <h2 className={styles.title}>{header}</h2>
