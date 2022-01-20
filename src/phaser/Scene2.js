@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import { onlinePlayers, room } from './SocketServer';
 
 import Player from './Player';
 import OnlinePlayer from './OnlinePlayer';
@@ -59,6 +58,7 @@ export class Scene2 extends Phaser.Scene {
       y: spawnPoint.y,
       reactProps: gameProps
     });
+    this.colyseus = getGameProps(this.game).colyseus;
 
     const camera = this.cameras.main;
     camera.startFollow(this.player);
@@ -68,7 +68,7 @@ export class Scene2 extends Phaser.Scene {
 
     // Help text that has a "fixed" position on the screen
     this.add
-      .text(16, 16, 'Arrow keys to move\nPress "D" to show hitboxes', {
+      .text(16, 16, 'Arrow keys to move', {
         font: '18px monospace',
         fill: '#000000',
         padding: { x: 20, y: 10 },
@@ -77,14 +77,15 @@ export class Scene2 extends Phaser.Scene {
       .setScrollFactor(0)
       .setDepth(30);
 
-    this.debugGraphics();
-
     this.movementTimer();
-    // this.openSocketConnection();
-    room.then((room) => {
+    this.handleColyseus();
+  }
+
+  handleColyseus() {
+    this.colyseus.room.then((room) => {
       console.log(room.state.players);
       for (const [sessionId, player] of room.state.players) {
-        onlinePlayers[sessionId] = new OnlinePlayer({
+        this.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
           scene: this,
           playerId: player.sessionId,
           key: player.sessionId,
@@ -101,7 +102,7 @@ export class Scene2 extends Phaser.Scene {
           let player = data.players[playerId];
 
           if (playerId !== room.sessionId) {
-            onlinePlayers[player.sessionId] = new OnlinePlayer({
+            this.colyseus.onlinePlayers[player.sessionId] = new OnlinePlayer({
               scene: this,
               playerId: player.sessionId,
               key: player.sessionId,
@@ -115,8 +116,8 @@ export class Scene2 extends Phaser.Scene {
       room.onMessage('PLAYER_JOINED', (data) => {
         console.log('PLAYER_JOINED');
         console.log(data);
-        if (!onlinePlayers[data.sessionId]) {
-          onlinePlayers[data.sessionId] = new OnlinePlayer({
+        if (!this.colyseus.onlinePlayers[data.sessionId]) {
+          this.colyseus.onlinePlayers[data.sessionId] = new OnlinePlayer({
             scene: this,
             playerId: data.sessionId,
             key: data.sessionId,
@@ -129,19 +130,19 @@ export class Scene2 extends Phaser.Scene {
       room.onMessage('PLAYER_LEFT', (data) => {
         console.log('PLAYER_LEFT');
 
-        if (onlinePlayers[data.sessionId]) {
-          onlinePlayers[data.sessionId].destroy();
-          delete onlinePlayers[data.sessionId];
+        if (this.colyseus.onlinePlayers[data.sessionId]) {
+          this.colyseus.onlinePlayers[data.sessionId].destroy();
+          delete this.colyseus.onlinePlayers[data.sessionId];
         }
       });
       room.onMessage('PLAYER_MOVED', (data) => {
         //console.log('PLAYER_MOVED');
         console.log(data);
         // If player is in same map
-        if (this.mapName === onlinePlayers[data.sessionId].map) {
+        if (this.mapName === this.colyseus.onlinePlayers[data.sessionId].map) {
           // If player isn't registered in this scene (map changing bug..)
-          if (!onlinePlayers[data.sessionId].scene) {
-            onlinePlayers[data.sessionId] = new OnlinePlayer({
+          if (!this.colyseus.onlinePlayers[data.sessionId].scene) {
+            this.colyseus.onlinePlayers[data.sessionId] = new OnlinePlayer({
               scene: this,
               playerId: data.sessionId,
               key: data.sessionId,
@@ -151,15 +152,15 @@ export class Scene2 extends Phaser.Scene {
             });
           }
           // Start animation and set sprite position
-          onlinePlayers[data.sessionId].isWalking(data.position, data.x, data.y);
+          this.colyseus.onlinePlayers[data.sessionId].isWalking(data.position, data.x, data.y);
         }
       });
       room.onMessage('PLAYER_MOVEMENT_ENDED', (data) => {
         // If player is in same map
-        if (this.mapName === onlinePlayers[data.sessionId].map) {
+        if (this.mapName === this.colyseus.onlinePlayers[data.sessionId].map) {
           // If player isn't registered in this scene (map changing bug..)
-          if (!onlinePlayers[data.sessionId].scene) {
-            onlinePlayers[data.sessionId] = new OnlinePlayer({
+          if (!this.colyseus.onlinePlayers[data.sessionId].scene) {
+            this.colyseus.onlinePlayers[data.sessionId] = new OnlinePlayer({
               scene: this,
               playerId: data.sessionId,
               key: data.sessionId,
@@ -169,17 +170,17 @@ export class Scene2 extends Phaser.Scene {
             });
           }
           // Stop animation & set sprite texture
-          onlinePlayers[data.sessionId].stopWalking(data.position);
+          this.colyseus.onlinePlayers[data.sessionId].stopWalking(data.position);
         }
       });
       room.onMessage('PLAYER_CHANGED_MAP', (data) => {
         console.log('PLAYER_CHANGED_MAP');
 
-        if (onlinePlayers[data.sessionId]) {
-          onlinePlayers[data.sessionId].destroy();
+        if (this.colyseus.onlinePlayers[data.sessionId]) {
+          this.colyseus.onlinePlayers[data.sessionId].destroy();
 
-          if (data.map === this.mapName && !onlinePlayers[data.sessionId].scene) {
-            onlinePlayers[data.sessionId] = new OnlinePlayer({
+          if (data.map === this.mapName && !this.colyseus.onlinePlayers[data.sessionId].scene) {
+            this.colyseus.onlinePlayers[data.sessionId] = new OnlinePlayer({
               scene: this,
               playerId: data.sessionId,
               key: data.sessionId,
@@ -193,20 +194,15 @@ export class Scene2 extends Phaser.Scene {
     });
   }
 
-  // openSocketConnection() {}
-
   update(time, delta) {
     // Loop the player update method
     this.player.update(time, delta);
-
-    // console.log('PlayerX: ' + this.player.x);
-    // console.log('PlayerY: ' + this.player.y);
 
     // Horizontal movement
     if (cursors.left.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'left',
               x: this.player.x,
@@ -219,7 +215,7 @@ export class Scene2 extends Phaser.Scene {
     } else if (cursors.right.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'right',
               x: this.player.x,
@@ -235,7 +231,7 @@ export class Scene2 extends Phaser.Scene {
     if (cursors.up.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'back',
               x: this.player.x,
@@ -248,7 +244,7 @@ export class Scene2 extends Phaser.Scene {
     } else if (cursors.down.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'front',
               x: this.player.x,
@@ -262,16 +258,16 @@ export class Scene2 extends Phaser.Scene {
 
     // Horizontal movement ended
     if (Phaser.Input.Keyboard.JustUp(cursors.left) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'left' }));
+      this.colyseus.room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'left' }));
     } else if (Phaser.Input.Keyboard.JustUp(cursors.right) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'right' }));
+      this.colyseus.room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'right' }));
     }
 
     // Vertical movement ended
     if (Phaser.Input.Keyboard.JustUp(cursors.up) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'back' }));
+      this.colyseus.room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'back' }));
     } else if (Phaser.Input.Keyboard.JustUp(cursors.down) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'front' }));
+      this.colyseus.room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'front' }));
     }
   }
 
@@ -279,21 +275,5 @@ export class Scene2 extends Phaser.Scene {
     setInterval(() => {
       socketKey = true;
     }, 50);
-  }
-
-  debugGraphics() {
-    // Debug graphics
-    this.input.keyboard.once('keydown_D', (event) => {
-      // Turn on physics debugging to show player's hitbox
-      this.physics.world.createDebugGraphic();
-
-      // Create worldLayer collision graphic above the player, but below the help text
-      const graphics = this.add.graphics().setAlpha(0.75).setDepth(20);
-      this.worldLayer.renderDebug(graphics, {
-        tileColor: null, // Color of non-colliding tiles
-        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-        faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-      });
-    });
   }
 }

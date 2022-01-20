@@ -5,12 +5,14 @@ import styles from './Game.module.scss';
 import classNames from 'classnames';
 import Course from '../Course/Course';
 import { ReactPhaserProps, useReactPhaserCommons } from '../../react-phaser-middleware/ReactPhaserTransmitter';
+import { onlinePlayers, room } from '../../react-phaser-middleware/SocketServer';
 
 const Game: React.FC = () => {
   const { setIsChatOpen, selectCourse, isCourseOpen, exitCourse, selectedCourseName } = useReactPhaserCommons();
   useEffect(() => {
     const game = new Phaser.Game(GameConfig);
     const reactProps: ReactPhaserProps = {
+      colyseus: { onlinePlayers, room },
       course: { selectCourse, exitCourse },
       chat: { openChat: () => setIsChatOpen(true), closeChat: () => setIsChatOpen(false) }
     };

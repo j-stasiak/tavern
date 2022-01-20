@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { room } from './SocketServer';
+import { room } from '../react-phaser-middleware/SocketServer';
 import { ReactPhaserProps } from '../react-phaser-middleware/ReactPhaserTransmitter';
 
 const SPEECH_BUBBLE_WIDTH = 140;
@@ -11,6 +11,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   private speechBubble: Phaser.GameObjects.Graphics;
   //@ts-ignore
   private speechBubbleContent: Phaser.GameObjects.Text;
+  private spacebar: Phaser.Input.Keyboard.Key;
 
   constructor(config: any) {
     super(config.scene, config.x, config.y, config.key);
@@ -52,7 +53,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.playerNickname = this.scene.add.text(this.x - this.width * 1.4, this.y - this.height / 2, 'Player');
 
     // Add spacebar input
-    // @ts-ignore
     this.spacebar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.createSpeechBubble(20, 20, SPEECH_BUBBLE_WIDTH, SPEECH_BUBBLE_HEIGHT, 'Ludzie zawsze gadają');
@@ -80,6 +80,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     // Player world interaction
     this.worldInteraction();
 
+    this.toggleSpeechBubble();
     // Stop any previous movement from the last frame
     // @ts-ignore
     this.body.setVelocity(0);
@@ -163,9 +164,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.scene.map.findObject('Doors', (obj) => {
       if (this.y >= obj.y && this.y <= obj.y + obj.height && this.x >= obj.x && this.x <= obj.x + obj.width) {
         console.log('Player is by ' + obj.name);
-        // @ts-ignore
         if (this.spacebar.isDown) {
-          console.log(this.reactProps);
           if (
             obj.properties?.some((prop: { name: string; value: boolean }) => prop.name === 'isCourse' && prop.value)
           ) {
@@ -176,6 +175,27 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
       }
     });
+  }
+
+  isSpeechBubbleVisible = false;
+  toggleSpeechBubble() {
+    if (this.spacebar.isDown && !this.isSpeechBubbleVisible) {
+      this.showSpeechBubble();
+      setTimeout(() => {
+        this.hideSpeechBubble();
+      }, 5000);
+    }
+  }
+
+  showSpeechBubble() {
+    this.isSpeechBubbleVisible = true;
+    this.speechBubble.setVisible(this.isSpeechBubbleVisible);
+    this.speechBubbleContent.setVisible(this.isSpeechBubbleVisible);
+  }
+  hideSpeechBubble() {
+    this.isSpeechBubbleVisible = false;
+    this.speechBubble.setVisible(this.isSpeechBubbleVisible);
+    this.speechBubbleContent.setVisible(this.isSpeechBubbleVisible);
   }
 
   worldInteraction() {
@@ -239,7 +259,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
   createSpeechBubble(x: any, y: any, width: any, height: any, quote: any) {
     const bubbleWidth = width;
     const bubbleHeight = height;
-    const bubblePadding = 10;
     const arrowHeight = bubbleHeight / 4;
 
     this.speechBubble = this.scene.add.graphics({ x: x, y: y });
