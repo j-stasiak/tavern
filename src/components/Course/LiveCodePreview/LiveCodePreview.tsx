@@ -1,19 +1,24 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import { LiveEditor, LiveError, LivePreview, LiveProvider } from 'react-live';
+import { LiveProvider } from 'react-live';
 import styles from './liveCodePreview.module.css';
 import classNames from 'classnames';
 import LiveCodeEditor from './LiveCodeEditor/LiveCodeEditor';
 import LiveCodeResult from './LiveCodeResult/LiveCodeResult';
 
 interface OwnProps {
-  cosTam?: string;
+  answer: string;
+  onCompleted: () => void;
 }
 
 type Props = OwnProps;
 
-const LiveCodePreview: FunctionComponent<Props> = (props) => {
+const LiveCodePreview: FunctionComponent<Props> = ({ answer, onCompleted }) => {
   const [code, setCode] = useState(DEFAULT_CODE);
+  useEffect(() => {
+    code.includes(answer) && onCompleted();
+  }, [code]);
+
   return (
     <LiveProvider code={code}>
       <div className={styles.splitScreen}>

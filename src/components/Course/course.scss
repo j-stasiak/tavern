@@ -1,0 +1,21 @@
+
+.finished-box {
+  width: 1000px;
+  border: solid #3cb371;
+  padding: 50px;
+  text-align: center;
+  font-size: 36px;
+  letter-spacing: 3px;
+  margin-top: 60px;
+  background-color: rgba(255, 255, 255, 0.93);
+  //background-color: #3cb371;
+  color: green;
+}
+
+.finish-border {
+  opacity: 0.5;
+  border-width: 5px 3px 3px 5px;
+  border-radius: 4% 95% 6% 95%/95% 4% 92% 5%;
+  transform: rotate(2deg);
+  padding: 30px;
+}
