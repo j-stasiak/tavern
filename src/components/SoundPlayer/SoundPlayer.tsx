@@ -1,10 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import ReactHowler from 'react-howler';
 
 const SoundPlayer: FunctionComponent = () => {
+  const [isPlaying, setPlaying] = useState(true);
+  const text = isPlaying ? 'Nacisnij mnie to się uciszę' : 'Naciśnij mnie to ci zaśpiewam';
   return (
     <>
-      <ReactHowler src="assets/audio/world.mp3" playing={true} loop={true} volume={0.3} />
+      <button onClick={() => setPlaying(!isPlaying)}>{text}</button>
+      <ReactHowler src="assets/audio/world.mp3" playing={isPlaying} loop={true} volume={0.3} />
     </>
   );
 };

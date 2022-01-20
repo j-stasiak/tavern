@@ -16,10 +16,10 @@ const Header: React.FC = () => {
 
   return (
     <header>
-      <SoundPlayer />
       <div className={classNames(styles.overlay, flex.flexRowContainer, flex.twoAxisCenter)}>
         {isLoggedIn ? (
           <ColyseusContext.Provider value={{ onlinePlayers, room }}>
+            <SoundPlayer />
             <Game />
             <Chat nick={'Andrzej'} />
           </ColyseusContext.Provider>
