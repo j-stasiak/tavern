@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { onlinePlayers, room } from './SocketServer';
 
 import Player from './Player';
-import OnlinePlayer from './OnlinePlayer';
+import OnlinePlayer, { DYNAMIC_PLAYER_FIELDS } from './OnlinePlayer';
 import { getGameProps } from './util/configUtils';
 
 let cursors, socketKey;
@@ -80,120 +80,72 @@ export class Scene2 extends Phaser.Scene {
     this.debugGraphics();
 
     this.movementTimer();
+
+    const addPlayerToGame = (sessionId, player) => {
+      console.log(sessionId);
+      console.log(player);
+      onlinePlayers[sessionId] = new OnlinePlayer({
+        scene: this,
+        playerId: sessionId,
+        key: sessionId,
+        map: player.map,
+        x: player.x,
+        y: player.y
+      });
+
+      player.onChange = (changes) => {
+        // Do some proper dictionary for field changes?
+        changes.forEach((change) => {
+          if (DYNAMIC_PLAYER_FIELDS.includes(change.field) && change.previousValue !== change.value) {
+            if (change.field == 'x' || change.field == 'y') {
+              onlinePlayers[sessionId].move(change.field, change.value);
+            } else if (change.field === 'walking') {
+              if (change.value === true) {
+                onlinePlayers[sessionId].playWalkingAnimation(player.position);
+              } else {
+                onlinePlayers[sessionId].stopWalkingAnimation(player.position);
+              }
+            } else if (change.field === 'map') {
+              onlinePlayers[sessionId].destroy();
+
+              if (change.value === this.mapName && !onlinePlayers[sessionId].scene) {
+                onlinePlayers[sessionId] = new OnlinePlayer({
+                  scene: this,
+                  playerId: sessionId,
+                  key: sessionId,
+                  map: change.value,
+                  x: player.x,
+                  y: player.y
+                });
+              }
+            } else {
+              onlinePlayers[sessionId][change.field] = change.value;
+            }
+          }
+        });
+      };
+    };
     // this.openSocketConnection();
     room.then((room) => {
-      console.log(room.state.players);
       for (const [sessionId, player] of room.state.players) {
-        onlinePlayers[sessionId] = new OnlinePlayer({
-          scene: this,
-          playerId: player.sessionId,
-          key: player.sessionId,
-          map: player.map,
-          x: player.x,
-          y: player.y
-        });
+        if (sessionId !== room.sessionId) {
+          console.log('Adding another players...');
+          addPlayerToGame(sessionId, player);
+        }
       }
-      room.onMessage('CURRENT_PLAYERS', (data) => {
-        console.log('CURRENT_PLAYERS');
-        console.log(data);
+      room.state.players.onAdd = (player, sessionId) => {
+        console.log('Player joined, setting up listeners...');
+        addPlayerToGame(sessionId, player);
+      };
 
-        Object.keys(data.players).forEach((playerId) => {
-          let player = data.players[playerId];
-
-          if (playerId !== room.sessionId) {
-            onlinePlayers[player.sessionId] = new OnlinePlayer({
-              scene: this,
-              playerId: player.sessionId,
-              key: player.sessionId,
-              map: player.map,
-              x: player.x,
-              y: player.y
-            });
-          }
-        });
-      });
-      room.onMessage('PLAYER_JOINED', (data) => {
-        console.log('PLAYER_JOINED');
-        console.log(data);
-        if (!onlinePlayers[data.sessionId]) {
-          onlinePlayers[data.sessionId] = new OnlinePlayer({
-            scene: this,
-            playerId: data.sessionId,
-            key: data.sessionId,
-            map: data.map,
-            x: data.x,
-            y: data.y
-          });
+      room.state.players.onRemove = (player, sessionId) => {
+        if (onlinePlayers[sessionId]) {
+          onlinePlayers[sessionId].destroy();
+          delete onlinePlayers[sessionId];
         }
-      });
-      room.onMessage('PLAYER_LEFT', (data) => {
-        console.log('PLAYER_LEFT');
-
-        if (onlinePlayers[data.sessionId]) {
-          onlinePlayers[data.sessionId].destroy();
-          delete onlinePlayers[data.sessionId];
-        }
-      });
-      room.onMessage('PLAYER_MOVED', (data) => {
-        //console.log('PLAYER_MOVED');
-        console.log(data);
-        // If player is in same map
-        if (this.mapName === onlinePlayers[data.sessionId].map) {
-          // If player isn't registered in this scene (map changing bug..)
-          if (!onlinePlayers[data.sessionId].scene) {
-            onlinePlayers[data.sessionId] = new OnlinePlayer({
-              scene: this,
-              playerId: data.sessionId,
-              key: data.sessionId,
-              map: data.map,
-              x: data.x,
-              y: data.y
-            });
-          }
-          // Start animation and set sprite position
-          onlinePlayers[data.sessionId].isWalking(data.position, data.x, data.y);
-        }
-      });
-      room.onMessage('PLAYER_MOVEMENT_ENDED', (data) => {
-        // If player is in same map
-        if (this.mapName === onlinePlayers[data.sessionId].map) {
-          // If player isn't registered in this scene (map changing bug..)
-          if (!onlinePlayers[data.sessionId].scene) {
-            onlinePlayers[data.sessionId] = new OnlinePlayer({
-              scene: this,
-              playerId: data.sessionId,
-              key: data.sessionId,
-              map: data.map,
-              x: data.x,
-              y: data.y
-            });
-          }
-          // Stop animation & set sprite texture
-          onlinePlayers[data.sessionId].stopWalking(data.position);
-        }
-      });
-      room.onMessage('PLAYER_CHANGED_MAP', (data) => {
-        console.log('PLAYER_CHANGED_MAP');
-
-        if (onlinePlayers[data.sessionId]) {
-          onlinePlayers[data.sessionId].destroy();
-
-          if (data.map === this.mapName && !onlinePlayers[data.sessionId].scene) {
-            onlinePlayers[data.sessionId] = new OnlinePlayer({
-              scene: this,
-              playerId: data.sessionId,
-              key: data.sessionId,
-              map: data.map,
-              x: data.x,
-              y: data.y
-            });
-          }
-        }
-      });
+      };
     });
   }
-
-  // openSocketConnection() {}
 
   update(time, delta) {
     // Loop the player update method
@@ -209,6 +161,7 @@ export class Scene2 extends Phaser.Scene {
           room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'left',
+              walking: true,
               x: this.player.x,
               y: this.player.y
             })
@@ -222,6 +175,7 @@ export class Scene2 extends Phaser.Scene {
           room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'right',
+              walking: true,
               x: this.player.x,
               y: this.player.y
             })
@@ -238,6 +192,7 @@ export class Scene2 extends Phaser.Scene {
           room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'back',
+              walking: true,
               x: this.player.x,
               y: this.player.y
             })
@@ -251,6 +206,7 @@ export class Scene2 extends Phaser.Scene {
           room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'front',
+              walking: true,
               x: this.player.x,
               y: this.player.y
             })
@@ -262,16 +218,16 @@ export class Scene2 extends Phaser.Scene {
 
     // Horizontal movement ended
     if (Phaser.Input.Keyboard.JustUp(cursors.left) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'left' }));
+      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'left', walking: false }));
     } else if (Phaser.Input.Keyboard.JustUp(cursors.right) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'right' }));
+      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'right', walking: false }));
     }
 
     // Vertical movement ended
     if (Phaser.Input.Keyboard.JustUp(cursors.up) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'back' }));
+      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'back', walking: false }));
     } else if (Phaser.Input.Keyboard.JustUp(cursors.down) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'front' }));
+      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'front', walking: false }));
     }
   }
 

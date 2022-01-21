@@ -4,7 +4,7 @@ import * as Colyseus from 'colyseus.js';
 | Array with current online players
 */
 
-let onlinePlayers = [];
+let onlinePlayers = {};
 
 /*================================================
 | Colyseus connection with server
