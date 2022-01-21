@@ -2,12 +2,13 @@ import { useState } from 'react';
 import * as Colyseus from 'colyseus.js';
 
 export type ReactPhaserProps = {
-  chat: { openChat: () => void; closeChat: () => void };
+  chat: { setMessages: any };
   course: { selectCourse: (courseId: string) => void; exitCourse: () => void };
   colyseus: {
     onlinePlayers: any[];
     room: Promise<void | Colyseus.Room<unknown>>;
   };
+  principal: { nick: string };
 };
 
 export const useReactPhaserCommons = () => {

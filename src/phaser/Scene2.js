@@ -1,10 +1,8 @@
 import Phaser from 'phaser';
-import { onlinePlayers, room } from './SocketServer';
 
 import Player from './Player';
 import OnlinePlayer, { DYNAMIC_PLAYER_FIELDS } from './OnlinePlayer';
 import { getGameProps } from './util/configUtils';
-import { MessageSharp } from '@mui/icons-material';
 
 let cursors, socketKey;
 
@@ -51,14 +49,14 @@ export class Scene2 extends Phaser.Scene {
     const spawnPoint = this.map.findObject('SpawnPoints', (obj) => obj.name === 'Spawn Point');
 
     // Set player
-    const gameProps = getGameProps(this.game);
+    this.gameProps = getGameProps(this.game);
     this.player = new Player({
       scene: this,
       worldLayer: this.worldLayer,
       key: 'player',
       x: spawnPoint.x,
       y: spawnPoint.y,
-      reactProps: gameProps
+      reactProps: this.gameProps
     });
 
     const camera = this.cameras.main;
@@ -85,7 +83,7 @@ export class Scene2 extends Phaser.Scene {
     const addPlayerToGame = (sessionId, player) => {
       console.log(sessionId);
       console.log(player);
-      onlinePlayers[sessionId] = new OnlinePlayer({
+      this.gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
         scene: this,
         playerId: sessionId,
         key: sessionId,
@@ -93,23 +91,24 @@ export class Scene2 extends Phaser.Scene {
         x: player.x,
         y: player.y
       });
+      // this.gameProps.colyseus.onlinePlayers[sessionId].toggleSpeechBubble('Witaj przybyłem');
       player.onChange = (changes) => {
         // Do some proper dictionary for field changes?
         changes.forEach((change) => {
           if (DYNAMIC_PLAYER_FIELDS.includes(change.field) && change.previousValue !== change.value) {
             if (change.field === 'x' || change.field === 'y') {
-              onlinePlayers[sessionId].move(change.field, change.value);
+              this.gameProps.colyseus.onlinePlayers[sessionId].move(change.field, change.value);
             } else if (change.field === 'walking') {
               if (change.value === true) {
-                onlinePlayers[sessionId].playWalkingAnimation(player.position);
+                this.gameProps.colyseus.onlinePlayers[sessionId].playWalkingAnimation(player.position);
               } else {
-                onlinePlayers[sessionId].stopWalkingAnimation(player.position);
+                this.gameProps.colyseus.onlinePlayers[sessionId].stopWalkingAnimation(player.position);
               }
             } else if (change.field === 'map') {
-              onlinePlayers[sessionId].destroy();
+              this.gameProps.colyseus.onlinePlayers[sessionId].destroy();
 
-              if (change.value === this.mapName && !onlinePlayers[sessionId].scene) {
-                onlinePlayers[sessionId] = new OnlinePlayer({
+              if (change.value === this.mapName && !this.gameProps.colyseus.onlinePlayers[sessionId].scene) {
+                this.gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
                   scene: this,
                   playerId: sessionId,
                   key: sessionId,
@@ -119,19 +118,27 @@ export class Scene2 extends Phaser.Scene {
                 });
               }
             } else {
-              onlinePlayers[sessionId][change.field] = change.value;
+              this.gameProps.colyseus.onlinePlayers[sessionId][change.field] = change.value;
             }
           }
         });
       };
     };
     // this.openSocketConnection();
-    room.then((room) => {
+    this.gameProps.colyseus.room.then((room) => {
       for (const message of room.state.messages) {
         console.log(message.message);
       }
       room.state.messages.onAdd = (message, _) => {
-        console.log(message);
+        this.gameProps.chat.setMessages([...room.state.messages]);
+        this.gameProps.principal.nick === message.nick && this.player.toggleSpeechBubble(message.message); //
+        for (const onlinePlayer in this.gameProps.colyseus.onlinePlayers) {
+          this.gameProps.colyseus.onlinePlayers[onlinePlayer].update();
+        }
+
+        //message.nick === principalNick && player.showBubble
+
+        // this.gameProps.colyseus.this.gameProps.colyseus.onlinePlayers.find(value => value.)
       };
       for (const [sessionId, player] of room.state.players) {
         if (sessionId !== room.sessionId) {
@@ -145,9 +152,9 @@ export class Scene2 extends Phaser.Scene {
       };
 
       room.state.players.onRemove = (player, sessionId) => {
-        if (onlinePlayers[sessionId]) {
-          onlinePlayers[sessionId].destroy();
-          delete onlinePlayers[sessionId];
+        if (this.gameProps.colyseus.onlinePlayers[sessionId]) {
+          this.gameProps.colyseus.onlinePlayers[sessionId].destroy();
+          delete this.gameProps.colyseus.onlinePlayers[sessionId];
         }
       };
     });
@@ -157,6 +164,10 @@ export class Scene2 extends Phaser.Scene {
     // Loop the player update method
     this.player.update(time, delta);
 
+    for (const onlinePlayer in this.gameProps.colyseus.onlinePlayers) {
+      this.gameProps.colyseus.onlinePlayers[onlinePlayer].update(time, delta);
+    }
+
     // console.log('PlayerX: ' + this.player.x);
     // console.log('PlayerY: ' + this.player.y);
 
@@ -164,7 +175,7 @@ export class Scene2 extends Phaser.Scene {
     if (cursors.left.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.gameProps.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'left',
               walking: true,
@@ -178,7 +189,7 @@ export class Scene2 extends Phaser.Scene {
     } else if (cursors.right.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.gameProps.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'right',
               walking: true,
@@ -195,7 +206,7 @@ export class Scene2 extends Phaser.Scene {
     if (cursors.up.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.gameProps.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'back',
               walking: true,
@@ -209,7 +220,7 @@ export class Scene2 extends Phaser.Scene {
     } else if (cursors.down.isDown) {
       if (socketKey) {
         if (this.player.isMoved()) {
-          room.then((room) =>
+          this.gameProps.colyseus.room.then((room) =>
             room.send('PLAYER_MOVED', {
               position: 'front',
               walking: true,
@@ -224,16 +235,24 @@ export class Scene2 extends Phaser.Scene {
 
     // Horizontal movement ended
     if (Phaser.Input.Keyboard.JustUp(cursors.left) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'left', walking: false }));
+      this.gameProps.colyseus.room.then((room) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'left', walking: false })
+      );
     } else if (Phaser.Input.Keyboard.JustUp(cursors.right) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'right', walking: false }));
+      this.gameProps.colyseus.room.then((room) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'right', walking: false })
+      );
     }
 
     // Vertical movement ended
     if (Phaser.Input.Keyboard.JustUp(cursors.up) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'back', walking: false }));
+      this.gameProps.colyseus.room.then((room) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'back', walking: false })
+      );
     } else if (Phaser.Input.Keyboard.JustUp(cursors.down) === true) {
-      room.then((room) => room.send('PLAYER_MOVEMENT_ENDED', { position: 'front', walking: false }));
+      this.gameProps.colyseus.room.then((room) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'front', walking: false })
+      );
     }
   }
 

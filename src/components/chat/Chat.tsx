@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './Chat.scss';
 import Message from './message/Message';
 import Scrollbars from 'react-custom-scrollbars';
@@ -14,49 +14,13 @@ export interface IMessage {
 }
 
 interface IProps {
-  nick: string;
+  messages: IMessage[];
 }
 
-const Chat: React.FC<IProps> = ({ nick }) => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+const Chat: React.FC<IProps> = ({ messages }) => {
   const [message, setMessage] = useState<string>('');
   const { room } = useColyseus();
-  const socketRef = useRef<any>();
-
-  useEffect(() => {
-    //TODO below code will be changed when socket changes get implemented. It's bad
-    room.then((room) => {
-      //@ts-ignore
-      room.state.messages.onAdd = (m, _) => {
-        console.log('Message added!');
-        setMessages([...messages, { message: m.message, nick: m.nick }]);
-      };
-      setMessages(
-        //@ts-ignore
-        room.state.messages.map((m) => {
-          return {
-            message: m.message,
-            nick: m.nick,
-            date: m.date
-          };
-        })
-      );
-    });
-    /* socketRef.current = io(SERVER_SOCKET_URL);
-
-    socketRef.current.on("message:client", (message: IMessage) => {
-      receivedMessage(message);
-    })*/
-  }, []);
-
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
-
-  const receivedMessage = (message: IMessage) => {
-    setMessages((oldMessages: IMessage[]) => [...oldMessages, message]);
-  };
-
+  const nick = 'Andrzej'; //get from jwt
   const sendMessage = (e: any) => {
     e.preventDefault();
     const messageObject: IMessage = {

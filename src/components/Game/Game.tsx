@@ -11,9 +11,26 @@ const courseMock = {
   answer: '<div>finito</div>',
   description: "Return <div>finito</div> to finish this course. That's a hard task..."
 };
-const Game: React.FC = () => {
-  const { setIsChatOpen, selectCourse, isCourseOpen, exitCourse, selectedCourseName } = useReactPhaserCommons();
+
+interface OwnProps {
+  setMessages: any; // :)
+}
+
+const Game: React.FC<OwnProps> = ({ setMessages }) => {
+  const { selectCourse, isCourseOpen, exitCourse, selectedCourseName } = useReactPhaserCommons();
   const { room, onlinePlayers } = useColyseus();
+  useEffect(() => {
+    room.then((room) => {
+      //@ts-ignore
+      for (const message of room.state.messages) {
+        console.log(message.message);
+      }
+      //@ts-ignore
+      room.state.messages.onAdd = (message, _) => {
+        console.log(' no siema', message);
+      };
+    });
+  }, []);
   useEffect(() => {
     const game = new Phaser.Game(GameConfig);
     const reactProps: ReactPhaserProps = {
@@ -21,8 +38,9 @@ const Game: React.FC = () => {
         room,
         onlinePlayers
       },
+      principal: { nick: 'Andrzej' },
       course: { selectCourse, exitCourse },
-      chat: { openChat: () => setIsChatOpen(true), closeChat: () => setIsChatOpen(false) }
+      chat: { setMessages }
     };
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
