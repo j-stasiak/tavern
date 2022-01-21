@@ -5,15 +5,17 @@ import classNames from 'classnames';
 import flex from '../../../styles/flex.module.scss';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import PrincipalZone from '../../principalZone/PrincipalZone';
+import { useToken } from '../../../hooks/useToken';
 
 const Header: React.FC = () => {
   const { header, description, button } = texts.landingPage;
   const { isLoggedIn, setIsMenuOpen } = useGlobalStates();
+  const { token } = useToken();
   const handleClick = () => setIsMenuOpen(false);
   return (
     <header onClick={handleClick} className={classNames(flex.flexRowContainer, flex.twoAxisCenter)}>
-      {isLoggedIn ? (
-        <PrincipalZone />
+      {isLoggedIn && token ? (
+        <PrincipalZone token={token} />
       ) : (
         <div className={styles.inner}>
           <h2 className={styles.title}>{header}</h2>
