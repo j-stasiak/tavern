@@ -15,7 +15,7 @@ const LandingPage: React.FC = () => {
         <div className={styles.main}>
           <Header />
         </div>
-        <Shadows />
+        {/*<Shadows />*/}
       </div>
       <div className={styles.sideMenuWrapper}>
         <SideMenu />
