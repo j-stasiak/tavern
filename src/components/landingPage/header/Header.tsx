@@ -12,10 +12,11 @@ import { ColyseusContext } from '../../../context/ColyseusContext';
 
 const Header: React.FC = () => {
   const { header, description, button } = texts.landingPage;
-  const { isLoggedIn } = useGlobalStates();
+  const { isLoggedIn, setIsMenuOpen } = useGlobalStates();
+  const handleClick = () => setIsMenuOpen(false);
 
   return (
-    <header className={classNames(flex.flexRowContainer, flex.twoAxisCenter)}>
+    <header onClick={handleClick} className={classNames(flex.flexRowContainer, flex.twoAxisCenter)}>
       {isLoggedIn ? (
         <ColyseusContext.Provider value={{ onlinePlayers, room }}>
           <SoundPlayer />

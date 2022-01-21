@@ -1,16 +1,19 @@
+@import "../../../styles/colors";
+
 .message {
   border-radius: 25px;
   padding: 10px;
   margin-top: 15px;
   color: white;
+  font-weight: 700;
 }
 
 .my-message {
   margin-left: auto;
-  background-color: #472f25;
+  background-color: $beige;
 }
 
 .received-message {
   margin-right: auto;
-  background-color: #652D15;
+  background-color: $tan;
 }
