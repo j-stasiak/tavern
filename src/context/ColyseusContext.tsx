@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { onlinePlayers, room } from '../react-phaser-middleware/SocketServer';
+import { onlinePlayers, room } from '../phaser/SocketServer';
 import * as Colyseus from 'colyseus.js';
 
 export interface ColyseusState {

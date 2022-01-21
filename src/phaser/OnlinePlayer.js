@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+export const DYNAMIC_PLAYER_FIELDS = ['x', 'y', 'position', 'walking', 'map'];
+
 export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
   constructor(config) {
     super(config.scene, config.x, config.y, config.playerId);
@@ -20,17 +22,22 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
     this.playerNickname = this.scene.add.text(this.x - 40, this.y - 25, config.playerId);
   }
 
-  isWalking(position, x, y) {
+  move(axis, value) {
     // Player
-    this.anims.play(`onlinePlayer-${position}-walk`, true);
-    this.setPosition(x, y);
-
-    // PlayerId
-    this.playerNickname.x = this.x - 40;
-    this.playerNickname.y = this.y - 25;
+    if (axis === 'x') {
+      this.setX(value);
+      this.playerNickname.x = this.x - 40;
+    } else if (axis === 'y') {
+      this.setY(value);
+      this.playerNickname.y = this.y - 25;
+    }
   }
 
-  stopWalking(position) {
+  playWalkingAnimation(position) {
+    this.anims.play(`onlinePlayer-${position}-walk`, true);
+  }
+
+  stopWalkingAnimation(position) {
     this.anims.stop();
     this.setTexture('players', `bob_${position}.png`);
   }

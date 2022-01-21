@@ -7,8 +7,8 @@ import Game from '../../Game/Game';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import SoundPlayer from '../../SoundPlayer/SoundPlayer';
 import Chat from '../../chat/Chat';
-import { onlinePlayers, room } from '../../../react-phaser-middleware/SocketServer';
 import { ColyseusContext } from '../../../context/ColyseusContext';
+import { onlinePlayers, room } from '../../../phaser/SocketServer';
 
 const Header: React.FC = () => {
   const { header, description, button } = texts.landingPage;

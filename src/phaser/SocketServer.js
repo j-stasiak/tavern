@@ -4,13 +4,13 @@ import * as Colyseus from 'colyseus.js';
 | Array with current online players
 */
 
-const onlinePlayers: any[] = [];
+let onlinePlayers = {};
 
 /*================================================
 | Colyseus connection with server
 */
-const client = new Colyseus.Client('ws://localhost:4001');
-const room = client
+var client = new Colyseus.Client('ws://localhost:4001');
+let room = client
   .joinOrCreate('poke_world')
   .then((room) => {
     console.log(room.sessionId, 'joined', room.name);
