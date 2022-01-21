@@ -15,22 +15,20 @@ const Header: React.FC = () => {
   const { isLoggedIn } = useGlobalStates();
 
   return (
-    <header>
-      <div className={classNames(styles.overlay, flex.flexRowContainer, flex.twoAxisCenter)}>
-        {isLoggedIn ? (
-          <ColyseusContext.Provider value={{ onlinePlayers, room }}>
-            <SoundPlayer />
-            <Game />
-            <Chat nick={'Andrzej'} />
-          </ColyseusContext.Provider>
-        ) : (
-          <div className={styles.inner}>
-            <h2 className={styles.title}>{header}</h2>
-            <p>{description}</p>
-            <button className={styles.btn}>{button}</button>
-          </div>
-        )}
-      </div>
+    <header className={classNames(flex.flexRowContainer, flex.twoAxisCenter)}>
+      {isLoggedIn ? (
+        <ColyseusContext.Provider value={{ onlinePlayers, room }}>
+          <SoundPlayer />
+          <Game />
+          <Chat nick={'Andrzej'} />
+        </ColyseusContext.Provider>
+      ) : (
+        <div className={styles.inner}>
+          <h2 className={styles.title}>{header}</h2>
+          <p>{description}</p>
+          <button className={styles.btn}>{button}</button>
+        </div>
+      )}
     </header>
   );
 };
