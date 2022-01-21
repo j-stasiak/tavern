@@ -4,18 +4,18 @@ import SoundPlayer from '../SoundPlayer/SoundPlayer';
 import Game from '../Game/Game';
 import Chat, { IMessage } from '../chat/Chat';
 import * as Colyseus from 'colyseus.js';
+import { useToken } from '../../hooks/useToken';
 
 const PrincipalZone: FunctionComponent = (props) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
-
+  const { getToken } = useToken();
   return (
     <ColyseusContext.Provider
       value={{
         onlinePlayers: {},
         room: new Colyseus.Client('ws://localhost:4001')
           .joinOrCreate('poke_world', {
-            token:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJKb2huZG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.BEtVcDngv70orUHE1xfBUMnIyBgdcdpkH0EqI_nzF80'
+            token: getToken()
           })
           .then((room) => {
             console.log(room.sessionId, 'joined', room.name);
