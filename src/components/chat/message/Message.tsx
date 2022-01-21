@@ -41,7 +41,7 @@ const Message: React.FC<IProps> = ({ sendByYou, message, nick }) => {
         onClick={() => nick !== message.nick /*&& likeMessage(message.nick)*/}
         className={`message ${sendByYou ? 'my-message' : 'received-message'}`}
       >
-        {`[${message.nick}]${reputation !== 0 ? `(${reputation})` : ''}: ${message.body}`}
+        {`[${message.nick}]${reputation !== 0 ? `(${reputation})` : ''}: ${message.message}`}
       </p>
     </>
   );

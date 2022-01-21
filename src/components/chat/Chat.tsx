@@ -9,7 +9,7 @@ import flex from '../../styles/flex.module.scss';
 import SendIcon from '@mui/icons-material/Send';
 
 export interface IMessage {
-  body: string;
+  message: string;
   nick: string;
 }
 
@@ -26,15 +26,21 @@ const Chat: React.FC<IProps> = ({ nick }) => {
   useEffect(() => {
     //TODO below code will be changed when socket changes get implemented. It's bad
     room.then((room) => {
-      room?.onMessage('CURRENT_PLAYERS', (data) => {
-        Object.keys(data.players).forEach((playerId) => {
-          const player = data.players[playerId];
-          receivedMessage({ body: 'Siema', nick: playerId });
-        });
-      });
-      room?.onMessage('PLAYER_JOINED', (data) => {
-        receivedMessage({ body: 'Siema', nick: data.sessionId });
-      });
+      //@ts-ignore
+      room.state.messages.onAdd = (m, _) => {
+        console.log('Message added!');
+        setMessages([...messages, { message: m.message, nick: m.nick }]);
+      };
+      setMessages(
+        //@ts-ignore
+        room.state.messages.map((m) => {
+          return {
+            message: m.message,
+            nick: m.nick,
+            date: m.date
+          };
+        })
+      );
     });
     /* socketRef.current = io(SERVER_SOCKET_URL);
 
@@ -43,6 +49,10 @@ const Chat: React.FC<IProps> = ({ nick }) => {
     })*/
   }, []);
 
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
+
   const receivedMessage = (message: IMessage) => {
     setMessages((oldMessages: IMessage[]) => [...oldMessages, message]);
   };
@@ -50,11 +60,14 @@ const Chat: React.FC<IProps> = ({ nick }) => {
   const sendMessage = (e: any) => {
     e.preventDefault();
     const messageObject: IMessage = {
-      body: message,
+      message: message,
       nick: nick
     };
     setMessage('');
-    socketRef.current.emit('message', messageObject);
+    room.then((room) => {
+      //@ts-ignore
+      room.send('MESSAGE_SENT', messageObject);
+    });
   };
 
   const handleChange = (e: any) => {

@@ -4,6 +4,7 @@ import { onlinePlayers, room } from './SocketServer';
 import Player from './Player';
 import OnlinePlayer, { DYNAMIC_PLAYER_FIELDS } from './OnlinePlayer';
 import { getGameProps } from './util/configUtils';
+import { MessageSharp } from '@mui/icons-material';
 
 let cursors, socketKey;
 
@@ -92,7 +93,6 @@ export class Scene2 extends Phaser.Scene {
         x: player.x,
         y: player.y
       });
-
       player.onChange = (changes) => {
         // Do some proper dictionary for field changes?
         changes.forEach((change) => {
@@ -127,6 +127,12 @@ export class Scene2 extends Phaser.Scene {
     };
     // this.openSocketConnection();
     room.then((room) => {
+      for (const message of room.state.messages) {
+        console.log(message.message);
+      }
+      room.state.messages.onAdd = (message, _) => {
+        console.log(message);
+      };
       for (const [sessionId, player] of room.state.players) {
         if (sessionId !== room.sessionId) {
           console.log('Adding another players...');
