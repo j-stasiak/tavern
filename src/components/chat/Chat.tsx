@@ -15,17 +15,17 @@ export interface IMessage {
 
 interface IProps {
   messages: IMessage[];
+  nick: string;
 }
 
-const Chat: React.FC<IProps> = ({ messages }) => {
+const Chat: React.FC<IProps> = ({ messages, nick }) => {
   const [message, setMessage] = useState<string>('');
   const { room } = useColyseus();
-  const nick = 'Andrzej'; //get from jwt
   const sendMessage = (e: any) => {
     e.preventDefault();
     const messageObject: IMessage = {
       message: message,
-      nick: nick
+      nick
     };
     setMessage('');
     room.then((room) => {

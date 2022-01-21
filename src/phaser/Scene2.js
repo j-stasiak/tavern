@@ -132,6 +132,13 @@ export class Scene2 extends Phaser.Scene {
       room.state.messages.onAdd = (message, _) => {
         this.gameProps.chat.setMessages([...room.state.messages]);
         this.gameProps.principal.nick === message.nick && this.player.toggleSpeechBubble(message.message); //
+        for (const [sessionId, player] of room.state.players) {
+          console.log(message.nick);
+          console.log(player.nick);
+          message.nick === player.nick &&
+            this.gameProps.colyseus.onlinePlayers[sessionId].toggleSpeechBubble(message.message);
+        }
+
         for (const onlinePlayer in this.gameProps.colyseus.onlinePlayers) {
           this.gameProps.colyseus.onlinePlayers[onlinePlayer].update();
         }

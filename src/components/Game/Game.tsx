@@ -14,9 +14,10 @@ const courseMock = {
 
 interface OwnProps {
   setMessages: any; // :)
+  nick: string;
 }
 
-const Game: React.FC<OwnProps> = ({ setMessages }) => {
+const Game: React.FC<OwnProps> = ({ setMessages, nick }) => {
   const { selectCourse, isCourseOpen, exitCourse, selectedCourseName } = useReactPhaserCommons();
   const { room, onlinePlayers } = useColyseus();
   useEffect(() => {
@@ -38,7 +39,7 @@ const Game: React.FC<OwnProps> = ({ setMessages }) => {
         room,
         onlinePlayers
       },
-      principal: { nick: 'Andrzej' },
+      principal: { nick },
       course: { selectCourse, exitCourse },
       chat: { setMessages }
     };
