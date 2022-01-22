@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { ReactPhaserProps } from '../react-phaser-middleware/ReactPhaserTransmitter';
+import { ReactPhaserProps } from '../components/providers/ReactPhaserCommonsProvider';
 
 export const SPEECH_BUBBLE_WIDTH = 140;
 export const SPEECH_BUBBLE_HEIGHT = 60;

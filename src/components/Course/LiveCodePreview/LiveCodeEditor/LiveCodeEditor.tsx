@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import { LiveEditor } from 'react-live';
 import { texts } from '../../../../texts';
@@ -14,7 +15,14 @@ const LiveCodeEditor: FunctionComponent<Props> = ({ setCode }) => {
   return (
     <div>
       <h2>{typeHere}</h2>
-      <LiveEditor onChange={setCode} />
+      <Box
+        sx={{
+          fontSize: '28px',
+          background: 'linear-gradient(90deg, rgba(15,16,18,0.88) 0%, rgba(40,49,59,0.55) 70%)'
+        }}
+      >
+        <LiveEditor onChange={setCode} />
+      </Box>
     </div>
   );
 };

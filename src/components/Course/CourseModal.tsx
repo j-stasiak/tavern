@@ -4,12 +4,10 @@ import styles from './CourseModal.module.scss';
 import flex from '../../styles/flex.module.scss';
 import classNames from 'classnames';
 import Course from './Course';
-import { useReactPhaserCommons } from '../../react-phaser-middleware/ReactPhaserTransmitter';
-import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
+import { useReactPhaserCommons } from '../providers/ReactPhaserCommonsProvider';
 
 const CourseModal: React.FC = () => {
-  const { selectedCourseName } = useReactPhaserCommons();
-  const { isCourseOpen } = useGlobalStates();
+  const { selectedCourseName, isCourseOpen } = useReactPhaserCommons();
 
   const courseMock = {
     answer: '<div>finito</div>',
