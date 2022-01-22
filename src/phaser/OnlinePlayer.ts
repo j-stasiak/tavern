@@ -75,7 +75,7 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
   }
 
   update() {
-    console.log('online playter update');
+    // console.log('online playter update');
     this.handleSpeechBubble();
   }
 

@@ -16,18 +16,6 @@ const Game: React.FC<OwnProps> = ({ setMessages, nick }) => {
   const { room, onlinePlayers } = useColyseus();
 
   useEffect(() => {
-    room.then((room) => {
-      //@ts-ignore
-      for (const message of room.state.messages) {
-        console.log(message.message);
-      }
-      //@ts-ignore
-      room.state.messages.onAdd = (message, _) => {
-        console.log(' no siema', message);
-      };
-    });
-  }, []);
-  useEffect(() => {
     const game = new Phaser.Game(GameConfig);
     const reactProps: ReactPhaserProps = {
       colyseus: {
