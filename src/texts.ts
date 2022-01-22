@@ -37,5 +37,12 @@ export const texts = {
     required: 'This field is required',
     incorrectCredentials: 'incorrect credentials!'
   },
-  backToMenu: 'back to menu'
+  backToMenu: 'back to menu',
+  course: {
+    course: 'Course',
+    description: 'Yours mission',
+    typeHere: 'Type code here:',
+    result: 'Your result:',
+    comeBack: 'come back to game'
+  }
 };

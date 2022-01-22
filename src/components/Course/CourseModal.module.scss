@@ -1,0 +1,17 @@
+@import "src/styles/colors";
+
+.container {
+  width: 900px;
+  height: 100vh;
+  margin: 0 auto;
+  color: $white;
+}
+
+.overlay {
+  background: linear-gradient(90deg, $backgroundColor2Transparency 0%, $backgroundColorTransparency 70%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

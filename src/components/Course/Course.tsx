@@ -1,7 +1,12 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { CSSProperties, FunctionComponent, useEffect, useState } from 'react';
 import LiveCodePreview from './LiveCodePreview/LiveCodePreview';
-import './course.scss';
+import styles from './Course.module.scss';
 import classNames from 'classnames';
+import { texts } from '../../texts';
+import { Fireworks } from 'fireworks-js/dist/react';
+import { Button } from '@mui/material';
+import { useReactPhaserCommons } from '../../react-phaser-middleware/ReactPhaserTransmitter';
+import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
 
 interface Course {
   answer: string;
@@ -17,6 +22,22 @@ type Props = OwnProps;
 
 const Course: FunctionComponent<Props> = ({ name, onExit, course: { answer, description } }) => {
   const [isCompleted, setCompleted] = useState(false);
+  const { comeBack, course, description: descriptionLabel } = texts.course;
+  const { exitCourse } = useReactPhaserCommons();
+  const { setIsCourseOpen } = useGlobalStates();
+
+  const options = {
+    speed: 3
+  };
+
+  const style: CSSProperties = {
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    position: 'fixed',
+    background: 'transparent'
+  };
 
   useEffect(() => {
     if (isCompleted) {
@@ -25,17 +46,35 @@ const Course: FunctionComponent<Props> = ({ name, onExit, course: { answer, desc
   }, [isCompleted]);
   return (
     <>
-      <div className={classNames({ [`finished-box finish-border`]: isCompleted })}>
-        KURS UKOŃCZONY!!!
-        <h1>Kurs: {name}</h1>
-        <h2>Opis: {description}</h2>
+      {isCompleted && <Fireworks options={options} style={style} />}
+      <div
+        className={classNames(
+          styles.container,
+          { [styles.finishedBox]: isCompleted },
+          { [styles.finishBorder]: isCompleted }
+        )}
+      >
+        <h1>{`${course}: ${name}`}</h1>
+        <h2>{`${descriptionLabel}: ${description}`}</h2>
         <LiveCodePreview
           answer={answer}
           onCompleted={() => {
             !isCompleted && setCompleted(true);
           }}
+          isCompleted={isCompleted}
         />
       </div>
+      <Button
+        onClick={() => {
+          //TODO to nie dziala :(
+          exitCourse();
+          setIsCourseOpen(false);
+        }}
+        variant={'contained'}
+        sx={{ fontSize: '20px', textTransform: 'uppercase' }}
+      >
+        {comeBack}
+      </Button>
     </>
   );
 };

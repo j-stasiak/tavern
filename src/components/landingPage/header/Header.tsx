@@ -19,7 +19,7 @@ const Header: React.FC = () => {
     <header onClick={handleClick} className={classNames(flex.flexRowContainer, flex.twoAxisCenter)}>
       {isLoggedIn ? (
         <ColyseusContext.Provider value={{ onlinePlayers, room }}>
-          <Box sx={{ width: '400px', height: '812px', backgroundColor: 'red', marginRight: '16px' }} />
+          <Box sx={{ width: '400px', height: '812px', marginRight: '16px' }} />
           <Game />
           <Chat nick={'Andrzej'} />
         </ColyseusContext.Provider>

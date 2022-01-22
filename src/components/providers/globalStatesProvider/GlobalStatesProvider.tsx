@@ -8,6 +8,8 @@ export interface IMenuContext {
   setIsLoginModalOpen: (isOpen: boolean) => void;
   setIsLoggedIn: (isOpen: boolean) => void;
   isLoggedIn: boolean;
+  setIsCourseOpen: (isOpen: boolean) => void;
+  isCourseOpen: boolean;
 }
 
 const GlobalStatesContext = createContext<IMenuContext>({
@@ -16,12 +18,15 @@ const GlobalStatesContext = createContext<IMenuContext>({
   isLoginModalOpen: false,
   setIsLoginModalOpen: () => undefined,
   setIsLoggedIn: () => undefined,
-  isLoggedIn: false
+  isLoggedIn: false,
+  setIsCourseOpen: () => undefined,
+  isCourseOpen: false
 });
 
 const GlobalStatesProvider: React.FC = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCourseOpen, setIsCourseOpen] = useState(false);
   const { getToken } = useToken();
   const token = !!getToken();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(token);
@@ -37,7 +42,9 @@ const GlobalStatesProvider: React.FC = ({ children }) => {
         isLoginModalOpen,
         setIsLoginModalOpen,
         isLoggedIn,
-        setIsLoggedIn
+        setIsLoggedIn,
+        isCourseOpen,
+        setIsCourseOpen
       }}
     >
       {children}
