@@ -24,7 +24,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     // Register cursors for player movement
     // @ts-ignore
     this.cursors = this.scene.input.keyboard.createCursorKeys();
-
+    this.scene.input.keyboard.disableGlobalCapture();
     // Player Offset
     // @ts-ignore
     this.body.setOffset(0, 24);
