@@ -65,6 +65,7 @@ export class Scene2 extends Phaser.Scene {
     camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
     cursors = this.input.keyboard.createCursorKeys();
+    this.input.keyboard.disableGlobalCapture();
 
     // Help text that has a "fixed" position on the screen
     this.add
