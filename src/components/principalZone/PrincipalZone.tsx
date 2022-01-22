@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { ColyseusContext } from '../../context/ColyseusContext';
-import SoundPlayer from '../SoundPlayer/SoundPlayer';
 import Game from '../Game/Game';
 import Chat, { IMessage } from '../chat/Chat';
 import * as Colyseus from 'colyseus.js';
@@ -41,7 +40,6 @@ const PrincipalZone: FunctionComponent<OwnProps> = ({ token }) => {
         setMessages
       }}
     >
-      <SoundPlayer />
       <Game setMessages={setMessages} nick={nick} />
       <Chat messages={messages} nick={nick} />
     </ColyseusContext.Provider>
