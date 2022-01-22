@@ -5,8 +5,7 @@ import classNames from 'classnames';
 import { texts } from '../../texts';
 import { Fireworks } from 'fireworks-js/dist/react';
 import { Button } from '@mui/material';
-import { useReactPhaserCommons } from '../../react-phaser-middleware/ReactPhaserTransmitter';
-import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
+import { useReactPhaserCommons } from '../providers/ReactPhaserCommonsProvider';
 
 interface Course {
   answer: string;
@@ -24,7 +23,6 @@ const Course: FunctionComponent<Props> = ({ name, onExit, course: { answer, desc
   const [isCompleted, setCompleted] = useState(false);
   const { comeBack, course, description: descriptionLabel } = texts.course;
   const { exitCourse } = useReactPhaserCommons();
-  const { setIsCourseOpen } = useGlobalStates();
 
   const options = {
     speed: 3
@@ -66,9 +64,7 @@ const Course: FunctionComponent<Props> = ({ name, onExit, course: { answer, desc
       </div>
       <Button
         onClick={() => {
-          //TODO to nie dziala :(
           exitCourse();
-          setIsCourseOpen(false);
         }}
         variant={'contained'}
         sx={{ fontSize: '20px', textTransform: 'uppercase' }}

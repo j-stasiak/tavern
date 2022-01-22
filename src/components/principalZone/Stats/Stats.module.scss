@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Handlee&display=swap');
+
+.container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  font-family: 'Handlee', cursive;
+  text-align: center;
+  font-weight: 700;
+  justify-content: center;
+  padding: 20px;
+}
+
+.nick {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  //height: 80px;
+  align-items: center;
+}
+
+.avatar {
+  background: url("../../../images/sheriff.png") no-repeat center;
+  background-size: contain;
+}
