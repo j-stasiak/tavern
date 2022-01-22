@@ -22,14 +22,14 @@
 }
 
 .menu {
-  max-width: 72rem;
+  max-width: 70%;
   width: 100%;
   margin: 0 auto;
   padding: 0 2rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
-  color: $white;
+  color: $beige;
 }
 
 .logo {
@@ -38,17 +38,17 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   line-height: 4rem;
-  color: tan;
+  text-align: center;
   font-family: 'Press Start 2P', serif;
 }
 
 .hamburgerMenu {
   height: 4rem;
-  width: 3rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  width: 100%;
 }
 
 .bar {
