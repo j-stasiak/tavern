@@ -3,26 +3,19 @@ import styles from './Header.module.scss';
 import { texts } from '../../../texts';
 import classNames from 'classnames';
 import flex from '../../../styles/flex.module.scss';
-import Game from '../../Game/Game';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
-import Chat from '../../chat/Chat';
-import { onlinePlayers, room } from '../../../react-phaser-middleware/SocketServer';
-import { ColyseusContext } from '../../../context/ColyseusContext';
-import { Box } from '@mui/material';
+import PrincipalZone from '../../principalZone/PrincipalZone';
+import { useToken } from '../../../hooks/useToken';
 
 const Header: React.FC = () => {
   const { header, description, button } = texts.landingPage;
   const { isLoggedIn, setIsMenuOpen } = useGlobalStates();
+  const { token } = useToken();
   const handleClick = () => setIsMenuOpen(false);
-
   return (
     <header onClick={handleClick} className={classNames(flex.flexRowContainer, flex.twoAxisCenter)}>
-      {isLoggedIn ? (
-        <ColyseusContext.Provider value={{ onlinePlayers, room }}>
-          <Box sx={{ width: '400px', height: '812px', marginRight: '16px' }} />
-          <Game />
-          <Chat nick={'Andrzej'} />
-        </ColyseusContext.Provider>
+      {isLoggedIn && token ? (
+        <PrincipalZone token={token} />
       ) : (
         <div className={styles.inner}>
           <h2 className={styles.title}>{header}</h2>

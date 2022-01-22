@@ -1,15 +1,18 @@
 import React, { createContext } from 'react';
-import { onlinePlayers, room } from '../react-phaser-middleware/SocketServer';
 import * as Colyseus from 'colyseus.js';
 
 export interface ColyseusState {
   room: Promise<void | Colyseus.Room<unknown>>;
   onlinePlayers: any;
+  setMessages: any;
 }
 
 export const ColyseusContext = createContext<any>({
-  onlinePlayers,
-  room
+  onlinePlayers: {},
+  room: undefined,
+  setMessages: () => {
+    console.log("this shouldnt' happen?");
+  }
 });
 
 export const useColyseus = () => React.useContext<ColyseusState>(ColyseusContext);

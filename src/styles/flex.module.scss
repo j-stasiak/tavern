@@ -19,3 +19,7 @@
 .justifyCenter {
   justify-content: center;
 }
+
+textarea::-webkit-input-placeholder {
+  opacity: 0.5; /*Change the opacity between 0 and 1*/
+}

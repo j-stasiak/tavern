@@ -1,9 +1,8 @@
 import Phaser from 'phaser';
-import { room } from '../react-phaser-middleware/SocketServer';
 import { ReactPhaserProps } from '../react-phaser-middleware/ReactPhaserTransmitter';
 
-const SPEECH_BUBBLE_WIDTH = 140;
-const SPEECH_BUBBLE_HEIGHT = 60;
+export const SPEECH_BUBBLE_WIDTH = 140;
+export const SPEECH_BUBBLE_HEIGHT = 60;
 
 export default class Player extends Phaser.GameObjects.Sprite {
   private reactProps: ReactPhaserProps;
@@ -50,9 +49,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     // Player nickname text
     // @ts-ignore
-    this.playerNickname = this.scene.add.text(this.x - this.width * 1.4, this.y - this.height / 2, 'Player');
+    this.playerNickname = this.scene.add.text(this.x - this.width * 1.4, this.y - this.height / 2, config.nick);
 
     // Add spacebar input
+    // @ts-ignore
     this.spacebar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.createSpeechBubble(20, 20, SPEECH_BUBBLE_WIDTH, SPEECH_BUBBLE_HEIGHT, 'Ludzie zawsze gadają');
@@ -63,7 +63,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
   update(time, delta) {
     // @ts-ignore
     const prevVelocity = this.body.velocity.clone();
-    this.updateSpeechBubble();
+    this.handleSpeechBubble();
     // Show player nickname above player
     this.showPlayerNickname();
 
@@ -73,7 +73,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     // Player world interaction
     this.worldInteraction();
 
-    // this.toggleSpeechBubble();
     // Stop any previous movement from the last frame
     // @ts-ignore
     this.body.setVelocity(0);
@@ -128,18 +127,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
   }
 
-  updateSpeechBubble() {
-    this.speechBubble.setX(this.x - 10);
-    this.speechBubble.setY(this.y - 85);
-    const b = this.speechBubbleContent.getBounds();
-    this.speechBubbleContent.setPosition(
-      this.speechBubble.x + SPEECH_BUBBLE_WIDTH / 2 - b.width / 2,
-      this.speechBubble.y + SPEECH_BUBBLE_HEIGHT / 2 - b.height / 2
-    );
-    //Todo might be dangerous to update it every loop
-    this.speechBubbleContent.setWordWrapWidth(SPEECH_BUBBLE_WIDTH);
-  }
-
   showPlayerNickname() {
     // @ts-ignore
     this.playerNickname.x = this.x - this.playerNickname.width / 2;
@@ -169,7 +156,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.scene.map.findObject('Doors', (obj) => {
       if (this.y >= obj.y && this.y <= obj.y + obj.height && this.x >= obj.x && this.x <= obj.x + obj.width) {
         console.log('Player is by ' + obj.name);
+        // @ts-ignore
         if (this.spacebar.isDown) {
+          console.log(this.reactProps);
           if (
             obj.properties?.some((prop: { name: string; value: boolean }) => prop.name === 'isCourse' && prop.value)
           ) {
@@ -204,64 +193,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.speechBubbleContent.setVisible(this.isSpeechBubbleVisible);
   }
 
-  worldInteraction() {
-    // @ts-ignore
-    this.scene.map.findObject('Worlds', (world) => {
-      if (
-        this.y >= world.y &&
-        this.y <= world.y + world.height &&
-        this.x >= world.x &&
-        this.x <= world.x + world.width
-      ) {
-        // console.log('Player is by world entry: ' + world.name);
-
-        // Get playerTexturePosition from from Worlds object property
-        let playerTexturePosition;
-        if (world.properties)
-          // @ts-ignore
-          playerTexturePosition = world.properties.find((property) => property.name === 'playerTexturePosition');
-        // @ts-ignore
-        if (playerTexturePosition) this.playerTexturePosition = playerTexturePosition.value;
-
-        // Load new level (tiles map)
-        this.scene.registry.destroy();
-        // @ts-ignore
-        this.scene.events.off();
-        // @ts-ignore
-        this.scene.scene.restart({ map: world.name, playerTexturePosition: this.playerTexturePosition });
-
-        room.then((room) =>
-          // @ts-ignore
-          room.send('PLAYER_CHANGED_MAP', {
-            map: world.name
-          })
-        );
-      }
-    });
+  handleSpeechBubble() {
+    this.speechBubble.setX(this.x - 10);
+    this.speechBubble.setY(this.y - 85);
+    const b = this.speechBubbleContent.getBounds();
+    this.speechBubbleContent.setPosition(
+      this.speechBubble.x + SPEECH_BUBBLE_WIDTH / 2 - b.width / 2,
+      this.speechBubble.y + SPEECH_BUBBLE_HEIGHT / 2 - b.height / 2
+    );
+    //Todo might be dangerous to update it every loop
+    this.speechBubbleContent.setWordWrapWidth(SPEECH_BUBBLE_WIDTH);
   }
-
-  worldInteraction2() {
-    // @ts-ignore
-    this.scene.map.findObject('Worlds', (world) => {
-      // console.log('Player is by world entry: ' + world.name);
-
-      // Get playerTexturePosition from from Worlds object property
-      // Load new level (tiles map)
-      this.scene.registry.destroy();
-      // @ts-ignore
-      this.scene.events.off();
-      // @ts-ignore
-      this.scene.scene.restart({ map: 'route1', playerTexturePosition: this.playerTexturePosition });
-
-      room.then((room) =>
-        // @ts-ignore
-        room.send('PLAYER_CHANGED_MAP', {
-          map: world.name
-        })
-      );
-    });
-  }
-
   createSpeechBubble(x: any, y: any, width: any, height: any, quote: any) {
     const bubbleWidth = width;
     const bubbleHeight = height;
@@ -314,6 +256,62 @@ export default class Player extends Phaser.GameObjects.Sprite {
       this.speechBubble.x + bubbleWidth / 2 - b.width / 2,
       this.speechBubble.y + bubbleHeight / 2 - b.height / 2
     );
-    this.hideSpeechBubble();
+  }
+
+  worldInteraction() {
+    // @ts-ignore
+    this.scene.map.findObject('Worlds', (world) => {
+      if (
+        this.y >= world.y &&
+        this.y <= world.y + world.height &&
+        this.x >= world.x &&
+        this.x <= world.x + world.width
+      ) {
+        // console.log('Player is by world entry: ' + world.name);
+
+        // Get playerTexturePosition from from Worlds object property
+        let playerTexturePosition;
+        if (world.properties)
+          // @ts-ignore
+          playerTexturePosition = world.properties.find((property) => property.name === 'playerTexturePosition');
+        // @ts-ignore
+        if (playerTexturePosition) this.playerTexturePosition = playerTexturePosition.value;
+
+        // Load new level (tiles map)
+        this.scene.registry.destroy();
+        // @ts-ignore
+        this.scene.events.off();
+        // @ts-ignore
+        this.scene.scene.restart({ map: world.name, playerTexturePosition: this.playerTexturePosition });
+        this.reactProps.colyseus.room.then((room) =>
+          // @ts-ignore
+          room.send('PLAYER_CHANGED_MAP', {
+            map: world.name
+          })
+        );
+      }
+    });
+  }
+
+  worldInteraction2() {
+    // @ts-ignore
+    this.scene.map.findObject('Worlds', (world) => {
+      // console.log('Player is by world entry: ' + world.name);
+
+      // Get playerTexturePosition from from Worlds object property
+      // Load new level (tiles map)
+      this.scene.registry.destroy();
+      // @ts-ignore
+      this.scene.events.off();
+      // @ts-ignore
+      this.scene.scene.restart({ map: 'route1', playerTexturePosition: this.playerTexturePosition });
+
+      this.reactProps.colyseus.room.then((room) =>
+        // @ts-ignore
+        room.send('PLAYER_CHANGED_MAP', {
+          map: world.name
+        })
+      );
+    });
   }
 }
