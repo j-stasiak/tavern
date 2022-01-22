@@ -1,5 +1,6 @@
-import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react';
+import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import { LiveEditor } from 'react-live';
+import { texts } from '../../../../texts';
 
 interface OwnProps {
   dupa?: string;
@@ -9,7 +10,13 @@ interface OwnProps {
 type Props = OwnProps;
 
 const LiveCodeEditor: FunctionComponent<Props> = ({ setCode }) => {
-  return <LiveEditor onChange={setCode} />;
+  const { typeHere } = texts.course;
+  return (
+    <div>
+      <h2>{typeHere}</h2>
+      <LiveEditor onChange={setCode} />
+    </div>
+  );
 };
 
 export default LiveCodeEditor;

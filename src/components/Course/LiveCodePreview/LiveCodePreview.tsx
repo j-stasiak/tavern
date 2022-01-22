@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { LiveProvider } from 'react-live';
-import styles from './liveCodePreview.module.css';
+import styles from './liveCodePreview.module.scss';
 import classNames from 'classnames';
 import LiveCodeEditor from './LiveCodeEditor/LiveCodeEditor';
 import LiveCodeResult from './LiveCodeResult/LiveCodeResult';
@@ -9,11 +9,12 @@ import LiveCodeResult from './LiveCodeResult/LiveCodeResult';
 interface OwnProps {
   answer: string;
   onCompleted: () => void;
+  isCompleted: boolean;
 }
 
 type Props = OwnProps;
 
-const LiveCodePreview: FunctionComponent<Props> = ({ answer, onCompleted }) => {
+const LiveCodePreview: FunctionComponent<Props> = ({ answer, onCompleted, isCompleted }) => {
   const [code, setCode] = useState(DEFAULT_CODE);
   useEffect(() => {
     code.includes(answer) && onCompleted();
@@ -21,11 +22,11 @@ const LiveCodePreview: FunctionComponent<Props> = ({ answer, onCompleted }) => {
 
   return (
     <LiveProvider code={code}>
-      <div className={styles.splitScreen}>
-        <div className={classNames(styles.editorPane, styles.darkMode)}>
+      <div className={styles.container}>
+        <div className={classNames(styles.editorPanel)}>
           <LiveCodeEditor setCode={setCode} />
         </div>
-        <div className={classNames(styles.resultPane, styles.lightMode)}>
+        <div className={classNames(styles.resultPanel, { [styles.success]: isCompleted })}>
           <LiveCodeResult />
         </div>
       </div>

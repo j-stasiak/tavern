@@ -22,7 +22,6 @@ export const useReactPhaserCommons = () => {
     setSelectedCourseName(courseId);
   };
   const exitCourse = () => {
-    // console.log('Exitting course');
     setIsCourseOpen(false);
   };
 
