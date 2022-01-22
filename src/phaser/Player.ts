@@ -155,10 +155,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
     // @ts-ignore
     this.scene.map.findObject('Doors', (obj) => {
       if (this.y >= obj.y && this.y <= obj.y + obj.height && this.x >= obj.x && this.x <= obj.x + obj.width) {
-        console.log('Player is by ' + obj.name);
+        // console.log('Player is by ' + obj.name);
         // @ts-ignore
         if (this.spacebar.isDown) {
-          console.log(this.reactProps);
+          // console.log(this.reactProps);
           if (
             obj.properties?.some((prop: { name: string; value: boolean }) => prop.name === 'isCourse' && prop.value)
           ) {

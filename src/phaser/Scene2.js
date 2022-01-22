@@ -128,15 +128,13 @@ export class Scene2 extends Phaser.Scene {
     };
     // this.openSocketConnection();
     this.gameProps.colyseus.room.then((room) => {
-      for (const message of room.state.messages) {
+      /*   for (const message of room.state.messages) {
         console.log(message.message);
-      }
+      }*/
       room.state.messages.onAdd = (message, _) => {
         this.gameProps.chat.setMessages([...room.state.messages]);
         this.gameProps.principal.nick === message.nick && this.player.toggleSpeechBubble(message.message); //
         for (const [sessionId, player] of room.state.players) {
-          console.log(message.nick);
-          console.log(player.nick);
           message.nick === player.nick &&
             this.gameProps.colyseus.onlinePlayers[sessionId].toggleSpeechBubble(message.message);
         }
