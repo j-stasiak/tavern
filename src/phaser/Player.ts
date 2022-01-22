@@ -3,7 +3,7 @@ import { ReactPhaserProps } from '../react-phaser-middleware/ReactPhaserTransmit
 
 export const SPEECH_BUBBLE_WIDTH = 140;
 export const SPEECH_BUBBLE_HEIGHT = 60;
-
+let isGlobalCaptureEnabled = false;
 export default class Player extends Phaser.GameObjects.Sprite {
   private reactProps: ReactPhaserProps;
   //@ts-ignore
@@ -106,17 +106,23 @@ export default class Player extends Phaser.GameObjects.Sprite {
     // Update the animation last and give left/right animations precedence over up/down animations
     // @ts-ignore
     if (this.cursors.left.isDown) {
+      this.enableGlobalCapture();
       this.anims.play('misa-left-walk', true);
     } // @ts-ignore
     else if (this.cursors.right.isDown) {
+      this.enableGlobalCapture();
       this.anims.play('misa-right-walk', true);
     } // @ts-ignore
     else if (this.cursors.up.isDown) {
+      this.enableGlobalCapture();
       this.anims.play('misa-back-walk', true);
     } // @ts-ignore
     else if (this.cursors.down.isDown) {
+      this.enableGlobalCapture();
       this.anims.play('misa-front-walk', true);
     } else {
+      this.disableGlobalCapture();
+
       this.anims.stop();
 
       // If we were moving, pick and idle frame to use
@@ -124,6 +130,20 @@ export default class Player extends Phaser.GameObjects.Sprite {
       else if (prevVelocity.x > 0) this.setTexture('currentPlayer', 'misa-right');
       else if (prevVelocity.y < 0) this.setTexture('currentPlayer', 'misa-back');
       else if (prevVelocity.y > 0) this.setTexture('currentPlayer', 'misa-front');
+    }
+  }
+
+  enableGlobalCapture() {
+    if (!isGlobalCaptureEnabled) {
+      this.scene.input.keyboard.enableGlobalCapture();
+      isGlobalCaptureEnabled = true;
+    }
+  }
+
+  disableGlobalCapture() {
+    if (isGlobalCaptureEnabled) {
+      this.scene.input.keyboard.disableGlobalCapture();
+      isGlobalCaptureEnabled = false;
     }
   }
 
