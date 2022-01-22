@@ -17,6 +17,7 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
     key: any;
     scene: Scene2;
     playerId: string | Phaser.Textures.Texture | string[];
+    nick: string;
   }) {
     // @ts-ignore
     super(config.scene, config.x, config.y, config.playerId);
@@ -37,7 +38,7 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
 
     // Display playerId above player
     // @ts-ignore
-    this.playerNickname = this.scene.add.text(this.x - 40, this.y - 25, config.playerId);
+    this.playerNickname = this.scene.add.text(this.x - 40, this.y - 25, config.nick);
 
     this.createSpeechBubble(20, 20, SPEECH_BUBBLE_WIDTH, SPEECH_BUBBLE_HEIGHT, 'Ludzie zawsze gadają');
   }

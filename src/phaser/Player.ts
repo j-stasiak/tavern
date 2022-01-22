@@ -49,7 +49,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     // Player nickname text
     // @ts-ignore
-    this.playerNickname = this.scene.add.text(this.x - this.width * 1.4, this.y - this.height / 2, 'Player');
+    this.playerNickname = this.scene.add.text(this.x - this.width * 1.4, this.y - this.height / 2, config.nick);
 
     // Add spacebar input
     // @ts-ignore

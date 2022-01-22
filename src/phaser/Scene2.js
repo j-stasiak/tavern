@@ -52,6 +52,7 @@ export class Scene2 extends Phaser.Scene {
     this.gameProps = getGameProps(this.game);
     this.player = new Player({
       scene: this,
+      nick: this.gameProps.principal.nick,
       worldLayer: this.worldLayer,
       key: 'player',
       x: spawnPoint.x,
@@ -81,11 +82,10 @@ export class Scene2 extends Phaser.Scene {
     this.movementTimer();
 
     const addPlayerToGame = (sessionId, player) => {
-      console.log(sessionId);
-      console.log(player);
       this.gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
         scene: this,
         playerId: sessionId,
+        nick: player.nick,
         key: sessionId,
         map: player.map,
         x: player.x,
@@ -110,6 +110,7 @@ export class Scene2 extends Phaser.Scene {
               if (change.value === this.mapName && !this.gameProps.colyseus.onlinePlayers[sessionId].scene) {
                 this.gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
                   scene: this,
+                  nick: player.nick,
                   playerId: sessionId,
                   key: sessionId,
                   map: change.value,
