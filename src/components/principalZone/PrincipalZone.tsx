@@ -5,6 +5,7 @@ import Chat, { IMessage } from '../chat/Chat';
 import * as Colyseus from 'colyseus.js';
 import { Room } from 'colyseus.js';
 import jwtDecode from 'jwt-decode';
+import Stats from './Stats/Stats';
 
 interface OwnProps {
   token: string;
@@ -40,6 +41,7 @@ const PrincipalZone: FunctionComponent<OwnProps> = ({ token }) => {
         setMessages
       }}
     >
+      <Stats />
       <Game setMessages={setMessages} nick={nick} />
       <Chat messages={messages} nick={nick} />
     </ColyseusContext.Provider>
