@@ -58,7 +58,7 @@ export const handleLoadingScreen = (scene: Scene) => {
   scene.load.on('fileprogress', function (file) {
     assetText.setText('Loading asset: ' + file.key);
   });
-  scene.load.on('compconste', function () {
+  scene.load.on('complete', function () {
     progressBar.destroy();
     progressBox.destroy();
     loadingText.destroy();

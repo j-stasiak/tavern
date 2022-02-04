@@ -15,8 +15,6 @@ export class SceneLoader extends GameScene {
   }
 
   create() {
-    // Create the player's walking animations from the texture currentPlayer. These are stored in the global
-    // animation manager so any sprite can access them.
     this.createPlayersAnimations();
     this.scene.start('mainMapScene', { map: 'mainMap', playerTexturePosition: 'front' });
   }
@@ -128,7 +126,7 @@ export class SceneLoader extends GameScene {
   }
 
   private loadMainMapAssets() {
-    this.loadPng('TilesTown', './assets/tilesets/tuxmon-sample-32px-extruded.png');
+    this.loadPng('MainMap', './assets/tilesets/tuxmon-sample-32px-extruded.png');
     this.loadTileMap('mainMap', './assets/tilemaps/mainMap.json');
   }
 }

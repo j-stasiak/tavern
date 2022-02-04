@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { Scene2 } from './Scene2';
 import { SPEECH_BUBBLE_HEIGHT, SPEECH_BUBBLE_WIDTH } from './Player';
+import { MainScene } from './logic/scenes/mainScene/MainScene';
 
 export const DYNAMIC_PLAYER_FIELDS = ['x', 'y', 'position', 'walking', 'map'];
 
@@ -15,7 +15,7 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
     y: number;
     map: any;
     key: any;
-    scene: Scene2;
+    scene: MainScene;
     playerId: string | Phaser.Textures.Texture | string[];
     nick: string;
   }) {
