@@ -7,7 +7,7 @@ import { getLayers } from '../utils/layerUtils';
 import { ReactPhaserProps } from '../../../../components/providers/ReactPhaserCommonsProvider';
 import { renderHint } from '../utils/hintUtils';
 import { createPlayerFollowingCamera } from '../utils/cameraUtils';
-import OnlinePlayer, { DYNAMIC_PLAYER_FIELDS } from '../../../OnlinePlayer';
+import { handleColyseus } from './colysesusHandler';
 
 export class MainScene extends Phaser.Scene {
   private mapManager!: MapManager;
@@ -18,6 +18,7 @@ export class MainScene extends Phaser.Scene {
   private cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
   private camera!: Phaser.Cameras.Scene2D.Camera;
   private socketKey!: boolean;
+  private map!: Phaser.Tilemaps.Tilemap;
 
   constructor() {
     super('mainMapScene');
@@ -25,6 +26,7 @@ export class MainScene extends Phaser.Scene {
 
   init(data: { map: any; playerTexturePosition: any }) {
     this.mapManager = { mapName: data.map, map: this.make.tilemap({ key: data.map }) };
+    this.map = this.mapManager.map;
     this.playerTexturePosition = data.playerTexturePosition;
   }
 
@@ -38,105 +40,96 @@ export class MainScene extends Phaser.Scene {
     this.input.keyboard.disableGlobalCapture();
     renderHint(this);
     this.startMovementInterval();
-    // this.openSocketConnection();
-    // this.handleColyseus();
+    handleColyseus(this.gameProps, this.player, this);
   }
 
-  // private handleColyseus() {
-  //   this.gameProps.colyseus.room.then((room) => {
-  //     if (room) {
-  //       room.state.messages.onAdd = (message, _) => {
-  //         this.gameProps.chat.setMessages([...room.state.messages]);
-  //         this.gameProps.principal.nick === message.nick && this.player.toggleSpeechBubble(message.message); //
-  //         for (const [sessionId, player] of room.state.players) {
-  //           message.nick === player.nick &&
-  //             this.gameProps.colyseus.onlinePlayers[sessionId].toggleSpeechBubble(message.message);
-  //         }
-  //
-  //         for (const onlinePlayer in this.gameProps.colyseus.onlinePlayers) {
-  //           this.gameProps.colyseus.onlinePlayers[onlinePlayer].update();
-  //         }
-  //
-  //         //message.nick === principalNick && player.showBubble
-  //
-  //         // this.gameProps.colyseus.this.gameProps.colyseus.onlinePlayers.find(value => value.)
-  //       };
-  //       for (const [sessionId, player] of room.state.players) {
-  //         if (sessionId !== room.sessionId) {
-  //           console.log('Adding another players...');
-  //           this.addPlayerToGame(sessionId, player);
-  //         }
-  //       }
-  //       room.state.players.onAdd = (player, sessionId) => {
-  //         console.log('Player joined, setting up listeners...');
-  //         this.addPlayerToGame(sessionId, player);
-  //       };
-  //
-  //       room.state.players.onRemove = (player, sessionId) => {
-  //         if (this.gameProps.colyseus.onlinePlayers[sessionId]) {
-  //           this.gameProps.colyseus.onlinePlayers[sessionId].destroy();
-  //           delete this.gameProps.colyseus.onlinePlayers[sessionId];
-  //         }
-  //       };
-  //     }
-  //   });
-  // }
+  update(time: number, delta: number) {
+    this.player.update(time, delta);
 
-  private addPlayerToGame() {
-    return (
-      sessionId: any,
-      player: {
-        nick: string;
-        map: Phaser.Tilemaps.Tilemap;
-        x: any;
-        y: any;
-        onChange: (changes: any) => void;
-        position: any;
+    for (const onlinePlayer in this.gameProps.colyseus.onlinePlayers) {
+      this.gameProps.colyseus.onlinePlayers[onlinePlayer].update(time, delta);
+    }
+    // Horizontal movement
+    if (this.cursorKeys.left.isDown) {
+      if (this.socketKey) {
+        if (this.player.isMoved()) {
+          this.gameProps.colyseus.room.then((room: any) =>
+            room.send('PLAYER_MOVED', {
+              position: 'left',
+              walking: true,
+              x: this.player.x,
+              y: this.player.y
+            })
+          );
+        }
+        this.socketKey = false;
       }
-    ) => {
-      this.gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
-        scene: this,
-        playerId: sessionId,
-        nick: player.nick,
-        key: sessionId,
-        map: player.map,
-        x: player.x,
-        y: player.y
-      });
-      player.onChange = (changes) => {
-        changes.forEach((change: { field: string; previousValue: any; value: boolean }) => {
-          if (DYNAMIC_PLAYER_FIELDS.includes(change.field) && change.previousValue !== change.value) {
-            if (change.field === 'x' || change.field === 'y') {
-              this.gameProps.colyseus.onlinePlayers[sessionId].move(change.field, change.value);
-            } else if (change.field === 'walking') {
-              if (change.value) {
-                this.gameProps.colyseus.onlinePlayers[sessionId].playWalkingAnimation(player.position);
-              } else {
-                this.gameProps.colyseus.onlinePlayers[sessionId].stopWalkingAnimation(player.position);
-              }
-            } else if (change.field === 'map') {
-              this.gameProps.colyseus.onlinePlayers[sessionId].destroy();
+    } else if (this.cursorKeys.right.isDown) {
+      if (this.socketKey) {
+        if (this.player.isMoved()) {
+          this.gameProps.colyseus.room.then((room: any) =>
+            room.send('PLAYER_MOVED', {
+              position: 'right',
+              walking: true,
+              x: this.player.x,
+              y: this.player.y
+            })
+          );
+        }
+        this.socketKey = false;
+      }
+    }
 
-              if (
-                /*change.value === this.mapManager.mapName && */ !this.gameProps.colyseus.onlinePlayers[sessionId].scene
-              ) {
-                this.gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
-                  scene: this,
-                  nick: player.nick,
-                  playerId: sessionId,
-                  key: sessionId,
-                  map: change.value,
-                  x: player.x,
-                  y: player.y
-                });
-              }
-            } else {
-              this.gameProps.colyseus.onlinePlayers[sessionId][change.field] = change.value;
-            }
-          }
-        });
-      };
-    };
+    // Vertical movement
+    if (this.cursorKeys.up.isDown) {
+      if (this.socketKey) {
+        if (this.player.isMoved()) {
+          this.gameProps.colyseus.room.then((room: any) =>
+            room.send('PLAYER_MOVED', {
+              position: 'back',
+              walking: true,
+              x: this.player.x,
+              y: this.player.y
+            })
+          );
+        }
+        this.socketKey = false;
+      }
+    } else if (this.cursorKeys.down.isDown) {
+      if (this.socketKey) {
+        if (this.player.isMoved()) {
+          this.gameProps.colyseus.room.then((room: any) =>
+            room.send('PLAYER_MOVED', {
+              position: 'front',
+              walking: true,
+              x: this.player.x,
+              y: this.player.y
+            })
+          );
+        }
+        this.socketKey = false;
+      }
+    }
+    // Vertical movement ended
+    if (Phaser.Input.Keyboard.JustUp(this.cursorKeys.up)) {
+      this.gameProps.colyseus.room.then((room: any) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'back', walking: false })
+      );
+    } else if (Phaser.Input.Keyboard.JustUp(this.cursorKeys.down)) {
+      this.gameProps.colyseus.room.then((room: any) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'front', walking: false })
+      );
+    }
+    // Horizontal movement ended
+    if (Phaser.Input.Keyboard.JustUp(this.cursorKeys.left)) {
+      this.gameProps.colyseus.room.then((room: any) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'left', walking: false })
+      );
+    } else if (Phaser.Input.Keyboard.JustUp(this.cursorKeys.right)) {
+      this.gameProps.colyseus.room.then((room: any) =>
+        room.send('PLAYER_MOVEMENT_ENDED', { position: 'right', walking: false })
+      );
+    }
   }
 
   private createPlayer() {
@@ -155,11 +148,8 @@ export class MainScene extends Phaser.Scene {
   private createLayers() {
     this.layerStorage = getLayers(this.mapManager.map);
     this.layerStorage.worldLayer.setCollisionByProperty({ collides: true });
-    // By default, everything gets depth sorted on the screen in the order we created things. Here, we
-    // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
-    // Higher depths will sit on top of lower depth objects.
     this.layerStorage.aboveLayer.setDepth(10);
-    this.layerStorage.worldLayer.setDepth(10);
+    this.layerStorage.worldLayer.setDepth(9);
   }
 
   startMovementInterval() {
