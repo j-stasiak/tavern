@@ -1,5 +1,5 @@
 import { SceneLoader } from '../logic/scenes/sceneLoader/SceneLoader';
-import { MainScene } from '../logic/scenes/mainScene/MainScene';
+import { Scene2 } from '../Scene2';
 
 export const GameConfig = {
   type: Phaser.AUTO,
@@ -12,6 +12,6 @@ export const GameConfig = {
       gravity: { y: 0 }
     }
   },
-  scene: [SceneLoader, MainScene],
+  scene: [SceneLoader, Scene2],
   zoom: 1.2
 };
