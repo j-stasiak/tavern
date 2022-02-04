@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { SPEECH_BUBBLE_HEIGHT, SPEECH_BUBBLE_WIDTH } from './Player';
 import { MainScene } from './logic/scenes/mainScene/MainScene';
+import { SPEECH_BUBBLE_HEIGHT, SPEECH_BUBBLE_WIDTH } from './logic/gameObjects/Player';
 
 export const DYNAMIC_PLAYER_FIELDS = ['x', 'y', 'position', 'walking', 'map'];
 
@@ -21,7 +21,6 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
   }) {
     // @ts-ignore
     super(config.scene, config.x, config.y, config.playerId);
-
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this);
     // @ts-ignore

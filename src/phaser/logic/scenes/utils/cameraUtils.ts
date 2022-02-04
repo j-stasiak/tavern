@@ -1,4 +1,4 @@
-import Player from '../../../Player';
+import Player from '../../gameObjects/Player';
 
 export const createPlayerFollowingCamera = (scene: Phaser.Scene, player: Player, map: Phaser.Tilemaps.Tilemap) => {
   const camera = scene.cameras.main;

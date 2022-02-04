@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import { getGameProps } from '../../../util/configUtils';
-import Player from '../../../Player';
 import { blockMapBorders } from './mainSceneUtil';
 import { LayerStorage, MapManager } from './interfaces';
 import { getLayers } from '../utils/layerUtils';
@@ -8,8 +7,10 @@ import { ReactPhaserProps } from '../../../../components/providers/ReactPhaserCo
 import { renderHint } from '../utils/hintUtils';
 import { createPlayerFollowingCamera } from '../utils/cameraUtils';
 import { handleColyseus } from './colysesusHandler';
+import { GameScene } from '../GameScene';
+import Player from '../../gameObjects/Player';
 
-export class MainScene extends Phaser.Scene {
+export class MainScene extends GameScene {
   private mapManager!: MapManager;
   private playerTexturePosition!: 'front';
   private layerStorage!: LayerStorage;
@@ -18,7 +19,6 @@ export class MainScene extends Phaser.Scene {
   private cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
   private camera!: Phaser.Cameras.Scene2D.Camera;
   private socketKey!: boolean;
-  private map!: Phaser.Tilemaps.Tilemap;
 
   constructor() {
     super('mainMapScene');
@@ -26,7 +26,6 @@ export class MainScene extends Phaser.Scene {
 
   init(data: { map: any; playerTexturePosition: any }) {
     this.mapManager = { mapName: data.map, map: this.make.tilemap({ key: data.map }) };
-    this.map = this.mapManager.map;
     this.playerTexturePosition = data.playerTexturePosition;
   }
 
@@ -44,15 +43,26 @@ export class MainScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number) {
-    this.player.update(time, delta);
+    this.invokePlayerUpdateMethod(time, delta);
+    this.invokeOnlinePlayersUpdateMethods(time, delta);
+    this.sendLastPlayerActionToServer();
+  }
 
+  private invokePlayerUpdateMethod(time: number, delta: number) {
+    this.player.update(time, delta);
+  }
+
+  private invokeOnlinePlayersUpdateMethods(time: number, delta: number) {
     for (const onlinePlayer in this.gameProps.colyseus.onlinePlayers) {
       this.gameProps.colyseus.onlinePlayers[onlinePlayer].update(time, delta);
     }
+  }
+
+  private sendLastPlayerActionToServer() {
     // Horizontal movement
     if (this.cursorKeys.left.isDown) {
       if (this.socketKey) {
-        if (this.player.isMoved()) {
+        if (this.player.hasMoved()) {
           this.gameProps.colyseus.room.then((room: any) =>
             room.send('PLAYER_MOVED', {
               position: 'left',
@@ -66,7 +76,7 @@ export class MainScene extends Phaser.Scene {
       }
     } else if (this.cursorKeys.right.isDown) {
       if (this.socketKey) {
-        if (this.player.isMoved()) {
+        if (this.player.hasMoved()) {
           this.gameProps.colyseus.room.then((room: any) =>
             room.send('PLAYER_MOVED', {
               position: 'right',
@@ -83,7 +93,7 @@ export class MainScene extends Phaser.Scene {
     // Vertical movement
     if (this.cursorKeys.up.isDown) {
       if (this.socketKey) {
-        if (this.player.isMoved()) {
+        if (this.player.hasMoved()) {
           this.gameProps.colyseus.room.then((room: any) =>
             room.send('PLAYER_MOVED', {
               position: 'back',
@@ -97,7 +107,7 @@ export class MainScene extends Phaser.Scene {
       }
     } else if (this.cursorKeys.down.isDown) {
       if (this.socketKey) {
-        if (this.player.isMoved()) {
+        if (this.player.hasMoved()) {
           this.gameProps.colyseus.room.then((room: any) =>
             room.send('PLAYER_MOVED', {
               position: 'front',
@@ -148,8 +158,8 @@ export class MainScene extends Phaser.Scene {
   private createLayers() {
     this.layerStorage = getLayers(this.mapManager.map);
     this.layerStorage.worldLayer.setCollisionByProperty({ collides: true });
-    this.layerStorage.aboveLayer.setDepth(10);
-    this.layerStorage.worldLayer.setDepth(9);
+    this.layerStorage.aboveLayer.setDepth(1);
+    this.layerStorage.worldLayer.setDepth(2);
   }
 
   startMovementInterval() {
