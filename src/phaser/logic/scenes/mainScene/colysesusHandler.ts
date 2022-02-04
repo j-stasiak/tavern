@@ -39,8 +39,7 @@ export const handleColyseus = (gameProps: ReactPhaserProps, player: Player, scen
           } else if (change.field === 'map') {
             gameProps.colyseus.onlinePlayers[sessionId].destroy();
 
-            // @ts-ignore
-            if (change.value === scene.mapManager.mapName && !gameProps.colyseus.onlinePlayers[sessionId].scene) {
+            if (/*change.value === mapManager.mapName && */ !gameProps.colyseus.onlinePlayers[sessionId].scene) {
               gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
                 // @ts-ignore
                 scene: scene,
