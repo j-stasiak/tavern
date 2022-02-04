@@ -7,12 +7,7 @@ import Course from './Course';
 import { useReactPhaserCommons } from '../providers/ReactPhaserCommonsProvider';
 
 const CourseModal: React.FC = () => {
-  const { selectedCourseName, isCourseOpen } = useReactPhaserCommons();
-
-  const courseMock = {
-    answer: '<div>finito</div>',
-    description: "Return <div>finito</div> to finish this course. That's a hard task..."
-  };
+  const { isCourseOpen } = useReactPhaserCommons();
 
   return (
     <Modal
@@ -21,7 +16,7 @@ const CourseModal: React.FC = () => {
       overlayClassName={styles.overlay}
       ariaHideApp={false}
     >
-      <Course course={courseMock} onExit={() => console.log('finito')} name={selectedCourseName} />
+      <Course />
     </Modal>
   );
 };

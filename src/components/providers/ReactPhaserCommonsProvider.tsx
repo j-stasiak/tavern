@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 import * as Colyseus from 'colyseus.js/dist/colyseus';
+import courseMap from '../../utils/courseMapper';
 
 export type ReactPhaserProps = {
   chat: { setMessages: any };
@@ -37,11 +38,14 @@ const ReactPhaserCommonsProvider: React.FC = ({ children }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const [isCourseOpen, setIsCourseOpen] = useState(false);
-  const [selectedCourseName, setSelectedCourseName] = useState('');
+  const [selectedCourseId, setSelectedCourseId] = useState('');
   const selectCourse = (courseId: string) => {
     // console.log('Get course from db and display in react');
-    setIsCourseOpen(true);
-    setSelectedCourseName(courseId);
+    const dbCourseId = courseMap.get(courseId);
+    if (dbCourseId) {
+      setIsCourseOpen(true);
+      setSelectedCourseId(dbCourseId);
+    }
   };
   const exitCourse = () => {
     setIsCourseOpen(false);
@@ -55,9 +59,9 @@ const ReactPhaserCommonsProvider: React.FC = ({ children }) => {
         isCourseOpen,
         selectCourse,
         exitCourse,
-        selectedCourseName,
+        selectedCourseName: selectedCourseId,
         setIsCourseOpen,
-        setSelectedCourseName
+        setSelectedCourseName: setSelectedCourseId
       }}
     >
       {children}
