@@ -1,5 +1,5 @@
-import { SceneLoader } from '../SceneLoader';
 import { Scene2 } from '../Scene2';
+import { SceneLoader } from '../logic/scenes/sceneLoader/SceneLoader';
 
 export const GameConfig = {
   type: Phaser.AUTO,

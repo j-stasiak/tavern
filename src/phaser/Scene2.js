@@ -8,7 +8,7 @@ let cursors, socketKey;
 
 export class Scene2 extends Phaser.Scene {
   constructor() {
-    super('playGame');
+    super('mainMapScene');
   }
 
   init(data) {

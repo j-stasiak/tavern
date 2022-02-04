@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 import React, { useEffect } from 'react';
-import { GameConfig } from '../../phaser';
 import styles from './Game.module.scss';
 import classNames from 'classnames';
 import { useColyseus } from '../../context/ColyseusContext';
 import { ReactPhaserProps, useReactPhaserCommons } from '../providers/ReactPhaserCommonsProvider';
+import { GameConfig } from '../../phaser/gameConfig/gameConfig';
 
 interface OwnProps {
   setMessages: any;
