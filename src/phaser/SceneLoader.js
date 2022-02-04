@@ -7,12 +7,12 @@ export class SceneLoader extends Phaser.Scene {
 
   preload() {
     this.handleLoadingScreen();
-    // Load Town
+    // Load mainMap
     this.load.image('TilesTown', './assets/tilesets/tuxmon-sample-32px-extruded.png');
-    this.load.tilemapTiledJSON('town', './assets/tilemaps/town.json');
+    this.load.tilemapTiledJSON('mainMap', './assets/tilemaps/mainMap.json');
 
-    // Load Route1
-    this.load.tilemapTiledJSON('route1', './assets/tilemaps/route1.json');
+    // Load bonusMap
+    this.load.tilemapTiledJSON('bonusMap', './assets/tilemaps/bonusMap.json');
 
     // Load atlas
     this.load.atlas('currentPlayer', './assets/atlas/atlas.png', './assets/atlas/atlas.json');
@@ -181,6 +181,6 @@ export class SceneLoader extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-    this.scene.start('playGame', { map: 'town', playerTexturePosition: 'front' });
+    this.scene.start('playGame', { map: 'mainMap', playerTexturePosition: 'front' });
   }
 }

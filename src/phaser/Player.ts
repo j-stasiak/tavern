@@ -324,7 +324,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
       // @ts-ignore
       this.scene.events.off();
       // @ts-ignore
-      this.scene.scene.restart({ map: 'route1', playerTexturePosition: this.playerTexturePosition });
+      this.scene.scene.restart({ map: 'bonusMap', playerTexturePosition: this.playerTexturePosition });
 
       this.reactProps.colyseus.room.then((room) =>
         // @ts-ignore

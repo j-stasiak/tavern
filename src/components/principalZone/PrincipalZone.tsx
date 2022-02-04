@@ -11,14 +11,12 @@ interface OwnProps {
   token: string;
 }
 const PrincipalZone: FunctionComponent<OwnProps> = ({ token }) => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
   const [room, setRoom] = useState<undefined | Promise<void | Room<unknown>>>(undefined);
-  //TODO is that event legit in react?
   useEffect(() => {
     if (!room) {
       setRoom(
-        new Colyseus.Client('ws://localhost:4001')
-          .joinOrCreate('poke_world', {
+        new Colyseus.Client(WEBSOCKET_ENDPOINT)
+          .joinOrCreate(ROOM_NAME, {
             token
           })
           .then((room) => {
@@ -31,6 +29,7 @@ const PrincipalZone: FunctionComponent<OwnProps> = ({ token }) => {
       );
     }
   }, [token, room]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
   // @ts-ignore
   const nick = jwtDecode(token).username;
   return room ? (
@@ -49,5 +48,7 @@ const PrincipalZone: FunctionComponent<OwnProps> = ({ token }) => {
     <div>Loading</div>
   );
 };
+const WEBSOCKET_ENDPOINT = 'ws://localhost:4001';
+const ROOM_NAME = 'poke_world';
 
 export default PrincipalZone;

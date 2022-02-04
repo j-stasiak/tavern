@@ -7,7 +7,7 @@ import { useColyseus } from '../../context/ColyseusContext';
 import { ReactPhaserProps, useReactPhaserCommons } from '../providers/ReactPhaserCommonsProvider';
 
 interface OwnProps {
-  setMessages: any; // :)
+  setMessages: any;
   nick: string;
 }
 
@@ -16,7 +16,7 @@ const Game: React.FC<OwnProps> = ({ setMessages, nick }) => {
   const { room, onlinePlayers } = useColyseus();
 
   useEffect(() => {
-    const game = new Phaser.Game(GameConfig);
+    const game: Partial<Phaser.Game> = new Phaser.Game(GameConfig);
     const reactProps: ReactPhaserProps = {
       colyseus: {
         // @ts-ignore
@@ -36,5 +36,4 @@ const Game: React.FC<OwnProps> = ({ setMessages, nick }) => {
     </div>
   );
 };
-
 export default Game;

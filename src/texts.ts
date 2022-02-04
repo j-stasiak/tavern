@@ -4,7 +4,7 @@ export const texts = {
   landingPage: {
     header: 'Future is here',
     description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium illum tenetur consequatur veritatis?',
+      'Learn coding as a part of fun, interactive, MMORPG-like game where you level up as you complete more tutorials!',
     button: 'Read more'
   },
   navBar: {

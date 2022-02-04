@@ -6,6 +6,7 @@ import { texts } from '../../texts';
 import { Fireworks } from 'fireworks-js/dist/react';
 import { Button } from '@mui/material';
 import { useReactPhaserCommons } from '../providers/ReactPhaserCommonsProvider';
+import ReactHowler from 'react-howler';
 
 interface Course {
   answer: string;
@@ -44,6 +45,7 @@ const Course: FunctionComponent<Props> = ({ name, onExit, course: { answer, desc
   }, [isCompleted]);
   return (
     <>
+      <ReactHowler src="assets/audio/course.mp3" playing={isCompleted} loop={false} volume={0.1} />;
       {isCompleted && <Fireworks options={options} style={style} />}
       <div
         className={classNames(
