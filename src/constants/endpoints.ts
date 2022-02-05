@@ -8,4 +8,7 @@ export const REGISTER_URL = `${AUTH_URL}/register`;
 export const COURSE_URL = `${BASE_URL}/tutorial`;
 export const getCourseUrl = (courseId: string) => `${COURSE_URL}/${courseId}`;
 
+export const USER_URL = `${BASE_URL}/user`;
+export const PLAYER_STATS_URL = `${USER_URL}/stats`;
+
 export const WS_ENDPOINT = 'http://localhost:4001';
