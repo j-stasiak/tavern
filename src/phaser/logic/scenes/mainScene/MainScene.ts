@@ -8,14 +8,14 @@ import { renderHint } from '../utils/hintUtils';
 import { createPlayerFollowingCamera } from '../utils/cameraUtils';
 import { handleColyseus } from './colysesusHandler';
 import { GameScene } from '../GameScene';
-import Player from '../../gameObjects/Player';
+import PrincipalPlayer from '../../gameObjects/PrincipalPlayer';
 
 export class MainScene extends GameScene {
   private mapManager!: MapManager;
   private playerTexturePosition!: 'front';
   private layerStorage!: LayerStorage;
   private gameProps!: ReactPhaserProps;
-  private player!: Player;
+  private player!: PrincipalPlayer;
   private cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
   private camera!: Phaser.Cameras.Scene2D.Camera;
   private socketKey!: boolean;
@@ -144,7 +144,7 @@ export class MainScene extends GameScene {
 
   private createPlayer() {
     const spawnPoint = this.mapManager.map.findObject('SpawnPoints', (obj) => obj.name === 'Spawn Point');
-    this.player = new Player({
+    this.player = new PrincipalPlayer({
       scene: this,
       nick: this.gameProps.principal.nick,
       worldLayer: this.layerStorage.worldLayer,

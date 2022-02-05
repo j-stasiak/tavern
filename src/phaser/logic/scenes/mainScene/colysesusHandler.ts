@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { ReactPhaserProps } from '../../../../components/providers/ReactPhaserCommonsProvider';
-import OnlinePlayer, { DYNAMIC_PLAYER_FIELDS } from '../../../OnlinePlayer';
-import Player from '../../gameObjects/Player';
+import PrincipalPlayer from '../../gameObjects/PrincipalPlayer';
+import OnlinePlayer, { DYNAMIC_PLAYER_FIELDS } from '../../gameObjects/OnlinePlayer';
 
 interface PlayerModel {
   nick: string;
@@ -12,7 +12,7 @@ interface PlayerModel {
   position: any;
 }
 
-export const handleColyseus = (gameProps: ReactPhaserProps, player: Player, scene: Phaser.Scene) => {
+export const handleColyseus = (gameProps: ReactPhaserProps, player: PrincipalPlayer, scene: Phaser.Scene) => {
   const addPlayer = (sessionId: any, player: PlayerModel) => {
     gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
       // @ts-ignore
@@ -79,12 +79,13 @@ function renderNewMessageAboveAuthor(
   gameProps: ReactPhaserProps,
   room: any,
   message: { nick: string; message: string },
-  player: Player
+  player: PrincipalPlayer
 ) {
   gameProps.chat.setMessages([...room.state.messages]);
-  gameProps.principal.nick === message.nick && player.toggleSpeechBubble(message.message); //
+  gameProps.principal.nick === message.nick && player.speechBubbleManager.toggleSpeechBubble(message.message); //
   for (const [sessionId, player] of room.state.players) {
-    message.nick === player.nick && gameProps.colyseus.onlinePlayers[sessionId].toggleSpeechBubble(message.message);
+    message.nick === player.nick &&
+      gameProps.colyseus.onlinePlayers[sessionId].speechBubbleManager.toggleSpeechBubble(message.message);
   }
 }
 
