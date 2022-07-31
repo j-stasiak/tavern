@@ -6,14 +6,15 @@
   margin-top: 15px;
   color: white;
   font-weight: 700;
+  max-width: 80%;
 }
 
 .my-message {
   margin-left: auto;
-  background-color: $beige;
+  background-color: $calico;
 }
 
 .received-message {
   margin-right: auto;
-  background-color: $tan;
+  background-color: $tobacco;
 }

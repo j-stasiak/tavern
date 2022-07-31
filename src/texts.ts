@@ -44,5 +44,8 @@ export const texts = {
     typeHere: 'Type code here:',
     result: 'Your result:',
     comeBack: 'come back to game'
+  },
+  chat: {
+    speak: 'No mówże!'
   }
 };
