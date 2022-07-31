@@ -9,32 +9,41 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 // @ts-ignore
 import { CircleProgress } from 'react-gradient-progress';
+import { useGetPlayerInfoQuery } from '../../../redux/playerApi/playerApi';
+import PacmanLoaderWrapper from '../../PacmanLoaderWrapper/PacmanLoaderWrapper';
 
 const Stats: React.FC = () => {
   const { token } = useToken();
   // @ts-ignore
   const nick = jwtDecode(token).username;
+  const { data, isLoading } = useGetPlayerInfoQuery(nick);
 
   return (
-    <Box className={styles.container} sx={{ width: '400px', height: '814px', marginRight: '16px' }}>
-      <div className={styles.nick}>
-        <BadgeIcon />
-        <h1>{nick}</h1>
-      </div>
-      <div className={styles.avatar} />
-      <div className={styles.nick}>
-        <StarHalfIcon />
-        <h1>Nowicjusz</h1>
-      </div>
-      <div className={styles.nick}>
-        <EmojiEventsIcon />
-        <h1>67</h1>
-      </div>
-      <div className={styles.nick}>
-        <DoneAllIcon />
-        <CircleProgress percentage={75} strokeWidth={8} />
-      </div>
-    </Box>
+    <>
+      {isLoading ? (
+        <PacmanLoaderWrapper />
+      ) : (
+        <Box className={styles.container} sx={{ width: '400px', height: '814px', marginRight: '16px' }}>
+          <div className={styles.nick}>
+            <BadgeIcon />
+            <h1>{nick}</h1>
+          </div>
+          <div className={styles.avatar} />
+          <div className={styles.nick}>
+            <StarHalfIcon />
+            <h1>{data?.rank}</h1>
+          </div>
+          <div className={styles.nick}>
+            <EmojiEventsIcon />
+            <h1>{data?.reputation}</h1>
+          </div>
+          <div className={styles.nick}>
+            <DoneAllIcon />
+            <CircleProgress percentage={75} strokeWidth={8} />
+          </div>
+        </Box>
+      )}
+    </>
   );
 };
 
