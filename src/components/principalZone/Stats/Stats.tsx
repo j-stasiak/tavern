@@ -19,11 +19,11 @@ const Stats: React.FC = () => {
   const { data, isLoading } = useGetPlayerInfoQuery(nick);
 
   return (
-    <>
+    <Box className={styles.container} sx={{ width: '400px', height: '814px', marginRight: '16px' }}>
       {isLoading ? (
         <PacmanLoaderWrapper />
       ) : (
-        <Box className={styles.container} sx={{ width: '400px', height: '814px', marginRight: '16px' }}>
+        <>
           <div className={styles.nick}>
             <BadgeIcon />
             <h1>{nick}</h1>
@@ -41,9 +41,9 @@ const Stats: React.FC = () => {
             <DoneAllIcon />
             <CircleProgress percentage={75} strokeWidth={8} />
           </div>
-        </Box>
+        </>
       )}
-    </>
+    </Box>
   );
 };
 
