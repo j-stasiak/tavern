@@ -29,7 +29,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
-  color: $beige;
+  color: $calico;
 }
 
 .logo {
@@ -55,7 +55,7 @@
   width: 1.9rem;
   height: 1.5px;
   border-radius: 2px;
-  background-color: $beige;
+  background-color: $calico;
   transition: 0.5s;
   position: relative;
 
@@ -65,7 +65,7 @@
     position: absolute;
     width: inherit;
     height: inherit;
-    background-color: $beige;
+    background-color: $calico;
     transition: .5s;
   }
 
