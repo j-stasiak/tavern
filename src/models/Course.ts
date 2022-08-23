@@ -1,16 +1,15 @@
 export interface Course {
-  id: string;
   title: string;
   description: string;
-  stepsAmount: number;
-  isActive: boolean;
+  id: string;
+  isActive?: boolean;
   steps: Step[];
 }
 
-interface Step {
-  id: string;
+export interface Step {
   title: string;
   description: string;
   stepNumber: number;
-  isActive: boolean;
+  isActive?: boolean;
+  id: string;
 }

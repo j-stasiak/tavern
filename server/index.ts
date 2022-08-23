@@ -21,6 +21,14 @@ app.post('/auth/register', (req: Request, res: Response) => {
   setTimeout(() => res.send(REGISTER_RESPONSE_MOCK), 1000);
 });
 
+app.get('/tutorial/', (req: Request, res: Response) => {
+  setTimeout(() => res.send(COURSES_RESPONSE_MOCK), 1000);
+});
+
+app.post('/tutorial/', (req: Request, res: Response) => {
+  setTimeout(() => res.status(201).send({ insertedId: 1999 }), 1000);
+});
+
 app.get('/tutorial/*', (req: Request, res: Response) => {
   setTimeout(() => res.send(COURSES_RESPONSE_MOCK[0]), 1000);
 });

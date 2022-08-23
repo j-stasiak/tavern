@@ -6,6 +6,7 @@ export const LOGIN_URL = `${AUTH_URL}/login`;
 export const REGISTER_URL = `${AUTH_URL}/register`;
 
 export const COURSE_URL = `${BASE_URL}/tutorial`;
+export const CREATE_COURSE_URL = `${COURSE_URL}/`;
 export const getCourseUrl = (courseId: string) => `${COURSE_URL}/${courseId}`;
 
 export const USER_URL = `${BASE_URL}/user`;

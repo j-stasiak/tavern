@@ -33,9 +33,20 @@ export const texts = {
     register: 'create account!',
     login: 'Already have an account?'
   },
+  tutorialForm: {
+    header: 'New tutorial',
+    title: 'title',
+    description: 'description',
+    isActive: 'activate tutorial?',
+    steps: 'not sure yet',
+    createButton: 'create tutorial!',
+    activateTutorial: 'Do you want to activate your tutorial?',
+    activateStep: 'Do you want to activate this step?'
+  },
   validation: {
     required: 'This field is required',
-    incorrectCredentials: 'incorrect credentials!'
+    incorrectCredentials: 'incorrect credentials!',
+    createTutorialFailed: 'something went wrong :('
   },
   backToMenu: 'back to menu',
   course: {
