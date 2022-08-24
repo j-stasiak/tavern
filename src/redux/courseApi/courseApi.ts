@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { COURSE_URL, getCourseUrl } from '../../constants/endpoints';
+import { COURSE_URL, getCourseUrl, getFinishTutorialUrl } from '../../constants/endpoints';
 import { Course } from '../../models/Course';
 
 interface CreateTutorialResponse {
@@ -44,8 +44,23 @@ export const courseApi = createApi({
           Authorization: `Bearer ${token}`
         }
       })
+    }),
+    finishCourse: builder.query<void, { id: string; token: string }>({
+      query: ({ id, token }) => ({
+        url: getFinishTutorialUrl(id),
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
     })
   })
 });
 
-export const { useGetCourseQuery, useCreateCourseMutation, useGetAllCoursesQuery, useUpdateCourseMutation } = courseApi;
+export const {
+  useGetCourseQuery,
+  useCreateCourseMutation,
+  useGetAllCoursesQuery,
+  useUpdateCourseMutation,
+  useLazyFinishCourseQuery
+} = courseApi;

@@ -7,8 +7,9 @@ import { Button } from '@mui/material';
 import { useReactPhaserCommons } from '../providers/ReactPhaserCommonsProvider';
 import ReactHowler from 'react-howler';
 import FireworksWrapper from './LiveCodePreview/FireworksWrapper';
-import { useGetCourseQuery } from '../../redux/courseApi/courseApi';
+import { useGetCourseQuery, useLazyFinishCourseQuery } from '../../redux/courseApi/courseApi';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
+import { useToken } from '../../hooks/useToken';
 
 const Course: React.FC = () => {
   const { selectedCourseName } = useReactPhaserCommons();
@@ -16,12 +17,15 @@ const Course: React.FC = () => {
   const { comeBack, description: descriptionLabel } = texts.course;
   const { exitCourse } = useReactPhaserCommons();
   const { data, isLoading } = useGetCourseQuery(selectedCourseName);
+  const { token } = useToken();
 
   const [position, setPosition] = useState(0);
 
   const stepData = data?.steps[position - 1];
   //@ts-ignore
-  const stepsLength = data.steps.length;
+  const stepsLength = data?.steps.length || 0;
+
+  const [completeTutorialTrigger] = useLazyFinishCourseQuery();
 
   return (
     <>
@@ -45,6 +49,9 @@ const Course: React.FC = () => {
                 answer={stepData.answer}
                 onCompleted={() => {
                   !isCompleted && setCompleted(true);
+                  if (position === stepsLength) {
+                    completeTutorialTrigger({ id: selectedCourseName, token });
+                  }
                 }}
                 isCompleted={isCompleted}
               />

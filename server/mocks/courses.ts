@@ -14,7 +14,7 @@ export const COURSES_RESPONSE_MOCK: Course[] = [
         description: 'Do this',
         stepNumber: 1,
         isActive: true,
-        answer: 'xd'
+        answer: '<div>my first course</div>'
       },
       {
         id: '00d0161e-d193-4bf5-a023-ade47f60ef59',
@@ -22,7 +22,7 @@ export const COURSES_RESPONSE_MOCK: Course[] = [
         description: 'Do that',
         stepNumber: 2,
         isActive: true,
-        answer: 'xd'
+        answer: '<div>my first course</div>'
       }
     ]
   },
