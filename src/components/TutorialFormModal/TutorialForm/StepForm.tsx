@@ -16,6 +16,9 @@ interface Props {
   descriptionName: string;
   isActiveName: string;
   header: string;
+  index?: number;
+  isStepForm?: boolean;
+  answerName?: string;
 }
 
 const Container = styled.div`
@@ -36,10 +39,13 @@ const StepForm: React.FC<Props> = ({
   watch,
   titleName,
   descriptionName,
-  isActiveName
+  isActiveName,
+  isStepForm,
+  index,
+  answerName
 }) => {
   const {
-    tutorialForm: { title, description, activateTutorial, activateStep }
+    tutorialForm: { title, description, activateTutorial, activateStep, describeStep, answer, describeTutorial }
   } = texts;
   return (
     <Container>
@@ -47,9 +53,20 @@ const StepForm: React.FC<Props> = ({
       <Input name={titleName} control={control} label={title} errors={errors}>
         <BadgeIcon sx={{ mr: 1, my: 0.5 }} />
       </Input>
-      <TextArea name={descriptionName} control={control} label={description} errors={errors}>
+      <TextArea
+        name={descriptionName}
+        control={control}
+        label={description}
+        errors={errors}
+        placeholder={isStepForm ? describeStep : describeTutorial}
+      >
         <DescriptionIcon sx={{ mr: 1, my: 0.5 }} />
       </TextArea>
+      {isStepForm && answerName && (
+        <TextArea name={answerName} control={control} label={answer} errors={errors} placeholder={answer}>
+          <DescriptionIcon sx={{ mr: 1, my: 0.5 }} />
+        </TextArea>
+      )}
       <Controller
         name={isActiveName}
         control={control}
@@ -59,7 +76,7 @@ const StepForm: React.FC<Props> = ({
             value={value}
             checked={watch(isActiveName)}
             control={<Switch />}
-            label={header.includes('Step') ? activateStep : activateTutorial}
+            label={isStepForm ? activateStep : activateTutorial}
           />
         )}
       />

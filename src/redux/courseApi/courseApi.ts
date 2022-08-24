@@ -35,14 +35,17 @@ export const courseApi = createApi({
         }
       })
     }),
-    updateCourse: builder.mutation<Partial<Course>, unknown>({
-      query: (course) => ({
-        url: '/',
-        method: 'POST',
-        body: course
+    updateCourse: builder.mutation<CreateTutorialResponse, { data: Course; token: string }>({
+      query: ({ data, token }) => ({
+        url: '',
+        method: 'PATCH',
+        body: data,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
     })
   })
 });
 
-export const { useGetCourseQuery, useCreateCourseMutation, useGetAllCoursesQuery } = courseApi;
+export const { useGetCourseQuery, useCreateCourseMutation, useGetAllCoursesQuery, useUpdateCourseMutation } = courseApi;

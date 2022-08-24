@@ -49,7 +49,7 @@ const Stats: React.FC = () => {
           </StatRow>
           <StatRow>
             <DoneAllIcon />
-            {data && <CircleProgress percentage={(completedTutorials.length / data.length) * 100} strokeWidth={8} />}
+            {data && <CircleProgress percentage={(completedTutorials?.length / data?.length) * 100} strokeWidth={8} />}
           </StatRow>
         </>
       )}

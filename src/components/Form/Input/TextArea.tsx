@@ -12,6 +12,7 @@ interface Props {
   label: string;
   errors: any;
   type?: string;
+  placeholder: string;
 }
 
 const StyledBox = styled(Box)`
@@ -23,7 +24,7 @@ const Validator = styled.span`
   color: red;
 `;
 
-const TextArea: React.FC<Props> = ({ name, control, label, errors, type, children }) => (
+const TextArea: React.FC<Props> = ({ name, placeholder, control, label, errors, type, children }) => (
   <StyledBox className={styles.box} sx={{ display: 'flex', flexDirection: 'column' }}>
     <Controller
       name={name}
@@ -33,13 +34,12 @@ const TextArea: React.FC<Props> = ({ name, control, label, errors, type, childre
         <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
           {children}
           <TextareaAutosize
-            style={{ marginLeft: '8px', width: 'calc(100% - 55px)' }}
+            style={{ marginLeft: '8px', width: 'calc(100% - 55px)', paddingLeft: '10px', paddingTop: '6px' }}
             onChange={onChange}
             value={value}
             aria-label="tutorial desc"
             minRows={3}
-            placeholder="Describe your tutorial!"
-            // style={{ width: 200 }}
+            placeholder={placeholder}
           />
         </Box>
       )}

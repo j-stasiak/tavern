@@ -5,7 +5,11 @@ import ErrorIcon from '@mui/icons-material/Error';
 import PacmanLoaderWrapper from '../../PacmanLoaderWrapper/PacmanLoaderWrapper';
 import { texts } from '../../../texts';
 import { Course } from '../../../models/Course';
-import { useCreateCourseMutation, useGetAllCoursesQuery } from '../../../redux/courseApi/courseApi';
+import {
+  useCreateCourseMutation,
+  useGetAllCoursesQuery,
+  useUpdateCourseMutation
+} from '../../../redux/courseApi/courseApi';
 import styled from 'styled-components';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import { useToken } from '../../../hooks/useToken';
@@ -13,14 +17,22 @@ import StepForm from './StepForm';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const StyledButton = styled(Button)`
-  width: 50%;
+  width: 80%;
 `;
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+`;
+
+const StepsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: start;
   gap: 80px;
+  margin-bottom: 200px;
 `;
 
 const Wrapper = styled.div`
@@ -60,76 +72,85 @@ const TutorialForm: React.FC = () => {
     name: 'steps' // unique name for your Field Array
   });
   const [createTutorial, { isLoading, isError }] = useCreateCourseMutation();
+  const [updateTutorial, { isLoading: isUpdateLoading, isError: isUpdateError }] = useUpdateCourseMutation();
 
   const onSubmit: SubmitHandler<Course> = (data) => {
-    createTutorial(
-      selectedTutorial ? { data: { ...data, id: selectedTutorial.id }, token } : { data: { ...data }, token }
-    )
-      .unwrap()
-      .then(() => {
-        setTutorialFormModalOpen(false);
-      });
+    selectedTutorial
+      ? updateTutorial({ data: { ...data, id: selectedTutorial.id }, token })
+          .unwrap()
+          .then(() => setTutorialFormModalOpen(false))
+      : createTutorial({ data: { ...data }, token })
+          .unwrap()
+          .then(() => {
+            setTutorialFormModalOpen(false);
+          });
   };
 
   return (
     <Wrapper>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container>
-          <StepForm
-            header={header}
-            control={control}
-            errors={errors}
-            watch={watch}
-            titleName={'title'}
-            descriptionName={'description'}
-            isActiveName={'isActive'}
-          >
-            <Button onClick={() => undefined} variant="text">
-              {'clear form'}
-            </Button>
-          </StepForm>
-          {fields.map((field, index) => (
+          <StepsContainer>
             <StepForm
-              header={`Step ${index + 1}`}
-              key={index}
+              header={header}
               control={control}
               errors={errors}
               watch={watch}
-              titleName={`steps.${index}.title`}
-              descriptionName={`steps.${index}.description`}
-              isActiveName={`steps.${index}.isActive`}
+              titleName={'title'}
+              descriptionName={'description'}
+              isActiveName={'isActive'}
             >
-              <Button onClick={() => remove(index)} variant="text">
-                {'delete step'}
+              <Button onClick={() => undefined} variant="text">
+                {'clear form'}
               </Button>
             </StepForm>
-          ))}
-          {fields.length < 2 && <Icon onClick={() => append({ title: '', description: '', isActive: true })} />}
+            {fields.map((field, index) => (
+              <StepForm
+                header={`Step ${index + 1}`}
+                key={index}
+                control={control}
+                isStepForm={true}
+                errors={errors}
+                watch={watch}
+                answerName={`steps.${index}.answer`}
+                titleName={`steps.${index}.title`}
+                descriptionName={`steps.${index}.description`}
+                isActiveName={`steps.${index}.isActive`}
+              >
+                <Button onClick={() => remove(index)} variant="text">
+                  {'delete step'}
+                </Button>
+              </StepForm>
+            ))}
+            {fields.length < 2 && <Icon onClick={() => append({ title: '', description: '', isActive: true })} />}
+          </StepsContainer>
+          {!isLoading || isUpdateLoading ? (
+            <StyledButton type={'submit'} variant="outlined">
+              {createButton}
+            </StyledButton>
+          ) : (
+            <PacmanLoaderWrapper />
+          )}
         </Container>
       </form>
-      {!isLoading ? (
-        <StyledButton type={'submit'} variant="outlined">
-          {createButton}
-        </StyledButton>
-      ) : (
-        <PacmanLoaderWrapper />
-      )}
-      {isError && (
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'space-around',
-            color: 'red',
-            alignItems: 'center',
-            fontSize: '1.2rem',
-            marginTop: '8px'
-          }}
-        >
-          <ErrorIcon sx={{ mr: 1, my: 0.5 }} />
-          <span>{createTutorialFailed}</span>
-        </Box>
-      )}
+
+      {isError ||
+        (isUpdateError && (
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'space-around',
+              color: 'red',
+              alignItems: 'center',
+              fontSize: '1.2rem',
+              marginTop: '8px'
+            }}
+          >
+            <ErrorIcon sx={{ mr: 1, my: 0.5 }} />
+            <span>{createTutorialFailed}</span>
+          </Box>
+        ))}
     </Wrapper>
   );
 };
