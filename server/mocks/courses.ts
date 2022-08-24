@@ -13,14 +13,16 @@ export const COURSES_RESPONSE_MOCK: Course[] = [
         title: 'Intermediate tutorial pt. 1',
         description: 'Do this',
         stepNumber: 1,
-        isActive: true
+        isActive: true,
+        answer: 'xd'
       },
       {
         id: '00d0161e-d193-4bf5-a023-ade47f60ef59',
         title: 'Intermediate tutorial pt. 2',
         description: 'Do that',
         stepNumber: 2,
-        isActive: true
+        isActive: true,
+        answer: 'xd'
       }
     ]
   },

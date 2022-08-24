@@ -13,9 +13,15 @@ import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
 const Course: React.FC = () => {
   const { selectedCourseName } = useReactPhaserCommons();
   const [isCompleted, setCompleted] = useState(false);
-  const { comeBack, course, description: descriptionLabel } = texts.course;
+  const { comeBack, description: descriptionLabel } = texts.course;
   const { exitCourse } = useReactPhaserCommons();
   const { data, isLoading } = useGetCourseQuery(selectedCourseName);
+
+  const [position, setPosition] = useState(0);
+
+  const stepData = data?.steps[position - 1];
+  //@ts-ignore
+  const stepsLength = data.steps.length;
 
   return (
     <>
@@ -32,23 +38,37 @@ const Course: React.FC = () => {
               { [styles.finishBorder]: isCompleted }
             )}
           >
-            <h1>{`${course}: ${data?.title}`}</h1>
-            <h2>{`${descriptionLabel}: ${data?.description}`}</h2>
-            <LiveCodePreview
-              //TODO zmienic jak bedzie w zwrotce z api
-              answer={'<div>finito</div>'}
-              onCompleted={() => {
-                !isCompleted && setCompleted(true);
-              }}
-              isCompleted={isCompleted}
-            />
+            <h1>{`${position === 0 ? data?.title : stepData?.title}`}</h1>
+            <h2>{`${descriptionLabel}: ${position === 0 ? data?.description : stepData?.description}`}</h2>
+            {stepData && (
+              <LiveCodePreview
+                answer={stepData.answer}
+                onCompleted={() => {
+                  !isCompleted && setCompleted(true);
+                }}
+                isCompleted={isCompleted}
+              />
+            )}
           </div>
+          {position < stepsLength && (isCompleted || position === 0) && (
+            <Button
+              onClick={() => {
+                setPosition(position + 1);
+                setCompleted(false);
+              }}
+              variant={'contained'}
+              sx={{ fontSize: '20px', textTransform: 'uppercase', marginBottom: '20px' }}
+            >
+              {'next step'}
+            </Button>
+          )}
+
           <Button
             onClick={() => {
               exitCourse();
             }}
             variant={'contained'}
-            sx={{ fontSize: '20px', textTransform: 'uppercase' }}
+            sx={{ fontSize: '20px', textTransform: 'uppercase', marginBottom: '20px' }}
           >
             {comeBack}
           </Button>
