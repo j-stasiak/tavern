@@ -67,9 +67,9 @@ const TutorialForm: React.FC = () => {
       ? { ...selectedTutorial }
       : { isActive: true, steps: [{ title: '', description: '', isActive: true }] }
   });
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: 'steps' // unique name for your Field Array
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'steps'
   });
   const [createTutorial, { isLoading, isError }] = useCreateCourseMutation();
   const [updateTutorial, { isLoading: isUpdateLoading, isError: isUpdateError }] = useUpdateCourseMutation();
@@ -117,16 +117,18 @@ const TutorialForm: React.FC = () => {
                 descriptionName={`steps.${index}.description`}
                 isActiveName={`steps.${index}.isActive`}
               >
-                <Button onClick={() => remove(index)} variant="text">
-                  {'delete step'}
-                </Button>
+                {fields.length > 1 && (
+                  <Button onClick={() => remove(index)} variant="text">
+                    {'delete step'}
+                  </Button>
+                )}
               </StepForm>
             ))}
             {fields.length < 2 && <Icon onClick={() => append({ title: '', description: '', isActive: true })} />}
           </StepsContainer>
           {!isLoading || isUpdateLoading ? (
             <StyledButton type={'submit'} variant="outlined">
-              {createButton}
+              {`${selectedTutorial ? 'update tutorial!' : createButton}`}
             </StyledButton>
           ) : (
             <PacmanLoaderWrapper />
