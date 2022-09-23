@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './Stats.module.scss';
 import { Box } from '@mui/material';
-import { TokenInfo, useToken } from '../../../hooks/useToken';
+import { TokenInfo } from '../../../hooks/useToken';
+import useToken from '../../../hooks/useToken';
 import jwtDecode from 'jwt-decode';
 import BadgeIcon from '@mui/icons-material/Badge';
 import StarHalfIcon from '@mui/icons-material/StarHalf';

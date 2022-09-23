@@ -1,7 +1,7 @@
 import { usePostLoginMutation } from '../redux/authApi/authApi';
 import { LoginInputs } from '../components/loginModal/LoginModal';
 import { useGlobalStates } from '../components/providers/globalStatesProvider/GlobalStatesProvider';
-import { useToken } from './useToken';
+import useToken from './useToken';
 
 export const useLogin = () => {
   const [triggerLogin, { isLoading, isError }] = usePostLoginMutation();

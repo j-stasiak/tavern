@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { useToken } from '../../../hooks/useToken';
+import useToken from '../../../hooks/useToken';
 
 export interface IMenuContext {
   isMenuOpen: boolean;

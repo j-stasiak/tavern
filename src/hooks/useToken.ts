@@ -23,7 +23,7 @@ export interface TokenInfo {
   iat: number;
 }
 
-export const useToken = () => {
+const useToken = () => {
   const token = getToken();
   return {
     token,
@@ -32,3 +32,5 @@ export const useToken = () => {
     removeToken
   };
 };
+
+export default useToken;

@@ -9,7 +9,6 @@ export const store = configureStore({
     sideMenu: sideMenuSlice,
     [authApi.reducerPath]: authApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer
-    // [playerApi.reducerPath]: playerApi.reducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware).concat(courseApi.middleware)
 });

@@ -8,7 +8,7 @@ import { useGlobalStates } from '../../../providers/globalStatesProvider/GlobalS
 import { routeToPath } from '../../../../redux/sideMenuSlice/sideMenuSlice';
 import { RouteEnum } from '../../../../enums/RouteEnum';
 import { useAppDispatch } from '../../../../hooks/reduxHooks';
-import { useToken } from '../../../../hooks/useToken';
+import useToken from '../../../../hooks/useToken';
 
 const NavButtons: React.FC = () => {
   const { links, login, logout } = texts.navBar;

@@ -12,7 +12,7 @@ import {
 } from '../../../redux/courseApi/courseApi';
 import styled from 'styled-components';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
-import { useToken } from '../../../hooks/useToken';
+import useToken from '../../../hooks/useToken';
 import StepForm from './StepForm';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 

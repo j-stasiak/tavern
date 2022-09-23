@@ -4,7 +4,7 @@ import { useGetAllCoursesQuery } from '../../redux/courseApi/courseApi';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
-import { useToken } from '../../hooks/useToken';
+import useToken from '../../hooks/useToken';
 
 const Container = styled.div`
   display: grid;
@@ -55,6 +55,7 @@ const Tutorials: React.FC = () => {
           <>
             {data?.map(({ id, title, description, steps, isActive }) => (
               <Box
+                data-testid={'tutorial-box-container'}
                 key={id}
                 isActive={!!isActive}
                 onClick={() => {

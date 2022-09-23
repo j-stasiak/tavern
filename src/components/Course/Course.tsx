@@ -9,7 +9,7 @@ import ReactHowler from 'react-howler';
 import FireworksWrapper from './LiveCodePreview/FireworksWrapper';
 import { useGetCourseQuery, useLazyFinishCourseQuery } from '../../redux/courseApi/courseApi';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
-import { useToken } from '../../hooks/useToken';
+import useToken from '../../hooks/useToken';
 
 const Course: React.FC = () => {
   const { selectedCourseName } = useReactPhaserCommons();

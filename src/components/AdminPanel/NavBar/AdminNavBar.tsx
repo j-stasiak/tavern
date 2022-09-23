@@ -7,8 +7,8 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import NavBarItem from './NavBarItem';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { TokenInfo, useToken } from '../../../hooks/useToken';
+import { Outlet } from 'react-router-dom';
+import useToken, { TokenInfo } from '../../../hooks/useToken';
 import jwtDecode from 'jwt-decode';
 
 interface Item {
@@ -35,11 +35,11 @@ const StyledNavBar = styled.div`
 const AdminNavBar: React.FC = () => {
   const { token } = useToken();
   const role = token && jwtDecode<TokenInfo>(token).role;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   //TODO: nie dziala mi ten redirect
-  if (role !== 'admin') {
-    navigate('/', { replace: true });
-  }
+  // if (role !== 'admin') {
+  //   navigate('/', { replace: true });
+  // }
 
   return (
     <>

@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import flex from '../../../styles/flex.module.scss';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import PrincipalZone from '../../principalZone/PrincipalZone';
-import { TokenInfo, useToken } from '../../../hooks/useToken';
+import { TokenInfo } from '../../../hooks/useToken';
+import useToken from '../../../hooks/useToken';
 import AdminIcon from './AdminPanel/AdminIcon';
 import jwtDecode from 'jwt-decode';
 
