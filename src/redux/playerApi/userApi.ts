@@ -1,17 +1,29 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { USER_URL } from '../../constants/endpoints';
+import { getUserId, USER_URL } from '../../constants/endpoints';
 import { User } from '../../hooks/useToken';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({ baseUrl: USER_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: USER_URL,
+    prepareHeaders: (headers, { getState }) => {
+      const token = sessionStorage.getItem('token');
+
+      // If we have a token set in state, let's assume that we should be passing it.
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+
+      return headers;
+    }
+  }),
   endpoints: (builder) => ({
-    // getCourse: builder.query<Course, string>({
-    //   query: (id) => ({
-    //     url: getCourseUrl(id),
-    //     method: 'GET'
-    //   })
-    // }),
+    getUser: builder.query<any, any>({
+      query: (id) => ({
+        url: getUserId(id),
+        method: 'GET'
+      })
+    }),
     getAllUsers: builder.query<User[], string>({
       query: (token) => ({
         url: '/',
@@ -53,4 +65,4 @@ export const userApi = createApi({
   })
 });
 
-export const { useGetAllUsersQuery } = userApi;
+export const { useGetUserQuery, useLazyGetUserQuery, useGetAllUsersQuery } = userApi;

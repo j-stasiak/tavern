@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Stats.module.scss';
 import { Box } from '@mui/material';
 import { TokenInfo } from '../../../hooks/useToken';
@@ -13,6 +13,7 @@ import { CircleProgress } from 'react-gradient-progress';
 import PacmanLoaderWrapper from '../../PacmanLoaderWrapper/PacmanLoaderWrapper';
 import styled from 'styled-components';
 import { useGetAllCoursesQuery } from '../../../redux/courseApi/courseApi';
+import { useGetUserQuery, useLazyGetUserQuery } from '../../../redux/playerApi/userApi';
 
 const StatRow = styled.div`
   display: grid;
@@ -27,12 +28,13 @@ const Rank = styled.h1`
 
 const Stats: React.FC = () => {
   const { token } = useToken();
-  const { username, info, completedTutorials } = jwtDecode<TokenInfo>(token);
+  const { sub, username, info, completedTutorials } = jwtDecode<TokenInfo>(token);
+  const { data: userInfo, isLoading: userInfoLoading } = useGetUserQuery(sub);
   const { data, isLoading } = useGetAllCoursesQuery(token);
 
   return (
     <Box className={styles.container} sx={{ width: '400px', height: '814px', marginRight: '16px' }}>
-      {isLoading ? (
+      {isLoading || userInfoLoading ? (
         <PacmanLoaderWrapper />
       ) : (
         <>
@@ -42,15 +44,20 @@ const Stats: React.FC = () => {
           </StatRow>
           <StatRow>
             <StarHalfIcon />
-            <Rank>{info?.rank}</Rank>
+            <Rank>{userInfo?.info.rank}</Rank>
           </StatRow>
           <StatRow>
             <EmojiEventsIcon />
-            <h1>{info?.reputation}</h1>
+            <h1>{userInfo?.info.reputation}</h1>
           </StatRow>
           <StatRow>
             <DoneAllIcon />
-            {data && <CircleProgress percentage={(completedTutorials?.length / data?.length) * 100} strokeWidth={8} />}
+            {data && (
+              <CircleProgress
+                percentage={(userInfo?.completedTutorials?.length / data?.length) * 100}
+                strokeWidth={8}
+              />
+            )}
           </StatRow>
         </>
       )}

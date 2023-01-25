@@ -9,6 +9,7 @@ export const COURSE_URL = `${BASE_URL}/tutorial`;
 export const USER_URL = `${BASE_URL}/user`;
 export const CREATE_COURSE_URL = `${COURSE_URL}/`;
 export const getCourseUrl = (courseId: string) => `${COURSE_URL}/${courseId}`;
+export const getUserId = (userId: string) => `${USER_URL}/${userId}`;
 export const getFinishTutorialUrl = (courseId: string) => `${COURSE_URL}/${courseId}/complete`;
 
 export const WS_ENDPOINT = 'http://localhost:4001';

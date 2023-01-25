@@ -9,7 +9,9 @@ import ReactHowler from 'react-howler';
 import FireworksWrapper from './LiveCodePreview/FireworksWrapper';
 import { useGetCourseQuery, useLazyFinishCourseQuery } from '../../redux/courseApi/courseApi';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
-import useToken from '../../hooks/useToken';
+import useToken, { TokenInfo } from '../../hooks/useToken';
+import { useLazyGetUserQuery } from '../../redux/playerApi/userApi';
+import jwtDecode from 'jwt-decode';
 
 const Course: React.FC = () => {
   const { selectedCourseName } = useReactPhaserCommons();
@@ -26,6 +28,9 @@ const Course: React.FC = () => {
   const stepsLength = data?.steps.length || 0;
 
   const [completeTutorialTrigger] = useLazyFinishCourseQuery();
+
+  const sub = token && jwtDecode<TokenInfo>(token)?.sub;
+  const [trigger] = useLazyGetUserQuery();
 
   return (
     <>
@@ -51,6 +56,7 @@ const Course: React.FC = () => {
                   !isCompleted && setCompleted(true);
                   if (position === stepsLength) {
                     completeTutorialTrigger({ id: selectedCourseName, token });
+                    trigger(sub);
                   }
                 }}
                 isCompleted={isCompleted}
