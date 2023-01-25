@@ -4,20 +4,9 @@ import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesP
 import styles from './TutorialFormModal.module.scss';
 import classNames from 'classnames';
 import TutorialForm from './TutorialForm/TutorialForm';
-import CloseIcon from '@mui/icons-material/Close';
-import styled from 'styled-components';
-
-const StyledIcon = styled(CloseIcon)`
-  align-self: end;
-  position: absolute;
-  top: 200px;
-  color: red;
-  cursor: pointer;
-  font-size: 60px !important;
-`;
 
 const TutorialFormModal: React.FC = () => {
-  const { isTutorialFormModalOpen, setTutorialFormModalOpen } = useGlobalStates();
+  const { isTutorialFormModalOpen } = useGlobalStates();
 
   return (
     <Modal
@@ -27,7 +16,6 @@ const TutorialFormModal: React.FC = () => {
       ariaHideApp={false}
     >
       <>
-        {/*<StyledIcon onClick={() => setTutorialFormModalOpen(false)} />*/}
         <TutorialForm />
       </>
     </Modal>
