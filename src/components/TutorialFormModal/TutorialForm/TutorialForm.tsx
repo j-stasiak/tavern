@@ -75,11 +75,12 @@ const TutorialForm: React.FC = () => {
   const [updateTutorial, { isLoading: isUpdateLoading, isError: isUpdateError }] = useUpdateCourseMutation();
 
   const onSubmit: SubmitHandler<Course> = (data) => {
+    data.steps[0].stepNumber = 1;
     selectedTutorial
       ? updateTutorial({ data: { ...data, id: selectedTutorial.id }, token })
           .unwrap()
           .then(() => setTutorialFormModalOpen(false))
-      : createTutorial({ data: { ...data }, token })
+      : createTutorial({ data, token })
           .unwrap()
           .then(() => {
             setTutorialFormModalOpen(false);
@@ -112,7 +113,7 @@ const TutorialForm: React.FC = () => {
                 isStepForm={true}
                 errors={errors}
                 watch={watch}
-                answerName={`steps.${index}.answer`}
+                answerName={`steps.${index}.expectedResult`}
                 titleName={`steps.${index}.title`}
                 descriptionName={`steps.${index}.description`}
                 isActiveName={`steps.${index}.isActive`}

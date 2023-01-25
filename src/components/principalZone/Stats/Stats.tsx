@@ -54,7 +54,7 @@ const Stats: React.FC = () => {
             <DoneAllIcon />
             {data && (
               <CircleProgress
-                percentage={(userInfo?.completedTutorials?.length / data?.length) * 100}
+                percentage={Math.floor((userInfo?.completedTutorials?.length / data?.length) * 100)}
                 strokeWidth={8}
               />
             )}

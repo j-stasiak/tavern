@@ -51,12 +51,11 @@ const Course: React.FC = () => {
             <h2>{`${descriptionLabel}: ${position === 0 ? data?.description : stepData?.description}`}</h2>
             {stepData && (
               <LiveCodePreview
-                answer={stepData.answer}
+                answer={stepData.expectedResult}
                 onCompleted={() => {
                   !isCompleted && setCompleted(true);
                   if (position === stepsLength) {
-                    completeTutorialTrigger({ id: selectedCourseName, token });
-                    trigger(sub);
+                    completeTutorialTrigger({ id: selectedCourseName, token }).then(() => trigger(sub));
                   }
                 }}
                 isCompleted={isCompleted}

@@ -12,6 +12,6 @@ export interface Step {
   description: string;
   stepNumber: number;
   isActive?: boolean;
-  answer: string;
+  expectedResult: string;
   id: string;
 }

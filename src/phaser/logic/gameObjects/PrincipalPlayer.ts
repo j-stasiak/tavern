@@ -3,7 +3,7 @@ import { ReactPhaserProps } from '../../../components/providers/ReactPhaserCommo
 import SpeechBubbleManager from './SpeechBubbleManager';
 
 export default class PrincipalPlayer extends Phaser.GameObjects.Sprite {
-  private reactProps: ReactPhaserProps;
+  public reactProps: ReactPhaserProps;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private speed = 150;
   private spacebar!: Phaser.Input.Keyboard.Key;

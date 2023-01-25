@@ -13,42 +13,48 @@ interface PlayerModel {
 }
 
 export const handleColyseus = (gameProps: ReactPhaserProps, player: PrincipalPlayer, scene: Phaser.Scene) => {
-  const addPlayer = (sessionId: any, player: PlayerModel) => {
+  const addPlayer = (sessionId: any, onlinePlayer: PlayerModel) => {
     gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
       // @ts-ignore
       scene: scene,
       playerId: sessionId,
-      nick: player.nick,
+      nick: onlinePlayer.nick,
       key: sessionId,
-      map: player.map,
-      x: player.x,
-      y: player.y
+      map: onlinePlayer.map,
+      x: onlinePlayer.x,
+      y: onlinePlayer.y
     });
-    player.onChange = (changes) => {
+    onlinePlayer.onChange = (changes) => {
       changes.forEach((change: { field: string; previousValue: any; value: boolean }) => {
         if (DYNAMIC_PLAYER_FIELDS.includes(change.field) && change.previousValue !== change.value) {
           if (change.field === 'x' || change.field === 'y') {
             gameProps.colyseus.onlinePlayers[sessionId].move(change.field, change.value);
           } else if (change.field === 'walking') {
             if (change.value) {
-              gameProps.colyseus.onlinePlayers[sessionId].playWalkingAnimation(player.position);
+              gameProps.colyseus.onlinePlayers[sessionId].playWalkingAnimation(onlinePlayer.position);
             } else {
-              gameProps.colyseus.onlinePlayers[sessionId].stopWalkingAnimation(player.position);
+              gameProps.colyseus.onlinePlayers[sessionId].stopWalkingAnimation(onlinePlayer.position);
             }
           } else if (change.field === 'map') {
-            gameProps.colyseus.onlinePlayers[sessionId].destroy();
-            if (/*change.value === mapManager.mapName && */ !gameProps.colyseus.onlinePlayers[sessionId].scene) {
-              gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
-                // @ts-ignore
-                scene: scene,
-                nick: player.nick,
-                playerId: sessionId,
-                key: sessionId,
-                map: change.value,
-                x: player.x,
-                y: player.y
-              });
-            }
+            player.reactProps.colyseus.room.then((resolvedRoom) => {
+              gameProps.colyseus.onlinePlayers[sessionId].destroy();
+              if (
+                //@ts-ignore
+                /*change.value === mapManager.mapName && */ sessionId !== resolvedRoom.sessionId &&
+                !gameProps.colyseus.onlinePlayers[sessionId].scene
+              ) {
+                gameProps.colyseus.onlinePlayers[sessionId] = new OnlinePlayer({
+                  // @ts-ignore
+                  scene: scene,
+                  nick: onlinePlayer.nick,
+                  playerId: sessionId,
+                  key: sessionId,
+                  map: change.value,
+                  x: onlinePlayer.x,
+                  y: onlinePlayer.y
+                });
+              }
+            });
           }
         }
       });
@@ -60,9 +66,9 @@ export const handleColyseus = (gameProps: ReactPhaserProps, player: PrincipalPla
       renderNewMessageAboveAuthor(gameProps, room, message, player);
     };
 
-    for (const [sessionId, player] of room.state.players) {
+    for (const [sessionId, onlinePlayer] of room.state.players) {
       if (sessionId !== room.sessionId) {
-        addPlayer(sessionId, player);
+        addPlayer(sessionId, onlinePlayer);
       }
     }
     room.state.players.onAdd = (player: PlayerModel, sessionId: any) => {
