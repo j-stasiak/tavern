@@ -15,6 +15,7 @@ import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStat
 import useToken from '../../../hooks/useToken';
 import StepForm from './StepForm';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import CloseIcon from '@mui/icons-material/Close';
 
 const StyledButton = styled(Button)`
   width: 80%;
@@ -45,6 +46,12 @@ const Wrapper = styled.div`
 
 const Icon = styled(PlaylistAddIcon)`
   font-size: 300px !important;
+`;
+
+const StyledIcon = styled(CloseIcon)`
+  color: red;
+  cursor: pointer;
+  font-size: 60px !important;
 `;
 
 const TutorialForm: React.FC = () => {
@@ -88,6 +95,7 @@ const TutorialForm: React.FC = () => {
 
   return (
     <Wrapper>
+      <StyledIcon onClick={() => setTutorialFormModalOpen(false)} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container>
           <StepsContainer>
