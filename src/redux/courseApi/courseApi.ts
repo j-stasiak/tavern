@@ -8,7 +8,19 @@ interface CreateTutorialResponse {
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
-  baseQuery: fetchBaseQuery({ baseUrl: COURSE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: COURSE_URL,
+    prepareHeaders: (headers, { getState }) => {
+      const token = sessionStorage.getItem('token');
+
+      // If we have a token set in state, let's assume that we should be passing it.
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+
+      return headers;
+    }
+  }),
   endpoints: (builder) => ({
     getCourse: builder.query<Course, string>({
       query: (id) => ({
