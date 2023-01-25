@@ -4,6 +4,7 @@ export interface Course {
   id: string;
   isActive?: boolean;
   steps: Step[];
+  stepsAmount: number;
 }
 
 export interface Step {
