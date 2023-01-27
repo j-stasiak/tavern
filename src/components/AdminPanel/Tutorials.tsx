@@ -4,7 +4,6 @@ import { useGetAllCoursesQuery } from '../../redux/courseApi/courseApi';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
-import useToken from '../../hooks/useToken';
 
 const Container = styled.div`
   display: grid;
@@ -42,13 +41,12 @@ const StyledPacMan = styled(PacmanLoaderWrapper)`
 `;
 
 const Tutorials: React.FC = () => {
-  const { token } = useToken();
-  const { data, isLoading } = useGetAllCoursesQuery(token);
+  const { data, isFetching } = useGetAllCoursesQuery('getCourses');
   const { setTutorialFormModalOpen, setSelectedCourseId } = useGlobalStates();
 
   return (
     <>
-      {isLoading ? (
+      {isFetching ? (
         <StyledPacMan />
       ) : (
         <Container>

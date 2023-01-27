@@ -32,37 +32,14 @@ export const userApi = createApi({
           Authorization: `Bearer ${token}`
         }
       })
+    }),
+    deleteUser: builder.mutation<any, { id: string }>({
+      query: (data) => ({
+        url: getUserId(data.id),
+        method: 'DELETE'
+      })
     })
-    // createCourse: builder.mutation<CreateTutorialResponse, { data: Course; token: string }>({
-    //   query: ({ data, token }) => ({
-    //     url: '',
-    //     method: 'POST',
-    //     body: data,
-    //     headers: {
-    //       Authorization: `Bearer ${token}`
-    //     }
-    //   })
-    // }),
-    // updateCourse: builder.mutation<CreateTutorialResponse, { data: Course; token: string }>({
-    //   query: ({ data, token }) => ({
-    //     url: '',
-    //     method: 'PATCH',
-    //     body: data,
-    //     headers: {
-    //       Authorization: `Bearer ${token}`
-    //     }
-    //   })
-    // }),
-    // finishCourse: builder.query<void, { id: string; token: string }>({
-    //   query: ({ id, token }) => ({
-    //     url: getFinishTutorialUrl(id),
-    //     method: 'POST',
-    //     headers: {
-    //       Authorization: `Bearer ${token}`
-    //     }
-    //   })
-    // })
   })
 });
 
-export const { useGetUserQuery, useLazyGetUserQuery, useGetAllUsersQuery } = userApi;
+export const { useGetUserQuery, useLazyGetUserQuery, useGetAllUsersQuery, useDeleteUserMutation } = userApi;

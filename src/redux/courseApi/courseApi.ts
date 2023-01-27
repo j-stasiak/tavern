@@ -10,10 +10,9 @@ export const courseApi = createApi({
   reducerPath: 'courseApi',
   baseQuery: fetchBaseQuery({
     baseUrl: COURSE_URL,
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers) => {
       const token = sessionStorage.getItem('token');
 
-      // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
@@ -29,41 +28,29 @@ export const courseApi = createApi({
       })
     }),
     getAllCourses: builder.query<Course[], string>({
-      query: (token) => ({
+      query: (id) => ({
         url: '/',
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        method: 'GET'
       })
     }),
-    createCourse: builder.mutation<CreateTutorialResponse, { data: Course; token: string }>({
-      query: ({ data, token }) => ({
+    createCourse: builder.mutation<CreateTutorialResponse, Course>({
+      query: (data) => ({
         url: '',
         method: 'POST',
-        body: data,
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        body: data
       })
     }),
-    updateCourse: builder.mutation<CreateTutorialResponse, { data: Course; token: string }>({
-      query: ({ data, token }) => ({
+    updateCourse: builder.mutation<CreateTutorialResponse, Course>({
+      query: (data) => ({
         url: '',
         method: 'PATCH',
-        body: data,
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        body: data
       })
     }),
-    finishCourse: builder.query<void, { id: string; token: string }>({
-      query: ({ id, token }) => ({
+    finishCourse: builder.query<void, string>({
+      query: (id) => ({
         url: getFinishTutorialUrl(id),
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        method: 'POST'
       })
     })
   })

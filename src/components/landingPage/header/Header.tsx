@@ -5,8 +5,7 @@ import classNames from 'classnames';
 import flex from '../../../styles/flex.module.scss';
 import { useGlobalStates } from '../../providers/globalStatesProvider/GlobalStatesProvider';
 import PrincipalZone from '../../principalZone/PrincipalZone';
-import { TokenInfo } from '../../../hooks/useToken';
-import useToken from '../../../hooks/useToken';
+import useToken, { TokenInfo } from '../../../hooks/useToken';
 import AdminIcon from './AdminPanel/AdminIcon';
 import jwtDecode from 'jwt-decode';
 
@@ -16,14 +15,12 @@ const Header: React.FC = () => {
   const { token } = useToken();
   const role = token && jwtDecode<TokenInfo>(token)?.role;
   const handleClick = () => setIsMenuOpen(false);
+
   return (
     <header onClick={handleClick} className={classNames(flex.flexRowContainer, flex.twoAxisCenter)}>
       {isLoggedIn && token ? (
         <>
           <PrincipalZone token={token} />
-          {
-            // TODO: change it later
-          }
           {role === 'admin' && <AdminIcon />}
         </>
       ) : (

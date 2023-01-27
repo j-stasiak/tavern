@@ -59,8 +59,8 @@ const TutorialForm: React.FC = () => {
     tutorialForm: { header, createButton },
     validation: { createTutorialFailed }
   } = texts;
-  const { token } = useToken();
-  const { data } = useGetAllCoursesQuery(token);
+
+  const { data, refetch: refetchTutorials } = useGetAllCoursesQuery('getCourses');
   const { setTutorialFormModalOpen, selectedCourseId } = useGlobalStates();
   const selectedTutorial = data?.find((tutorial) => tutorial.id === selectedCourseId);
 
@@ -82,14 +82,18 @@ const TutorialForm: React.FC = () => {
   const [updateTutorial, { isLoading: isUpdateLoading, isError: isUpdateError }] = useUpdateCourseMutation();
 
   const onSubmit: SubmitHandler<Course> = (data) => {
-    data.steps[0].stepNumber = 1;
+    data.steps = data.steps.map((step, index) => ({ ...step, stepNumber: index + 1 }));
     selectedTutorial
-      ? updateTutorial({ data: { ...data, id: selectedTutorial.id }, token })
-          .unwrap()
-          .then(() => setTutorialFormModalOpen(false))
-      : createTutorial({ data, token })
+      ? updateTutorial({ ...data, id: selectedTutorial.id })
           .unwrap()
           .then(() => {
+            refetchTutorials();
+            setTutorialFormModalOpen(false);
+          })
+      : createTutorial(data)
+          .unwrap()
+          .then(() => {
+            refetchTutorials();
             setTutorialFormModalOpen(false);
           });
   };

@@ -13,7 +13,7 @@ const StyledAdminIcon = styled(AdbIcon)`
 `;
 
 const AdminIcon: React.FC = () => (
-  <Link to="admin">
+  <Link to="admin/dashboard">
     <StyledAdminIcon />
   </Link>
 );

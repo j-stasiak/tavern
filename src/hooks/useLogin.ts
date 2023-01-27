@@ -15,10 +15,10 @@ export const useLogin = () => {
       .then(({ access_token }) => {
         setIsLoginModalOpen(false);
         setIsMenuOpen(false);
-        setIsLoggedIn(true);
         setToken(access_token);
         // setSocket(io(WS_ENDPOINT));
-      });
+      })
+      .then(() => setIsLoggedIn(true));
 
   return {
     login,

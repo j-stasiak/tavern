@@ -5,6 +5,7 @@ import { LOGIN_RESPONSE_MOCK } from './mocks/login';
 import { REGISTER_RESPONSE_MOCK } from './mocks/register';
 import { COURSES_RESPONSE_MOCK } from './mocks/courses';
 import { PLAYER_INFO_RESPONSE_MOCK } from './mocks/playerInfo';
+import { usersMock } from './mocks/users';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -25,8 +26,16 @@ app.get('/tutorial/', (req: Request, res: Response) => {
   setTimeout(() => res.send(COURSES_RESPONSE_MOCK), 1000);
 });
 
+app.get('/user/', (req: Request, res: Response) => {
+  setTimeout(() => res.send(usersMock), 1000);
+});
+
 app.post('/tutorial/', (req: Request, res: Response) => {
   setTimeout(() => res.status(201).send({ insertedId: 1999 }), 1000);
+});
+
+app.delete('/user/*', (req: Request, res: Response) => {
+  setTimeout(() => res.status(200).send(), 3000);
 });
 
 app.get('/tutorial/*', (req: Request, res: Response) => {

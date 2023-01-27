@@ -83,7 +83,7 @@ const RegisterForm: React.FC<Props> = ({ setIsLoginPage }) => {
           }}
         >
           <ErrorIcon sx={{ mr: 1, my: 0.5 }} />
-          <span>{incorrectCredentials}</span>
+          <span>{'Something went wrong :('}</span>
         </Box>
       )}
     </>

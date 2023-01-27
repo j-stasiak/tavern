@@ -55,7 +55,7 @@ const Course: React.FC = () => {
                 onCompleted={() => {
                   !isCompleted && setCompleted(true);
                   if (position === stepsLength) {
-                    completeTutorialTrigger({ id: selectedCourseName, token }).then(() => trigger(sub));
+                    completeTutorialTrigger(selectedCourseName).then(() => trigger(sub));
                   }
                 }}
                 isCompleted={isCompleted}

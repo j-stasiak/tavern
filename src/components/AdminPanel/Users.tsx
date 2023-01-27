@@ -2,7 +2,24 @@ import React, { useEffect, useState } from 'react';
 import useToken, { User } from '../../hooks/useToken';
 import styled from 'styled-components';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
-import { useGetAllUsersQuery } from '../../redux/playerApi/userApi';
+import { useDeleteUserMutation, useGetAllUsersQuery } from '../../redux/playerApi/userApi';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  width: calc(100% - 300px);
+`;
+
+const TableContainer = styled.table`
+  width: 100%;
+  min-height: 100vh;
+  padding: 100px;
+`;
 
 const StyledPacMan = styled(PacmanLoaderWrapper)`
   display: grid;
@@ -26,63 +43,106 @@ const sortData = (tableData: User[], sortKey: SortKeys, reverse: boolean) => {
   return sortedData;
 };
 
+const DeleteIcon = styled(DeleteForeverIcon)`
+  cursor: pointer;
+`;
+
+const FixedTd = styled.td`
+  width: 20%;
+  text-align: center;
+`;
+
+const FixedTdDelete = styled.td`
+  width: 10%;
+  text-align: center;
+`;
+
+const FixedTdHeader = styled.td`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+`;
+
 const Users: React.FC = () => {
   const { token } = useToken();
-  const { data: tableData, isLoading } = useGetAllUsersQuery(token);
+  const { data: tableData, isFetching, refetch: refetchUsers } = useGetAllUsersQuery(token);
+  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
-  const [sortKey, setSortKey] = useState<SortKeys>('id');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
+  const [sortKey, setSortKey] = useState<SortKeys>('role');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [sortedData, setSortedData] = useState<User[]>([]);
 
   const headers = [
     { key: 'id', label: 'id' },
     { key: 'email', label: 'email' },
-    { key: 'firstName', label: 'first name' },
-    { key: 'isActive', label: 'is active?' },
     { key: 'username', label: 'username' },
     { key: 'role', label: 'role' }
   ];
 
   useEffect(() => {
-    if (!isLoading && tableData) {
+    if (!isFetching && tableData) {
       setSortedData(sortData(tableData, sortKey, sortOrder === 'desc'));
     }
-  }, [isLoading, tableData]);
+  }, [isFetching, tableData]);
 
-  // const sortedData: User[] = useCallback(() => {
-  //   return sortData(tableData, sortKey, sortOrder === 'desc');
-  // }, [tableData, sortKey, sortOrder]);
+  useEffect(() => {
+    if (!isFetching && tableData) {
+      setSortedData(sortData(tableData, sortKey, sortOrder === 'desc'));
+    }
+  }, [sortOrder, sortKey]);
 
   return (
     <>
-      {isLoading ? (
+      {isFetching || isDeleting ? (
         <StyledPacMan />
       ) : (
-        <table>
-          <thead>
-            <tr>
-              {headers.map((row) => (
-                <td onClick={() => setSortKey(row.key as SortKeys)} key={row.key}>
-                  {row.label}
-                </td>
-              ))}
-            </tr>
-          </thead>
-          {tableData && (
-            <tbody>
-              {sortedData.map(({ id, firstName, isActive, username, email, role }) => (
-                <tr key={id}>
-                  <td>{id}</td>
-                  <td>{firstName}</td>
-                  <td>{isActive}</td>
-                  <td>{username}</td>
-                  <td>{email}</td>
-                  <td>{role}</td>
-                </tr>
-              ))}
-            </tbody>
-          )}
-        </table>
+        <Container>
+          <TableContainer>
+            <thead>
+              <tr>
+                {headers.map((row) => (
+                  <FixedTd key={row.label}>
+                    <FixedTdHeader>
+                      {row.label}
+                      <ArrowDropUpIcon
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setSortOrder('desc');
+                          setSortKey(row.key as SortKeys);
+                        }}
+                      />
+                      <ArrowDropDownIcon
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setSortOrder('ascn');
+                          setSortKey(row.key as SortKeys);
+                        }}
+                      />
+                    </FixedTdHeader>
+                  </FixedTd>
+                ))}
+                <FixedTdHeader> </FixedTdHeader>
+              </tr>
+            </thead>
+            {tableData && (
+              <tbody>
+                {sortedData.map(({ id, username, email, role }) => (
+                  <tr key={id}>
+                    <FixedTd>{id}</FixedTd>
+                    <FixedTd>{email}</FixedTd>
+                    <FixedTd>{username}</FixedTd>
+                    <FixedTd>{role}</FixedTd>
+                    <FixedTdDelete>
+                      <DeleteIcon onClick={() => deleteUser({ id }).then(() => refetchUsers())} />
+                    </FixedTdDelete>
+                  </tr>
+                ))}
+              </tbody>
+            )}
+          </TableContainer>
+        </Container>
       )}
     </>
   );
