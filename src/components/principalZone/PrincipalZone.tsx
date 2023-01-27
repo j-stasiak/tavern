@@ -6,6 +6,7 @@ import * as Colyseus from 'colyseus.js';
 import { Room } from 'colyseus.js';
 import jwtDecode from 'jwt-decode';
 import Stats from './Stats/Stats';
+import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
 
 interface OwnProps {
   token: string;
@@ -45,7 +46,9 @@ const PrincipalZone: FunctionComponent<OwnProps> = ({ token }) => {
       <Chat messages={messages} nick={nick} />
     </ColyseusContext.Provider>
   ) : (
-    <div>Loading</div>
+    <div>
+      <PacmanLoaderWrapper />
+    </div>
   );
 };
 const WEBSOCKET_ENDPOINT = 'ws://localhost:4001';
