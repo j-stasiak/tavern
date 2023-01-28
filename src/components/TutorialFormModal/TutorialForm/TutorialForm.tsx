@@ -82,7 +82,12 @@ const TutorialForm: React.FC = () => {
   const [updateTutorial, { isLoading: isUpdateLoading, isError: isUpdateError }] = useUpdateCourseMutation();
 
   const onSubmit: SubmitHandler<Course> = (data) => {
-    data.steps = data.steps.map((step, index) => ({ ...step, stepNumber: index + 1 }));
+    //@ts-ignore
+    data.steps = data.steps.map((step, index) => ({
+      ...step,
+      stepNumber: index + 1,
+      id: selectedTutorial?.steps[index]?.id
+    }));
     selectedTutorial
       ? updateTutorial({ ...data, id: selectedTutorial.id })
           .unwrap()
