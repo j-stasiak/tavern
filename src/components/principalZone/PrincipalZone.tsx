@@ -3,16 +3,17 @@ import { ColyseusContext } from '../../context/ColyseusContext';
 import Game from '../Game/Game';
 import Chat, { IMessage } from '../chat/Chat';
 import * as Colyseus from 'colyseus.js';
-import { Room } from 'colyseus.js';
 import jwtDecode from 'jwt-decode';
 import Stats from './Stats/Stats';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
+import { useGlobalStates } from '../providers/globalStatesProvider/GlobalStatesProvider';
 
 interface OwnProps {
   token: string;
 }
 const PrincipalZone: FunctionComponent<OwnProps> = ({ token }) => {
-  const [room, setRoom] = useState<undefined | Promise<void | Room<unknown>>>(undefined);
+  const { room, setRoom } = useGlobalStates();
+
   useEffect(() => {
     if (!room) {
       setRoom(

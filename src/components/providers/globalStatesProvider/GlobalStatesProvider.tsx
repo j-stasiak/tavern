@@ -1,3 +1,4 @@
+import { Room } from 'colyseus.js';
 import React, { createContext, useEffect, useState } from 'react';
 import useToken from '../../../hooks/useToken';
 
@@ -14,6 +15,8 @@ export interface IMenuContext {
   isLoggedIn: boolean;
   selectedCourseId: string;
   setSelectedCourseId: (id: string) => void;
+  room: undefined | Promise<void | Room<unknown>>;
+  setRoom: (room: undefined | Promise<void | Room<unknown>>) => void;
 }
 
 const GlobalStatesContext = createContext<IMenuContext>({
@@ -28,7 +31,9 @@ const GlobalStatesContext = createContext<IMenuContext>({
   setIsLoggedIn: () => undefined,
   isLoggedIn: false,
   selectedCourseId: '',
-  setSelectedCourseId: () => undefined
+  setSelectedCourseId: () => undefined,
+  room: undefined,
+  setRoom: () => undefined
 });
 
 const GlobalStatesProvider: React.FC = ({ children }) => {
@@ -38,6 +43,8 @@ const GlobalStatesProvider: React.FC = ({ children }) => {
   const [isTutorialFormModalOpen, setTutorialFormModalOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState('');
   const { getToken } = useToken();
+  const [room, setRoom] = useState<undefined | Promise<void | Room<unknown>>>(undefined);
+
   const token = !!getToken();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(token);
   useEffect(() => {
@@ -58,7 +65,9 @@ const GlobalStatesProvider: React.FC = ({ children }) => {
         isTutorialFormModalOpen,
         setTutorialFormModalOpen,
         selectedCourseId,
-        setSelectedCourseId
+        setSelectedCourseId,
+        room,
+        setRoom
       }}
     >
       {children}
