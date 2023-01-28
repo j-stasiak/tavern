@@ -8,7 +8,7 @@ const SoundPlayer: FunctionComponent = () => {
   return (
     <>
       <div onClick={() => setPlaying(!isPlaying)}>{isPlaying ? <MusicNoteIcon /> : <MusicOffIcon />}</div>
-      <ReactHowler src="assets/audio/world.mp3" playing={isPlaying} loop={true} volume={0.9} />
+      <ReactHowler src="assets/audio/world.mp3" playing={isPlaying} loop={true} volume={0.01} />
     </>
   );
 };
