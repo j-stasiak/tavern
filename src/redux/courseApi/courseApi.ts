@@ -42,7 +42,7 @@ export const courseApi = createApi({
     }),
     updateCourse: builder.mutation<CreateTutorialResponse, Course>({
       query: (data) => ({
-        url: '',
+        url: getCourseUrl(data.id),
         method: 'PATCH',
         body: data
       })

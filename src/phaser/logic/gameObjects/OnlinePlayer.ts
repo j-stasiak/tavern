@@ -51,11 +51,11 @@ export default class OnlinePlayer extends Phaser.GameObjects.Sprite {
   }
 
   playWalkingAnimation(position: string) {
-    this.anims.play(`onlinePlayer-${position}-walk`, true);
+    this.anims?.play(`onlinePlayer-${position}-walk`, true);
   }
 
   stopWalkingAnimation(position: string) {
-    this.anims.stop();
+    this.anims?.stop();
     this.setTexture('players', `bob_${position}.png`);
   }
 
