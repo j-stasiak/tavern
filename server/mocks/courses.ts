@@ -2,73 +2,65 @@ import { Course } from '../../src/models/Course';
 
 export const COURSES_RESPONSE_MOCK: Course[] = [
   {
-    id: 'f3aa5c31-0d1b-4fee-b03c-b6316a9e7a01',
-    title: 'Intermediate tutorial 4',
-    description: 'This tutorial is for intermediate only',
-    stepsAmount: 2,
+    id: 'ee4271b9-74c5-48b1-bb31-f35644337a21',
+    title: 'Demo',
+    description: 'Demo description',
+    stepsAmount: 1,
     isActive: true,
     steps: [
       {
-        id: '831de3ec-ad45-4c33-81c0-62302c307ab8',
-        title: 'Intermediate tutorial pt. 1',
-        description: 'Do this',
+        id: '28acdb38-6fa0-4e12-a05b-46c0e9818a86',
+        title: 'Demo step 1',
+        description: 'Demo step 1 description',
         stepNumber: 1,
         isActive: true,
-        answer: '<div>my first course</div>'
+        expGrant: 100,
+        expectedResult: '<div>Hello world!</div>'
       },
       {
-        id: '00d0161e-d193-4bf5-a023-ade47f60ef59',
-        title: 'Intermediate tutorial pt. 2',
-        description: 'Do that',
+        id: '28acdb38-6fa0-4e12-a05b-46c0e9818a98',
+        title: 'Demo step 1',
+        description: 'Demo step 2 desc',
         stepNumber: 2,
         isActive: true,
-        answer: '<div>my first course</div>'
+        expGrant: 100,
+        expectedResult: '<div>Hello world bla</div>'
       }
     ]
   },
   {
-    id: '819fa406-56d4-4420-b309-40972592cef1',
-    title: 'Beginner tutorial 2',
-    description: 'beginer tutek',
-    stepsAmount: 2,
+    id: '025290b9-a939-42c6-a173-000f23045a92',
+    title: 'Demo 2',
+    description: 'Demo 2 description',
+    stepsAmount: 1,
     isActive: true,
     steps: [
       {
-        id: '0eaf2d9a-d332-4527-8770-6433b7cea122',
-        title: 'beginer tutorial pt. 1',
-        description: 'Do this',
+        id: 'ec464b7b-71b8-44dd-a0bc-8ae7f3955e43',
+        title: 'Demo 2 step 1',
+        description: 'Demo 2 step 1 description',
         stepNumber: 1,
-        isActive: true
-      },
-      {
-        id: 'd52eb789-cc8a-4957-a0fd-f0a5bee29a9c',
-        title: 'beginer tutorial pt. 2',
-        description: 'Do that',
-        stepNumber: 2,
-        isActive: true
+        isActive: true,
+        expGrant: 100,
+        expectedResult: '<div>Demo</div>'
       }
     ]
   },
   {
-    id: '078fe1e1-d618-4630-a6ad-d7d91d719ab4',
-    title: 'amateur tutorial 1',
-    description: 'amateur tutek',
-    stepsAmount: 2,
+    id: '8981d6a7-bfff-4c51-a610-fc47bc97ba59',
+    title: 'Demo 3',
+    description: 'Demo 3 description',
+    stepsAmount: 1,
     isActive: true,
     steps: [
       {
-        id: '530645ab-50f4-4965-a4e7-f2e1a7d5f0d4',
-        title: 'amateur tutorial pt. 1',
-        description: 'Do this',
+        id: 'df07212c-db66-48a0-abee-2f4c39c2f0f1',
+        title: 'Demo 3 step 1',
+        description: 'Demo 3 step 1 description,\nwrite: <h1>Demo3</h1>',
         stepNumber: 1,
-        isActive: true
-      },
-      {
-        id: 'c4b9665c-8fe8-4291-b549-3828c7e1dd60',
-        title: 'amateur tutorial pt. 2',
-        description: 'Do that',
-        stepNumber: 2,
-        isActive: true
+        isActive: true,
+        expGrant: 100,
+        expectedResult: '<h1>Demo3</h1>'
       }
     ]
   }

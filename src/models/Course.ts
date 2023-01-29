@@ -12,6 +12,7 @@ export interface Step {
   description: string;
   stepNumber: number;
   isActive?: boolean;
+  expGrant?: number;
   expectedResult: string;
   id: string;
 }

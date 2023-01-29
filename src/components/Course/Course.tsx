@@ -30,7 +30,7 @@ const Course: React.FC = () => {
   const [completeTutorialTrigger] = useLazyFinishCourseQuery();
 
   const sub = token && jwtDecode<TokenInfo>(token)?.sub;
-  const [trigger] = useLazyGetUserQuery();
+  const [refetchUser] = useLazyGetUserQuery();
 
   return (
     <>
@@ -55,7 +55,7 @@ const Course: React.FC = () => {
                 onCompleted={() => {
                   !isCompleted && setCompleted(true);
                   if (position === stepsLength) {
-                    completeTutorialTrigger(selectedCourseName).then(() => trigger(sub));
+                    completeTutorialTrigger(selectedCourseName).then(() => refetchUser(sub));
                   }
                 }}
                 isCompleted={isCompleted}

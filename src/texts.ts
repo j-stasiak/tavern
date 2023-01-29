@@ -54,9 +54,9 @@ export const texts = {
   backToMenu: 'back to menu',
   course: {
     course: 'Course',
-    description: 'Yours mission',
+    description: 'Your quest',
     typeHere: 'Type code here:',
     result: 'Your result:',
-    comeBack: 'come back to game'
+    comeBack: 'exit course'
   }
 };

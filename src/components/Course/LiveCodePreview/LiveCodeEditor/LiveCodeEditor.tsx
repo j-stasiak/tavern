@@ -4,7 +4,6 @@ import { LiveEditor } from 'react-live';
 import { texts } from '../../../../texts';
 
 interface OwnProps {
-  dupa?: string;
   setCode: Dispatch<SetStateAction<string>>;
 }
 
