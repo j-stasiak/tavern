@@ -88,9 +88,9 @@ function renderNewMessageAboveAuthor(
   player: PrincipalPlayer
 ) {
   gameProps.chat.setMessages([...room.state.messages]);
-  gameProps.principal.nick === message.nick && player.speechBubbleManager.toggleSpeechBubble(message.message); //
+  gameProps.principal.nick === message.nick && player.speechBubbleManager.toggleSpeechBubble(message.message);
   for (const [sessionId, player] of room.state.players) {
-    message.nick === player.nick &&
+      gameProps.principal.nick !== message.nick && message.nick === player.nick &&
       gameProps.colyseus.onlinePlayers[sessionId].speechBubbleManager.toggleSpeechBubble(message.message);
   }
 }

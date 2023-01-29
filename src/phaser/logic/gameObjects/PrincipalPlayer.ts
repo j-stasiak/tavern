@@ -32,7 +32,7 @@ export default class PrincipalPlayer extends Phaser.GameObjects.Sprite {
     this.spacebar = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.speechBubbleManager.createSpeechBubble(20, 20);
-    this.speechBubbleManager.toggleSpeechBubble('Cześć, jestem tu nowy');
+    // this.speechBubbleManager.toggleSpeechBubble('Witamy na prezentacji!');
   }
 
   update(time: number, delta: number) {
@@ -200,5 +200,3 @@ export default class PrincipalPlayer extends Phaser.GameObjects.Sprite {
     }
   }
 }
-export const SPEECH_BUBBLE_WIDTH = 140;
-export const SPEECH_BUBBLE_HEIGHT = 60;

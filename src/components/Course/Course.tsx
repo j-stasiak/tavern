@@ -34,7 +34,7 @@ const Course: React.FC = () => {
 
   return (
     <>
-      <ReactHowler src="assets/audio/course.mp3" playing={isCompleted} loop={false} volume={0.1} />
+      <ReactHowler src="assets/audio/course.mp3" playing={isCompleted} loop={false} volume={0.9} />
       {isLoading ? (
         <PacmanLoaderWrapper />
       ) : (
@@ -42,13 +42,16 @@ const Course: React.FC = () => {
           {isCompleted && <FireworksWrapper />}
           <div
             className={classNames(
+                {[styles.description]: !stepData},
               styles.container,
               { [styles.finishedBox]: isCompleted },
               { [styles.finishBorder]: isCompleted }
             )}
           >
-            <h1>{`${position === 0 ? data?.title : stepData?.title}`}</h1>
-            <h2>{`${descriptionLabel}: ${position === 0 ? data?.description : stepData?.description}`}</h2>
+            <div className={styles.description}>
+                <h1>{`${position === 0 ? data?.title : stepData?.title}`}</h1>
+                <h2 className={styles.m1}>{`${position === 0 ? data?.description : stepData?.description}`}</h2>
+            </div>
             {stepData && (
               <LiveCodePreview
                 answer={stepData.expectedResult}

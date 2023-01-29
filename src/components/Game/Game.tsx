@@ -12,7 +12,7 @@ interface OwnProps {
 }
 
 const Game: React.FC<OwnProps> = ({ setMessages, nick }) => {
-  const { selectCourse, exitCourse } = useReactPhaserCommons();
+  const { selectCourse, exitCourse, isCourseOpen } = useReactPhaserCommons();
   const { room, onlinePlayers } = useColyseus();
 
   useEffect(() => {

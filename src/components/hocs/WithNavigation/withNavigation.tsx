@@ -7,6 +7,7 @@ import { RouteEnum } from '../../../enums/RouteEnum';
 
 // eslint-disable-next-line react/display-name
 const WithNavigation = (WrappedComponent: any) => (props: any) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch = useAppDispatch();
   const handleClick = () => dispatch(routeToPath(RouteEnum.Home));
   return (

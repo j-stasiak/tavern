@@ -1,6 +1,6 @@
 export const renderHint = (scene: Phaser.Scene) => {
   scene.add
-    .text(16, 16, 'Use arrow keys to move', {
+    .text(16, 16, 'ZPSB Thesis POC', {
       font: '18px monospace',
       // @ts-ignore
       fill: '#000000',
