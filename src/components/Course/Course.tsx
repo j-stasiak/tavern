@@ -42,15 +42,15 @@ const Course: React.FC = () => {
           {isCompleted && <FireworksWrapper />}
           <div
             className={classNames(
-                {[styles.description]: !stepData},
+              { [styles.description]: !stepData },
               styles.container,
               { [styles.finishedBox]: isCompleted },
               { [styles.finishBorder]: isCompleted }
             )}
           >
             <div className={styles.description}>
-                <h1>{`${position === 0 ? data?.title : stepData?.title}`}</h1>
-                <h2 className={styles.m1}>{`${position === 0 ? data?.description : stepData?.description}`}</h2>
+              <h1>{`${position === 0 ? data?.title : stepData?.title}`}</h1>
+              <h2 className={styles.m1}>{`${position === 0 ? data?.description : stepData?.description}`}</h2>
             </div>
             {stepData && (
               <LiveCodePreview

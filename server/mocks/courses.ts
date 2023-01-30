@@ -19,7 +19,7 @@ export const COURSES_RESPONSE_MOCK: Course[] = [
       },
       {
         id: '28acdb38-6fa0-4e12-a05b-46c0e9818a98',
-        title: 'Demo step 1',
+        title: 'Demo step 2',
         description: 'Demo step 2 desc',
         stepNumber: 2,
         isActive: true,

@@ -18,7 +18,8 @@ type Props = OwnProps;
 const LiveCodePreview: FunctionComponent<Props> = ({ answer, onCompleted, isCompleted }) => {
   const [code, setCode] = useState(DEFAULT_CODE);
   useEffect(() => {
-    code.replace(' ', '').includes(answer.replace(' ', '')) && onCompleted();
+    code.includes(answer) && onCompleted();
+    // code.replace(' ', '').includes(answer.replace(' ', '')) && onCompleted();
   }, [code]);
   return (
     <LiveProvider code={code} /*transformCode={(code) => beautify.js_beautify(code)}*/>

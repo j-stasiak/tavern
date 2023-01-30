@@ -3,22 +3,16 @@ import useToken, { User } from '../../hooks/useToken';
 import styled from 'styled-components';
 import PacmanLoaderWrapper from '../PacmanLoaderWrapper/PacmanLoaderWrapper';
 import { useDeleteUserMutation, useGetAllUsersQuery } from '../../redux/playerApi/userApi';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  width: calc(100% - 300px);
-`;
+import { Box, TextField } from '@mui/material';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 const TableContainer = styled.table`
   width: 100%;
   min-height: 100vh;
-  padding: 100px;
+  padding: 0 100px 30px;
 `;
 
 const StyledPacMan = styled(PacmanLoaderWrapper)`
@@ -26,22 +20,6 @@ const StyledPacMan = styled(PacmanLoaderWrapper)`
   justify-content: center;
   align-items: center;
 `;
-
-type SortKeys = keyof User;
-
-type SortOrder = 'ascn' | 'desc';
-
-const sortData = (tableData: User[], sortKey: SortKeys, reverse: boolean) => {
-  if (!sortKey) return tableData;
-  const dataToSort = [...tableData];
-  const sortedData = dataToSort.sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1));
-
-  if (reverse) {
-    return sortedData.reverse();
-  }
-
-  return sortedData;
-};
 
 const DeleteIcon = styled(DeleteForeverIcon)`
   cursor: pointer;
@@ -65,6 +43,30 @@ const FixedTdHeader = styled.td`
   gap: 20px;
 `;
 
+const StyledContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  flex-direction: column;
+  width: calc(100% - 300px);
+`;
+
+type SortKeys = keyof User;
+
+type SortOrder = 'ascn' | 'desc';
+
+const sortData = (tableData: User[], sortKey: SortKeys, reverse: boolean) => {
+  if (!sortKey) return tableData;
+  const dataToSort = [...tableData];
+  const sortedData = dataToSort.sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1));
+
+  if (reverse) {
+    return sortedData.reverse();
+  }
+
+  return sortedData;
+};
+
 const Users: React.FC = () => {
   const { token } = useToken();
   const { data: tableData, isFetching, refetch: refetchUsers } = useGetAllUsersQuery(token);
@@ -73,6 +75,7 @@ const Users: React.FC = () => {
   const [sortKey, setSortKey] = useState<SortKeys>('role');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [sortedData, setSortedData] = useState<User[]>([]);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const headers = [
     { key: 'id', label: 'id' },
@@ -83,6 +86,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     if (!isFetching && tableData) {
+      setSearchValue('');
       setSortedData(sortData(tableData, sortKey, sortOrder === 'desc'));
     }
   }, [isFetching, tableData]);
@@ -93,12 +97,23 @@ const Users: React.FC = () => {
     }
   }, [sortOrder, sortKey]);
 
+  useEffect(() => {
+    const defaultData = tableData ? sortData(tableData, sortKey, sortOrder === 'desc') : [];
+    if (!isFetching && tableData && searchValue.length > 2) {
+      setSortedData([...defaultData.filter((row) => row.username.toLowerCase().includes(searchValue.toLowerCase()))]);
+    } else {
+      setSortedData([...defaultData]);
+    }
+  }, [searchValue]);
+
   return (
     <>
       {isFetching || isDeleting ? (
         <StyledPacMan />
       ) : (
-        <Container>
+        <StyledContainer>
+          <Input value={searchValue} setValue={setSearchValue} />
+          {/*<Container>*/}
           <TableContainer>
             <thead>
               <tr>
@@ -142,10 +157,38 @@ const Users: React.FC = () => {
               </tbody>
             )}
           </TableContainer>
-        </Container>
+          {/*</Container>*/}
+        </StyledContainer>
       )}
     </>
   );
 };
 
 export default Users;
+
+interface BoxProps {
+  value: string;
+  setValue: (value: string) => void;
+}
+
+const StyledIcon = styled(ManageSearchIcon)`
+  font-size: 40px !important;
+`;
+
+const Input: React.FC<BoxProps> = ({ value, setValue }) => {
+  return (
+    <div style={{ alignSelf: 'end', marginRight: '70px' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <StyledIcon />
+        <TextField
+          sx={{ marginLeft: '8px' }}
+          onChange={(e) => setValue(e.target.value)}
+          value={value}
+          label={'start searching...'}
+          variant={'standard'}
+          autoComplete={'off'}
+        />
+      </Box>
+    </div>
+  );
+};
